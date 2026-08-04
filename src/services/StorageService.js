@@ -48,8 +48,8 @@ export const StorageService = {
   addHistoryItem: async (item) => {
     try {
       const history = await StorageService.getHistory();
-      // Keep last 50 items
-      const newHistory = [item, ...history].slice(0, 50);
+      // Keep last 30 items
+      const newHistory = [item, ...history].slice(0, 30);
       await AsyncStorage.setItem(STORAGE_KEYS.HISTORY, JSON.stringify(newHistory));
     } catch (e) {
       console.error('Error saving history', e);

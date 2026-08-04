@@ -22,7 +22,7 @@ export const TabBar = ({ activeTab, onTabChange }) => {
             onPress={() => onTabChange(tab.id)}
           >
             <Ionicons name={tab.icon} size={24} color={isActive ? COLORS.primary : COLORS.textSecondary} />
-            {isActive && <Text style={styles.label}>{tab.label}</Text>}
+            <Text style={[styles.label, !isActive && styles.inactiveLabel]}>{tab.label}</Text>
           </TouchableOpacity>
         );
       })}
@@ -42,22 +42,23 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   tab: {
-    flexDirection: 'row',
+    flex: 1,
+    flexDirection: 'column',
     alignItems: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 20,
+    paddingVertical: 10,
     borderRadius: SIZES.pillRadius,
   },
   activeTab: {
     backgroundColor: COLORS.accent,
   },
-  icon: {
-    fontSize: 20,
-  },
   label: {
-    marginLeft: 8,
-    fontSize: 14,
+    marginTop: 4,
+    fontSize: 12,
     fontWeight: '700',
-    color: COLORS.textPrimary,
+    color: COLORS.primary,
+  },
+  inactiveLabel: {
+    color: COLORS.textSecondary,
+    fontWeight: '500',
   },
 });

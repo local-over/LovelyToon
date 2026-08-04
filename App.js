@@ -76,15 +76,23 @@ export default function App() {
       onConnect: () => setIsConnected(true),
       onMessage: async (data) => {
         if (data.sender !== id) {
+          if (data.status === 'stopped') {
+            setCurrentSong(null);
+            return;
+          }
+          
           setCurrentSong(data);
           await StorageService.addHistoryItem({ ...data, direction: 'received' });
           
           const settings = await StorageService.getSettings();
           if (settings.pushNotifications !== false && AppState.currentState !== 'active') {
             await Notifications.scheduleNotificationAsync({
+              identifier: 'now-playing',
               content: {
                 title: `${data.senderName || 'Your partner'} is listening to...`,
                 body: `${data.title} • ${data.artist}`,
+                categoryIdentifier: 'music-actions',
+                data: { ...data },
               },
               trigger: null,
             });
@@ -101,6 +109,37 @@ export default function App() {
     
     mqttService.connect(code);
   };
+
+  useEffect(() => {
+    Notifications.setNotificationCategoryAsync('music-actions', [
+      {
+        identifier: 'like',
+        buttonTitle: '❤️ Like',
+        options: { opensAppToForeground: false }
+      },
+      {
+        identifier: 'listen',
+        buttonTitle: '🎧 Listen',
+        options: { opensAppToForeground: true }
+      }
+    ]);
+    
+    const subscription = Notifications.addNotificationResponseReceivedListener(response => {
+      const action = response.actionIdentifier;
+      const data = response.notification.request.content.data;
+      
+      if (action === 'listen') {
+        const query = encodeURIComponent(`${data.title} ${data.artist}`);
+        Linking.openURL(`https://open.spotify.com/search/${query}`).catch(() => {});
+      } else if (action === 'like') {
+        // Here you would normally save to a "Liked" database, 
+        // but for now we'll just log or trigger a toast if possible.
+        console.log("Liked song:", data.title);
+      }
+    });
+    
+    return () => subscription.remove();
+  }, []);
 
   const handleDisconnect = async () => {
     await StorageService.setPairingCode('');

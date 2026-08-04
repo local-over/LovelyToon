@@ -15,6 +15,17 @@ export const handleNotification = async (notification) => {
   if (!notification || !notification.app) return;
   
   if (MEDIA_APPS.includes(notification.app)) {
+    const pairingCode = await StorageService.getPairingCode();
+    if (!pairingCode) return;
+    
+    if (notification.event === 'removed') {
+      try {
+        await mqttService.publishBackgroundMessage(pairingCode, { status: 'stopped', sender: await StorageService.getDeviceId() });
+      } catch (e) {}
+      lastSong = { title: null, artist: null };
+      return;
+    }
+
     const title = notification.title || 'Unknown Title';
     const text = notification.text || 'Unknown Artist';
     

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform, Dimensions, Animated } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform, Dimensions, Animated, Share } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import RNAndroidNotificationListener from 'react-native-android-notification-listener';
@@ -16,7 +16,7 @@ export const OnboardingScreen = ({ onConnect }) => {
   const [generatedCode, setGeneratedCode] = useState(null);
 
   // We skip step 3 (permissions) on non-Android platforms
-  const TOTAL_STEPS = 4;
+  const TOTAL_STEPS = 6;
 
   const handleNext = async () => {
     if (step === 2) {
@@ -63,12 +63,14 @@ export const OnboardingScreen = ({ onConnect }) => {
           alert('Link copied to clipboard!');
         }
       } else {
-        await Sharing.shareAsync(`https://local-over.github.io/LovelyToon/pair/${generatedCode}`, {
-          dialogTitle: 'Share your Magic Link',
-          mimeType: 'text/plain',
+        await Share.share({
+          message: message,
+          title: 'Share your Magic Link'
         });
       }
-    } catch (e) {}
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   return (
@@ -127,6 +129,28 @@ export const OnboardingScreen = ({ onConnect }) => {
           )}
 
           {step === 4 && (
+            <View style={styles.slide}>
+              <Ionicons name="apps-outline" size={80} color={COLORS.primary} />
+              <Text style={styles.title}>Widgets & Background</Text>
+              <Text style={styles.subtitle}>You can add Lovely Toon to your Android Home Screen!{'\n\n'}Note: If you have a Huawei or Xiaomi device, make sure to disable "Battery Optimization" for this app, otherwise it may stop working in the background.</Text>
+              <TouchableOpacity style={styles.button} onPress={handleNext}>
+                <Text style={styles.buttonText}>Got it!</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+
+          {step === 5 && (
+            <View style={styles.slide}>
+              <Ionicons name="options-outline" size={80} color={COLORS.primary} />
+              <Text style={styles.title}>Preferences</Text>
+              <Text style={styles.subtitle}>By default, we keep a small history of songs and send a Push Notification when a new song plays. You can change these later in Settings.</Text>
+              <TouchableOpacity style={styles.button} onPress={handleNext}>
+                <Text style={styles.buttonText}>Continue</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+
+          {step === 6 && (
             <View style={styles.slide}>
               <Ionicons name="people-circle-outline" size={80} color={COLORS.primary} />
               <Text style={styles.title}>Room Setup</Text>

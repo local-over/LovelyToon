@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Room Invite - Lovely Toon</title>
+    <style>
+        :root {
+            --primary: #FF4B72;
+            --secondary: #FF8BA7;
+            --background: #FFF5F7;
+            --text: #2D3748;
+            --card: #FFFFFF;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        .container {
+            background-color: var(--card);
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 10px 25px rgba(255, 75, 114, 0.1);
+            max-width: 90%;
+            width: 400px;
+        }
+        .icon {
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        h1 {
+            margin: 0 0 10px 0;
+            font-size: 24px;
+        }
+        p {
+            color: #718096;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+        .room-code {
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: 4px;
+            color: var(--primary);
+            margin-bottom: 30px;
+            background: #FFF5F7;
+            padding: 10px 20px;
+            border-radius: 12px;
+            display: inline-block;
+        }
+        .button {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            text-decoration: none;
+            padding: 16px 32px;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 18px;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(255, 75, 114, 0.3);
+            transition: transform 0.2s;
+        }
+        .button:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+                <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+            </svg>
+        </div>
+        <h1>You've been invited!</h1>
+        <p>Someone wants to share their music with you using Lovely Toon.</p>
+        
+        <div id="code-container" style="display: none;">
+            <div class="room-code" id="room-code">XXXXXX</div>
+        </div>
+
+        <a href="https://github.com/local-over/LovelyToon/releases/latest" class="button">Download App to Join</a>
+    </div>
+
+    <script>
+        // Extract room code from URL: /LovelyToon/pair/ABCDEF
+        const path = window.location.pathname;
+        const match = path.match(/\/pair\/([a-zA-Z0-9]+)/i);
+        
+        if (match && match[1]) {
+            const code = match[1].toUpperCase();
+            document.getElementById('room-code').innerText = code;
+            document.getElementById('code-container').style.display = 'block';
+            
+            // Try to redirect to the app if installed using custom scheme
+            setTimeout(() => {
+                window.location.href = `lovelytoon://pair/${code}`;
+            }, 500);
+        } else if (path !== '/LovelyToon' && path !== '/LovelyToon/') {
+            // It's a real 404
+            document.querySelector('h1').innerText = 'Page Not Found';
+            document.querySelector('p').innerText = 'The page you are looking for does not exist.';
+            document.querySelector('.icon').innerHTML = '<svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>';
+            document.querySelector('.button').innerText = 'Go Home';
+            document.querySelector('.button').href = '/LovelyToon/';
+        }
+    </script>
+</body>
+</html>

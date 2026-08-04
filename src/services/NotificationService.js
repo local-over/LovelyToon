@@ -36,11 +36,16 @@ export const handleNotification = async (notification) => {
       sender: deviceId,
       senderName: nickname
     };
-    
-    mqttService.publishNowPlaying(songData);
-    
-    // Save to history locally as sent
-    await StorageService.addHistoryItem({ ...songData, direction: 'sent' });
+    const pairingCode = await StorageService.getPairingCode();
+    if (!pairingCode) return;
+
+    try {
+      await mqttService.publishBackgroundMessage(pairingCode, songData);
+      // Save to history locally as sent
+      await StorageService.addHistoryItem({ ...songData, direction: 'sent' });
+    } catch (e) {
+      console.error('Failed to publish background message', e);
+    }
   }
 };
 

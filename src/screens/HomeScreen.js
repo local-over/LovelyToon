@@ -10,7 +10,10 @@ export const HomeScreen = ({ currentSong, isConnected, pairingCode }) => {
   return (
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
       <View style={styles.header}>
-        <Text style={styles.headerText}>Room: {pairingCode}</Text>
+        <View style={styles.roomBadge}>
+          <View style={[styles.statusDot, { backgroundColor: isConnected ? '#48BB78' : '#A0AEC0' }]} />
+          <Text style={styles.headerText}>Room: {pairingCode}</Text>
+        </View>
         <HeartBeat connected={isConnected} />
       </View>
       
@@ -20,7 +23,9 @@ export const HomeScreen = ({ currentSong, isConnected, pairingCode }) => {
         <View style={styles.spacer} />
         
         <Text style={styles.statusText}>
-          {currentSong ? "They're listening to..." : "Waiting for them to play something..."}
+          {isConnected 
+            ? (currentSong ? "They're listening to..." : "Connected! Waiting for music...")
+            : "Waiting for partner to connect..."}
         </Text>
         
         <SongCard 
@@ -49,10 +54,20 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     color: COLORS.textSecondary,
-    backgroundColor: COLORS.accent,
+  },
+  roomBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: COLORS.surface,
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 9999,
+  },
+  statusDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    marginRight: 8,
   },
   content: {
     flex: 1,

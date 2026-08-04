@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, StatusBar, AppState } from 'react-native';
+import { View, StyleSheet, StatusBar, AppState, Platform } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import * as Linking from 'expo-linking';
 import * as Notifications from 'expo-notifications';
 import { HomeScreen } from './src/screens/HomeScreen';
 import { HistoryScreen } from './src/screens/HistoryScreen';
 import { SettingsScreen } from './src/screens/SettingsScreen';
-import { PairingScreen } from './src/screens/PairingScreen';
+import { OnboardingScreen } from './src/screens/OnboardingScreen';
 import { TabBar } from './src/components/TabBar';
-import { updateWidget } from './src/widget/WidgetTaskHandler';
 import { mqttService } from './src/services/MqttService';
 import { StorageService } from './src/services/StorageService';
 import { UpdateService } from './src/services/UpdateService';
@@ -20,6 +19,7 @@ export default function App() {
   const [pairingCode, setPairingCode] = useState(null);
   const [currentSong, setCurrentSong] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
+  const [deviceId, setDeviceId] = useState('');
 
   useEffect(() => {
     Notifications.setNotificationHandler({
@@ -33,9 +33,12 @@ export default function App() {
   }, []);
 
   const initApp = async () => {
+    const id = await StorageService.getDeviceId();
+    setDeviceId(id);
+    
     const savedCode = await StorageService.getPairingCode();
     if (savedCode) {
-      handleConnect(savedCode);
+      handleConnect(savedCode, id);
     }
     
     // Handle deep links
@@ -58,12 +61,12 @@ export default function App() {
     if (data.path && data.path.startsWith('pair/')) {
       const code = data.path.replace('pair/', '');
       if (code) {
-        handleConnect(code);
+        handleConnect(code, deviceId);
       }
     }
   };
 
-  const handleConnect = async (code) => {
+  const handleConnect = async (code, id = deviceId) => {
     if (!code) return;
     
     setPairingCode(code);
@@ -72,7 +75,7 @@ export default function App() {
     mqttService.setCallbacks({
       onConnect: () => setIsConnected(true),
       onMessage: async (data) => {
-        if (data.sender !== 'me') {
+        if (data.sender !== id) {
           setCurrentSong(data);
           await StorageService.addHistoryItem({ ...data, direction: 'received' });
           
@@ -87,7 +90,10 @@ export default function App() {
             });
           }
           
-          await updateWidget();
+          if (Platform.OS === 'android') {
+            const { updateWidget } = require('./src/widget/WidgetTaskHandler');
+            await updateWidget();
+          }
         }
       },
       onError: () => setIsConnected(false),
@@ -111,7 +117,7 @@ export default function App() {
       <SafeAreaProvider>
         <View style={styles.container}>
           <StatusBar barStyle="dark-content" backgroundColor={COLORS.background} />
-          <PairingScreen onConnect={handleConnect} />
+          <OnboardingScreen onConnect={(code) => handleConnect(code, deviceId)} />
         </View>
       </SafeAreaProvider>
     );

@@ -26,13 +26,14 @@ export const handleNotification = async (notification) => {
     lastSong = { title, artist: text };
     
     const nickname = await StorageService.getNickname() || 'Your partner';
+    const deviceId = await StorageService.getDeviceId();
     
     const songData = {
       title,
       artist: text,
       app: notification.app,
       timestamp: Date.now(),
-      sender: 'me',
+      sender: deviceId,
       senderName: nickname
     };
     

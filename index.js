@@ -1,5 +1,5 @@
 import { registerRootComponent } from 'expo';
-import { AppRegistry } from 'react-native';
+import { AppRegistry, Platform } from 'react-native';
 import App from './App';
 import { handleNotification } from './src/services/NotificationService';
 
@@ -8,19 +8,22 @@ import { handleNotification } from './src/services/NotificationService';
 // the environment is set up appropriately
 registerRootComponent(App);
 
-// Headless task for react-native-android-notification-listener
-AppRegistry.registerHeadlessTask('RNAndroidNotificationListenerHeadlessJs', () => async ({ notification }) => {
-  if (notification) {
-    try {
-      const parsed = typeof notification === 'string' ? JSON.parse(notification) : notification;
-      await handleNotification(parsed);
-    } catch (e) {
-      console.error('Error parsing notification', e);
+if (Platform.OS === 'android') {
+  // Headless task for react-native-android-notification-listener
+  AppRegistry.registerHeadlessTask('RNAndroidNotificationListenerHeadlessJs', () => async ({ notification }) => {
+    if (notification) {
+      try {
+        const parsed = typeof notification === 'string' ? JSON.parse(notification) : notification;
+        await handleNotification(parsed);
+      } catch (e) {
+        console.error('Error parsing notification', e);
+      }
     }
-  }
-});
+  });
 
-import { registerWidgetTaskHandler } from 'react-native-android-widget';
-import { widgetTaskHandler } from './src/widget/WidgetTaskHandler';
+  const { registerWidgetTaskHandler } = require('react-native-android-widget');
+  const { widgetTaskHandler } = require('./src/widget/WidgetTaskHandler');
 
-registerWidgetTaskHandler(widgetTaskHandler);
+  registerWidgetTaskHandler(widgetTaskHandler);
+}
+

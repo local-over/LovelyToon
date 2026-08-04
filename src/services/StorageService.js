@@ -70,5 +70,17 @@ export const StorageService = {
     } catch (e) {
       console.error('Error saving settings', e);
     }
+  },
+  getDeviceId: async () => {
+    try {
+      let deviceId = await AsyncStorage.getItem('@device_id');
+      if (!deviceId) {
+        deviceId = 'device_' + Math.random().toString(36).substr(2, 9);
+        await AsyncStorage.setItem('@device_id', deviceId);
+      }
+      return deviceId;
+    } catch (e) {
+      return 'fallback_device_id';
+    }
   }
 };

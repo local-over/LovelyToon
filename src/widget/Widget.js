@@ -15,7 +15,7 @@ export function Widget({ song }) {
       }}
     >
       <TextWidget
-        text="🎵 Lovely Toon"
+        text="Lovely Toon"
         style={{
           fontSize: 14,
           fontFamily: 'sans-serif-medium',

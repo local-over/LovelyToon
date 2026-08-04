@@ -2,11 +2,13 @@ import React from 'react';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { COLORS, SIZES, SHADOWS } from '../utils/constants';
 
+import { Ionicons } from '@expo/vector-icons';
+
 export const TabBar = ({ activeTab, onTabChange }) => {
   const tabs = [
-    { id: 'home', icon: '🏠', label: 'Home' },
-    { id: 'history', icon: '📜', label: 'History' },
-    { id: 'settings', icon: '⚙️', label: 'Settings' },
+    { id: 'home', icon: 'home-outline', label: 'Home' },
+    { id: 'history', icon: 'time-outline', label: 'History' },
+    { id: 'settings', icon: 'settings-outline', label: 'Settings' },
   ];
 
   return (
@@ -19,7 +21,7 @@ export const TabBar = ({ activeTab, onTabChange }) => {
             style={[styles.tab, isActive && styles.activeTab]}
             onPress={() => onTabChange(tab.id)}
           >
-            <Text style={styles.icon}>{tab.icon}</Text>
+            <Ionicons name={tab.icon} size={24} color={isActive ? COLORS.primary : COLORS.textSecondary} />
             {isActive && <Text style={styles.label}>{tab.label}</Text>}
           </TouchableOpacity>
         );

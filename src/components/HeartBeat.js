@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { Animated, StyleSheet, Text, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { COLORS } from '../utils/constants';
 
 export const HeartBeat = ({ connected }) => {
@@ -30,9 +31,13 @@ export const HeartBeat = ({ connected }) => {
 
   return (
     <View style={styles.container}>
-      <Animated.Text style={[styles.heart, { transform: [{ scale }] }]}>
-        {connected ? '❤️' : '🤍'}
-      </Animated.Text>
+      <Animated.View style={{ transform: [{ scale }] }}>
+        <Ionicons 
+          name={connected ? "heart" : "heart-outline"} 
+          size={32} 
+          color={connected ? COLORS.primary : COLORS.textSecondary} 
+        />
+      </Animated.View>
     </View>
   );
 };

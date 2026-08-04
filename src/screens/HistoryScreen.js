@@ -29,7 +29,7 @@ export const HistoryScreen = () => {
         contentContainerStyle={styles.list}
         ListEmptyComponent={
           <View style={styles.empty}>
-            <Text style={styles.emptyText}>No songs yet. Share some music! 🎵</Text>
+            <Text style={styles.emptyText}>No songs yet. Share some music!</Text>
           </View>
         }
       />

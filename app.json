@@ -2,12 +2,29 @@
   "expo": {
     "name": "LovelyToon",
     "slug": "LovelyToon",
-    "version": "2.0.2",
+    "scheme": "lovelytoon",
+    "version": "2.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "plugins": [
-      "./plugins/withAllowBackupFix"
+      "./plugins/withAllowBackupFix",
+      "expo-sharing",
+      [
+        "react-native-android-widget",
+        {
+          "widgets": [
+            {
+              "name": "LovelyWidget",
+              "label": "Lovely Toon",
+              "minWidth": "110dp",
+              "minHeight": "110dp",
+              "description": "See what your partner is listening to!",
+              "previewImage": "./assets/icon.png"
+            }
+          ]
+        }
+      ]
     ],
     "ios": {
       "supportsTablet": true,
@@ -21,6 +38,20 @@
         "monochromeImage": "./assets/android-icon-monochrome.png"
       },
       "package": "com.anonymous.LovelyToon",
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            {
+              "scheme": "https",
+              "host": "local-over.github.io",
+              "pathPrefix": "/LovelyToon"
+            }
+          ],
+          "category": ["BROWSABLE", "DEFAULT"]
+        }
+      ],
       "permissions": [
         "android.permission.INTERNET",
         "android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS",

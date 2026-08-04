@@ -22,6 +22,20 @@ export const StorageService = {
       console.error('Error saving pairing code', e);
     }
   },
+  getNickname: async () => {
+    try {
+      return await AsyncStorage.getItem('@nickname');
+    } catch (e) {
+      return null;
+    }
+  },
+  setNickname: async (name) => {
+    try {
+      await AsyncStorage.setItem('@nickname', name);
+    } catch (e) {
+      console.error(e);
+    }
+  },
   getHistory: async () => {
     try {
       const data = await AsyncStorage.getItem(STORAGE_KEYS.HISTORY);

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, SafeAreaView, FlatList, Text } from 'react-native';
+import { View, StyleSheet, FlatList, Text } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { HistoryItem } from '../components/HistoryItem';
 import { StorageService } from '../services/StorageService';
 import { COLORS } from '../utils/constants';
@@ -17,7 +18,7 @@ export const HistoryScreen = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
       <View style={styles.header}>
         <Text style={styles.title}>Listening History</Text>
       </View>

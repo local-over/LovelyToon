@@ -25,12 +25,15 @@ export const handleNotification = async (notification) => {
     
     lastSong = { title, artist: text };
     
+    const nickname = await StorageService.getNickname() || 'Your partner';
+    
     const songData = {
       title,
       artist: text,
       app: notification.app,
       timestamp: Date.now(),
-      sender: 'me'
+      sender: 'me',
+      senderName: nickname
     };
     
     mqttService.publishNowPlaying(songData);

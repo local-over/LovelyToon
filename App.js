@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, StatusBar } from 'react-native';
+import { View, StyleSheet, StatusBar, AppState } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import * as Linking from 'expo-linking';
+import * as Notifications from 'expo-notifications';
 import { HomeScreen } from './src/screens/HomeScreen';
 import { HistoryScreen } from './src/screens/HistoryScreen';
 import { SettingsScreen } from './src/screens/SettingsScreen';
 import { PairingScreen } from './src/screens/PairingScreen';
 import { TabBar } from './src/components/TabBar';
+import { updateWidget } from './src/widget/WidgetTaskHandler';
 import { mqttService } from './src/services/MqttService';
 import { StorageService } from './src/services/StorageService';
 import { UpdateService } from './src/services/UpdateService';
@@ -18,6 +22,13 @@ export default function App() {
   const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
+    Notifications.setNotificationHandler({
+      handleNotification: async () => ({
+        shouldShowAlert: true,
+        shouldPlaySound: true,
+        shouldSetBadge: false,
+      }),
+    });
     initApp();
   }, []);
 
@@ -27,11 +38,28 @@ export default function App() {
       handleConnect(savedCode);
     }
     
+    // Handle deep links
+    const initialUrl = await Linking.getInitialURL();
+    if (initialUrl) {
+      handleDeepLink({ url: initialUrl });
+    }
+    Linking.addEventListener('url', handleDeepLink);
+    
     startListening();
 
     const updateInfo = await UpdateService.checkForUpdates();
     if (updateInfo?.hasUpdate) {
       UpdateService.showUpdateAlert(updateInfo);
+    }
+  };
+
+  const handleDeepLink = (event) => {
+    const data = Linking.parse(event.url);
+    if (data.path && data.path.startsWith('pair/')) {
+      const code = data.path.replace('pair/', '');
+      if (code) {
+        handleConnect(code);
+      }
     }
   };
 
@@ -47,6 +75,19 @@ export default function App() {
         if (data.sender !== 'me') {
           setCurrentSong(data);
           await StorageService.addHistoryItem({ ...data, direction: 'received' });
+          
+          const settings = await StorageService.getSettings();
+          if (settings.pushNotifications !== false && AppState.currentState !== 'active') {
+            await Notifications.scheduleNotificationAsync({
+              content: {
+                title: `${data.senderName || 'Your partner'} is listening to...`,
+                body: `${data.title} • ${data.artist}`,
+              },
+              trigger: null,
+            });
+          }
+          
+          await updateWidget();
         }
       },
       onError: () => setIsConnected(false),
@@ -67,10 +108,12 @@ export default function App() {
 
   if (!pairingCode) {
     return (
-      <View style={styles.container}>
-        <StatusBar barStyle="dark-content" backgroundColor={COLORS.background} />
-        <PairingScreen onConnect={handleConnect} />
-      </View>
+      <SafeAreaProvider>
+        <View style={styles.container}>
+          <StatusBar barStyle="dark-content" backgroundColor={COLORS.background} />
+          <PairingScreen onConnect={handleConnect} />
+        </View>
+      </SafeAreaProvider>
     );
   }
 
@@ -94,13 +137,15 @@ export default function App() {
   };
 
   return (
-    <View style={styles.container}>
-      <StatusBar barStyle="dark-content" backgroundColor={COLORS.background} />
-      <View style={styles.content}>
-        {renderScreen()}
+    <SafeAreaProvider>
+      <View style={styles.container}>
+        <StatusBar barStyle="dark-content" backgroundColor={COLORS.background} />
+        <View style={styles.content}>
+          {renderScreen()}
+        </View>
+        <TabBar activeTab={activeTab} onTabChange={setActiveTab} />
       </View>
-      <TabBar activeTab={activeTab} onTabChange={setActiveTab} />
-    </View>
+    </SafeAreaProvider>
   );
 }
 

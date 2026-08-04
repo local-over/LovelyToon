@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, SafeAreaView, Text } from 'react-native';
+import { View, StyleSheet, Text, Animated } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { VinylRecord } from '../components/VinylRecord';
 import { SongCard } from '../components/SongCard';
 import { HeartBeat } from '../components/HeartBeat';
@@ -7,7 +8,7 @@ import { COLORS } from '../utils/constants';
 
 export const HomeScreen = ({ currentSong, isConnected, pairingCode }) => {
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
       <View style={styles.header}>
         <Text style={styles.headerText}>Room: {pairingCode}</Text>
         <HeartBeat connected={isConnected} />

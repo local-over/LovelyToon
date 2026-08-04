@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lovely Toon | Know what your person is vibing to</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="hero">
+        <div class="hero-content">
+            <div class="logo-area">
+                <span class="heart-icon">💖</span>
+                <h1>Lovely Toon</h1>
+            </div>
+            <h2>Know what your person is vibing to, right now.</h2>
+            <p>A free Android app for couples and besties. No accounts needed.</p>
+            <a href="https://github.com/local-over/LovelyToon/releases" class="btn btn-primary">Download APK</a>
+        </div>
+        
+        <div class="hero-illustration">
+            <div class="phone phone-1">
+                <div class="phone-screen">🎵</div>
+            </div>
+            <div class="floating-heart">❤️</div>
+            <div class="phone phone-2">
+                <div class="phone-screen">✨</div>
+            </div>
+        </div>
+    </header>
+
+    <section class="how-it-works">
+        <h3>How It Works</h3>
+        <div class="steps-container">
+            <div class="step">
+                <div class="step-number">1</div>
+                <h4>Share your code</h4>
+                <p>Generate a 6-character pairing code and give it to your partner.</p>
+            </div>
+            <div class="step step-alt">
+                <div class="step-number">2</div>
+                <h4>Play some music</h4>
+                <p>Open Spotify, YouTube Music, or whatever you like.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <h4>Stay connected</h4>
+                <p>See what they're listening to, live on your screen.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="bento-grid">
+            <div class="bento-card card-large card-pink">
+                <h4>Live Sync</h4>
+                <p>Updates instantly when they change the track.</p>
+            </div>
+            <div class="bento-card card-purple">
+                <h4>History</h4>
+                <p>Check what you both listened to recently.</p>
+            </div>
+            <div class="bento-card">
+                <h4>Battery Friendly</h4>
+                <p>Runs quietly in the background without eating your battery.</p>
+            </div>
+            <div class="bento-card">
+                <h4>No Accounts</h4>
+                <p>Just pair up with a code. Zero signups required.</p>
+            </div>
+            <div class="bento-card">
+                <h4>Auto Updates</h4>
+                <p>Gets better over time with automatic updates.</p>
+            </div>
+            <div class="bento-card card-large card-outline">
+                <h4>Open Source</h4>
+                <p>Free forever. Check out the code and contribute.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="download-section">
+        <h3>Ready to tune in together?</h3>
+        <p>Works on Android 8+</p>
+        <a href="https://github.com/local-over/LovelyToon/releases" class="btn btn-large">Get Lovely Toon</a>
+        <a href="https://github.com/local-over/LovelyToon" class="repo-link">View on GitHub</a>
+    </section>
+
+    <footer>
+        <p>Made with 💕 by Hassan Elkady</p>
+        <div class="footer-links">
+            <a href="https://github.com/local-over/LovelyToon">GitHub</a>
+            <a href="https://github.com/local-over/LovelyToon#support-this-project">Support this project</a>
+        </div>
+    </footer>
+    <script>
+        // Simple IntersectionObserver for fade-in animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.step, .bento-card').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>

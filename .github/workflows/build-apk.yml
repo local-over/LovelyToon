@@ -1,46 +1,84 @@
-name: Build Android APK
+name: Build and Release APK
+
 on:
   push:
     branches:
       - main
+    tags:
+      - 'v*'
 
 jobs:
   build:
+    name: Build APK
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: 18.x
+          node-version: '20'
           cache: 'npm'
-          cache-dependency-path: LovelyToon/package-lock.json
+          cache-dependency-path: package-lock.json
 
-      - name: Setup Java
-        uses: actions/setup-java@v3
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
         with:
-          distribution: 'zulu'
           java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
 
-      - name: Install dependencies
-        run: cd LovelyToon && npm ci --legacy-peer-deps
+      - name: Install JS dependencies
+        run: npm ci --legacy-peer-deps
 
-      - name: Prebuild Expo
-        run: cd LovelyToon && npx expo prebuild
+      - name: Run Expo prebuild
+        run: npx expo prebuild --clean
 
-      - name: Build Android Release
-        run: cd LovelyToon/android && ./gradlew assembleRelease
+      - name: Grant execute permission for gradlew
+        run: chmod +x android/gradlew
 
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v3
+      - name: Build Debug APK
+        run: cd android && ./gradlew assembleDebug
+
+      - name: Rename APK
+        run: mv android/app/build/outputs/apk/debug/app-debug.apk LovelyToon-v${{ github.ref_name || 'dev' }}.apk || mv android/app/build/outputs/apk/debug/app-debug.apk LovelyToon.apk
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
         with:
-          name: LovelyToon-APK
-          path: LovelyToon/android/app/build/outputs/apk/release/app-release.apk
+          name: lovely-toon-apk
+          path: LovelyToon*.apk
+
+  release:
+    name: Create GitHub Release
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Download APK artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: lovely-toon-apk
 
       - name: Create Release
-        uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
         with:
-          files: LovelyToon/android/app/build/outputs/apk/release/app-release.apk
+          files: LovelyToon*.apk
+          name: "Lovely Toon ${{ github.ref_name }} 💕"
+          body: |
+            ## What's New
+            Download the APK below and install it on your Android phone.
+            
+            **How to install:**
+            1. Download `LovelyToon*.apk` from below
+            2. Open it on your phone
+            3. Allow "Install from unknown sources" if prompted
+            4. Pair with your partner and enjoy! 💖
+          generate_release_notes: true
+          draft: false
+          prerelease: false

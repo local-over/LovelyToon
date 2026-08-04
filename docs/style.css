@@ -115,8 +115,11 @@ p {
     margin-bottom: 1rem;
 }
 
-.heart-icon {
-    font-size: 3rem;
+.app-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px var(--primary-shadow);
 }
 
 .hero-content {

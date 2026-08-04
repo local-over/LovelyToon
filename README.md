@@ -1,5 +1,6 @@
 <div align="center">
-  <h1>💖 Lovely Toon</h1>
+  <img src="docs/icon.png" width="100" height="100" alt="Lovely Toon Icon" style="border-radius: 20px;">
+  <h1>Lovely Toon</h1>
   <p><b>Know what your person is vibing to, right now.</b></p>
   <p>
     <a href="https://github.com/local-over/LovelyToon/releases/latest">

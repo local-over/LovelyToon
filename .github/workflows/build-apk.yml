@@ -28,7 +28,6 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-          cache: gradle
 
       - name: Install JS dependencies
         run: npm ci --legacy-peer-deps
@@ -43,13 +42,13 @@ jobs:
         run: cd android && ./gradlew assembleDebug
 
       - name: Rename APK
-        run: mv android/app/build/outputs/apk/debug/app-debug.apk LovelyToon-v${{ github.ref_name || 'dev' }}.apk || mv android/app/build/outputs/apk/debug/app-debug.apk LovelyToon.apk
+        run: cp android/app/build/outputs/apk/debug/app-debug.apk LovelyToon.apk
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: lovely-toon-apk
-          path: LovelyToon*.apk
+          path: LovelyToon.apk
 
   release:
     name: Create GitHub Release
@@ -68,14 +67,14 @@ jobs:
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          files: LovelyToon*.apk
+          files: LovelyToon.apk
           name: "Lovely Toon ${{ github.ref_name }} 💕"
           body: |
             ## What's New
             Download the APK below and install it on your Android phone.
             
             **How to install:**
-            1. Download `LovelyToon*.apk` from below
+            1. Download `LovelyToon.apk` from below
             2. Open it on your phone
             3. Allow "Install from unknown sources" if prompted
             4. Pair with your partner and enjoy! 💖

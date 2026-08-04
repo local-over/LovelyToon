@@ -19,8 +19,7 @@
               "label": "Lovely Toon",
               "minWidth": "110dp",
               "minHeight": "110dp",
-              "description": "See what your partner is listening to!",
-              "previewImage": "./assets/icon.png"
+              "description": "See what your partner is listening to!"
             }
           ]
         }

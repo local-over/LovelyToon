@@ -47,8 +47,6 @@ export const handleNotification = async (notification) => {
       sender: deviceId,
       senderName: nickname
     };
-    const pairingCode = await StorageService.getPairingCode();
-    if (!pairingCode) return;
 
     try {
       await mqttService.publishBackgroundMessage(pairingCode, songData);

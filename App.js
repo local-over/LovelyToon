@@ -111,18 +111,20 @@ export default function App() {
   };
 
   useEffect(() => {
-    Notifications.setNotificationCategoryAsync('music-actions', [
-      {
-        identifier: 'like',
-        buttonTitle: '❤️ Like',
-        options: { opensAppToForeground: false }
-      },
-      {
-        identifier: 'listen',
-        buttonTitle: '🎧 Listen',
-        options: { opensAppToForeground: true }
-      }
-    ]);
+    if (Platform.OS !== 'web') {
+      Notifications.setNotificationCategoryAsync('music-actions', [
+        {
+          identifier: 'like',
+          buttonTitle: '❤️ Like',
+          options: { opensAppToForeground: false }
+        },
+        {
+          identifier: 'listen',
+          buttonTitle: '🎧 Listen',
+          options: { opensAppToForeground: true }
+        }
+      ]).catch(() => {});
+    }
     
     const subscription = Notifications.addNotificationResponseReceivedListener(response => {
       const action = response.actionIdentifier;

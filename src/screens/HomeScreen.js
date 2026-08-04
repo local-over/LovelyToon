@@ -1,12 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Text, Animated } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { VinylRecord } from '../components/VinylRecord';
 import { SongCard } from '../components/SongCard';
 import { HeartBeat } from '../components/HeartBeat';
+import { MusicInfoService } from '../services/MusicInfoService';
 import { COLORS } from '../utils/constants';
 
 export const HomeScreen = ({ currentSong, isConnected, pairingCode }) => {
+  const [songInfo, setSongInfo] = useState(null);
+
+  useEffect(() => {
+    if (currentSong?.title) {
+      MusicInfoService.fetchSongInfo(currentSong.title, currentSong.artist)
+        .then(info => setSongInfo(info));
+    } else {
+      setSongInfo(null);
+    }
+  }, [currentSong]);
+
   return (
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
       <View style={styles.header}>
@@ -18,9 +29,6 @@ export const HomeScreen = ({ currentSong, isConnected, pairingCode }) => {
       </View>
       
       <View style={styles.content}>
-        <VinylRecord isPlaying={!!currentSong} />
-        
-        <View style={styles.spacer} />
         
         <Text style={styles.statusText}>
           {isConnected 
@@ -32,6 +40,9 @@ export const HomeScreen = ({ currentSong, isConnected, pairingCode }) => {
           title={currentSong?.title} 
           artist={currentSong?.artist} 
           app={currentSong?.app} 
+          timestamp={currentSong?.timestamp}
+          artwork={songInfo?.artwork}
+          duration={songInfo?.duration}
         />
       </View>
     </SafeAreaView>

@@ -48,7 +48,8 @@ export const OnboardingScreen = ({ onConnect }) => {
   };
 
   const shareCode = async () => {
-    const message = `Let's listen together! Download Lovely Toon and join my room: https://local-over.github.io/LovelyToon/pair/${generatedCode}`;
+    const senderName = nickname ? nickname : 'Your partner';
+    const message = `${senderName} wants to listen to music with you! Download Lovely Toon and join the room: https://local-over.github.io/LovelyToon/pair/${generatedCode}`;
     try {
       if (Platform.OS === 'web') {
         if (navigator.share) {

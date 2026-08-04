@@ -1,0 +1,46 @@
+name: Build Android APK
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+          cache: 'npm'
+          cache-dependency-path: LovelyToon/package-lock.json
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Install dependencies
+        run: cd LovelyToon && npm ci --legacy-peer-deps
+
+      - name: Prebuild Expo
+        run: cd LovelyToon && npx expo prebuild
+
+      - name: Build Android Release
+        run: cd LovelyToon/android && ./gradlew assembleRelease
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: LovelyToon-APK
+          path: LovelyToon/android/app/build/outputs/apk/release/app-release.apk
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: LovelyToon/android/app/build/outputs/apk/release/app-release.apk

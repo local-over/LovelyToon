@@ -5,7 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { COLORS, SIZES, SHADOWS } from '../utils/constants';
 import { StorageService } from '../services/StorageService';
 
-export const SettingsScreen = ({ onDisconnect }) => {
+export const SettingsScreen = ({ onDisconnect, onResetPartner }) => {
   const [pushEnabled, setPushEnabled] = useState(true);
   
   useEffect(() => {
@@ -78,8 +78,11 @@ export const SettingsScreen = ({ onDisconnect }) => {
 
         <View style={styles.card}>
           <Text style={styles.sectionTitle}>Connection</Text>
+          <TouchableOpacity style={[styles.button, { marginBottom: 12 }]} onPress={onResetPartner}>
+            <Text style={styles.buttonText}>Reset Partner Choice</Text>
+          </TouchableOpacity>
           <TouchableOpacity style={[styles.button, styles.disconnectButton]} onPress={onDisconnect}>
-            <Text style={styles.disconnectButtonText}>Disconnect Partner</Text>
+            <Text style={styles.disconnectButtonText}>Leave Room completely</Text>
           </TouchableOpacity>
         </View>
       </View>

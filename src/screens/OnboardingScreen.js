@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import RNAndroidNotificationListener from 'react-native-android-notification-listener';
 import { StorageService } from '../services/StorageService';
+import { mqttService } from '../services/MqttService';
 import { COLORS } from '../utils/constants';
 import * as Sharing from 'expo-sharing';
 
@@ -42,9 +43,29 @@ export const OnboardingScreen = ({ onConnect }) => {
     }
   };
 
-  const handleCreateRoom = () => {
-    const code = Math.random().toString(36).substring(2, 8).toUpperCase();
-    setGeneratedCode(code);
+  const [isCreating, setIsCreating] = useState(false);
+
+  const handleCreateRoom = async () => {
+    setIsCreating(true);
+    let code;
+    let claimed = false;
+    
+    // Try up to 3 times to find an empty room
+    for (let i = 0; i < 3; i++) {
+      code = Math.random().toString(36).substring(2, 8).toUpperCase();
+      const success = await mqttService.checkAndClaimRoom(code);
+      if (success) {
+        claimed = true;
+        break;
+      }
+    }
+    
+    setIsCreating(false);
+    if (claimed) {
+      setGeneratedCode(code);
+    } else {
+      alert("Failed to create a room. Please try again.");
+    }
   };
 
   const shareCode = async () => {
@@ -176,8 +197,14 @@ export const OnboardingScreen = ({ onConnect }) => {
 
                   <Text style={styles.divider}>OR</Text>
 
-                  <TouchableOpacity style={styles.secondaryButton} onPress={handleCreateRoom}>
-                    <Text style={styles.secondaryButtonText}>Create New Room</Text>
+                  <TouchableOpacity 
+                    style={[styles.secondaryButton, isCreating && styles.buttonDisabled]} 
+                    onPress={handleCreateRoom}
+                    disabled={isCreating}
+                  >
+                    <Text style={styles.secondaryButtonText}>
+                      {isCreating ? 'Creating Room...' : 'Create New Room'}
+                    </Text>
                   </TouchableOpacity>
                 </>
               ) : (

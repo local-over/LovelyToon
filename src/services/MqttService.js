@@ -114,6 +114,49 @@ class MqttService {
       });
     });
   }
+
+  checkAndClaimRoom(code) {
+    return new Promise((resolve) => {
+      const clientId = `lovelytoon_check_${Math.random().toString(16).substr(2, 8)}`;
+      const tempClient = mqtt.connect('wss://broker.hivemq.com:8884/mqtt', {
+        clientId,
+        clean: true,
+        connectTimeout: 5000,
+      });
+
+      let claimed = false;
+
+      tempClient.on('connect', () => {
+        tempClient.subscribe(`lovelytoon/room/${code}/created`);
+        
+        // Wait 1 second to see if a retained message arrives
+        const timeout = setTimeout(() => {
+          if (!claimed) {
+            // Claim it by publishing a retained message
+            tempClient.publish(`lovelytoon/room/${code}/created`, '1', { qos: 1, retain: true });
+            tempClient.end();
+            resolve(true); // Successfully claimed
+          }
+        }, 1000);
+
+        tempClient.on('message', (topic, message) => {
+          if (topic === `lovelytoon/room/${code}/created`) {
+            // Room is already taken
+            claimed = true;
+            clearTimeout(timeout);
+            tempClient.end();
+            resolve(false); 
+          }
+        });
+      });
+
+      tempClient.on('error', () => {
+        tempClient.end();
+        // If error, assume taken just to be safe, or retry. We'll resolve false.
+        resolve(false);
+      });
+    });
+  }
 }
 
 export const mqttService = new MqttService();

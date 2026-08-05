@@ -20,6 +20,7 @@ export default function App() {
   const [currentSong, setCurrentSong] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
   const [deviceId, setDeviceId] = useState('');
+  const [partnerId, setPartnerId] = useState(null);
 
   useEffect(() => {
     Notifications.setNotificationHandler({
@@ -36,9 +37,12 @@ export default function App() {
     const id = await StorageService.getDeviceId();
     setDeviceId(id);
     
+    const pid = await StorageService.getPartnerId();
+    setPartnerId(pid);
+    
     const savedCode = await StorageService.getPairingCode();
     if (savedCode) {
-      handleConnect(savedCode, id);
+      handleConnect(savedCode, id, pid);
     }
     
     // Handle deep links
@@ -61,21 +65,34 @@ export default function App() {
     if (data.path && data.path.startsWith('pair/')) {
       const code = data.path.replace('pair/', '');
       if (code) {
-        handleConnect(code, deviceId);
+        handleConnect(code, deviceId, partnerId);
       }
     }
   };
 
-  const handleConnect = async (code, id = deviceId) => {
+  const handleConnect = async (code, id = deviceId, currentPartnerId = partnerId) => {
     if (!code) return;
     
     setPairingCode(code);
     await StorageService.setPairingCode(code);
     
+    let activePartnerId = currentPartnerId;
+    
     mqttService.setCallbacks({
       onConnect: () => setIsConnected(true),
       onMessage: async (data) => {
         if (data.sender !== id) {
+          
+          if (!activePartnerId && data.status !== 'stopped') {
+            activePartnerId = data.sender;
+            setPartnerId(activePartnerId);
+            await StorageService.setPartnerId(activePartnerId);
+          }
+          
+          if (activePartnerId && data.sender !== activePartnerId) {
+            return; // Ignore 3rd parties completely
+          }
+          
           if (data.status === 'stopped') {
             setCurrentSong(null);
             return;
@@ -164,6 +181,13 @@ export default function App() {
     );
   }
 
+  const handleResetPartner = async () => {
+    setPartnerId(null);
+    await StorageService.setPartnerId(null);
+    setCurrentSong(null); // Clear the screen so they wait for the next person
+    alert("Partner reset! Waiting for the next person to join...");
+  };
+
   const renderScreen = () => {
     switch (activeTab) {
       case 'home':
@@ -177,7 +201,7 @@ export default function App() {
       case 'history':
         return <HistoryScreen />;
       case 'settings':
-        return <SettingsScreen onDisconnect={handleDisconnect} />;
+        return <SettingsScreen onDisconnect={handleDisconnect} onResetPartner={handleResetPartner} />;
       default:
         return <HomeScreen />;
     }

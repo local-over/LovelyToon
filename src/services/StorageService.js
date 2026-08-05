@@ -22,6 +22,24 @@ export const StorageService = {
       console.error('Error saving pairing code', e);
     }
   },
+  getPartnerId: async () => {
+    try {
+      return await AsyncStorage.getItem('@partner_id');
+    } catch (e) {
+      return null;
+    }
+  },
+  setPartnerId: async (id) => {
+    try {
+      if (id) {
+        await AsyncStorage.setItem('@partner_id', id);
+      } else {
+        await AsyncStorage.removeItem('@partner_id');
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  },
   getNickname: async () => {
     try {
       return await AsyncStorage.getItem('@nickname');

@@ -1,0 +1,384 @@
+﻿2026-08-07T17:03:21.9050677Z Current runner version: '2.336.0'
+2026-08-07T17:03:21.9076376Z ##[group]Runner Image Provisioner
+2026-08-07T17:03:21.9077289Z Hosted Compute Agent
+2026-08-07T17:03:21.9077826Z Version: 20260707.563
+2026-08-07T17:03:21.9078414Z Commit: 02667638d2b423fbc733a8e32a88b44996a3ba6e
+2026-08-07T17:03:21.9079148Z Build Date: 2026-07-07T19:33:50Z
+2026-08-07T17:03:21.9079816Z Worker ID: {3731efd9-d0f0-40bc-9af0-dc56f8557e4a}
+2026-08-07T17:03:21.9080495Z Azure Region: centralus
+2026-08-07T17:03:21.9081024Z ##[endgroup]
+2026-08-07T17:03:21.9082717Z ##[group]Operating System
+2026-08-07T17:03:21.9083365Z Ubuntu
+2026-08-07T17:03:21.9083854Z 24.04.4
+2026-08-07T17:03:21.9084336Z LTS
+2026-08-07T17:03:21.9084802Z ##[endgroup]
+2026-08-07T17:03:21.9085301Z ##[group]Runner Image
+2026-08-07T17:03:21.9085866Z Image: ubuntu-24.04
+2026-08-07T17:03:21.9086398Z Version: 20260720.247.2
+2026-08-07T17:03:21.9087576Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260720.247/images/ubuntu/Ubuntu2404-Readme.md
+2026-08-07T17:03:21.9088869Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260720.247
+2026-08-07T17:03:21.9090118Z ##[endgroup]
+2026-08-07T17:03:21.9091265Z ##[group]GITHUB_TOKEN Permissions
+2026-08-07T17:03:21.9093984Z Contents: read
+2026-08-07T17:03:21.9094549Z Metadata: read
+2026-08-07T17:03:21.9095050Z Packages: read
+2026-08-07T17:03:21.9095575Z ##[endgroup]
+2026-08-07T17:03:21.9097700Z Secret source: Actions
+2026-08-07T17:03:21.9098729Z Prepare workflow directory
+2026-08-07T17:03:21.9427788Z Prepare all required actions
+2026-08-07T17:03:21.9484225Z Getting action download info
+2026-08-07T17:03:22.2106143Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+2026-08-07T17:03:22.6140949Z Download action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+2026-08-07T17:03:22.6850723Z Download action repository 'actions/setup-java@v4' (SHA:cf277c60eb25467037889841efdb72551f06f6c3)
+2026-08-07T17:03:23.2738916Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-08-07T17:03:23.4698772Z Complete job name: Build APK
+2026-08-07T17:03:23.5655439Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-08-07T17:03:23.5664589Z ##[group]Run actions/checkout@v4
+2026-08-07T17:03:23.5665282Z with:
+2026-08-07T17:03:23.5665719Z   repository: local-over/LovelyToon
+2026-08-07T17:03:23.5669443Z   token: ***
+2026-08-07T17:03:23.5669835Z   ssh-strict: true
+2026-08-07T17:03:23.5670243Z   ssh-user: git
+2026-08-07T17:03:23.5670659Z   persist-credentials: true
+2026-08-07T17:03:23.5671122Z   clean: true
+2026-08-07T17:03:23.5671537Z   sparse-checkout-cone-mode: true
+2026-08-07T17:03:23.5672167Z   fetch-depth: 1
+2026-08-07T17:03:23.5672620Z   fetch-tags: false
+2026-08-07T17:03:23.5673051Z   show-progress: true
+2026-08-07T17:03:23.5673486Z   lfs: false
+2026-08-07T17:03:23.5673931Z   submodules: false
+2026-08-07T17:03:23.5674351Z   set-safe-directory: true
+2026-08-07T17:03:23.5674829Z   allow-unsafe-pr-checkout: false
+2026-08-07T17:03:23.5675560Z ##[endgroup]
+2026-08-07T17:03:23.6726306Z Syncing repository: local-over/LovelyToon
+2026-08-07T17:03:23.6728381Z ##[group]Getting Git version info
+2026-08-07T17:03:23.6729097Z Working directory is '/home/runner/work/LovelyToon/LovelyToon'
+2026-08-07T17:03:23.6730461Z [command]/usr/bin/git version
+2026-08-07T17:03:23.6787394Z git version 2.54.0
+2026-08-07T17:03:23.6812848Z ##[endgroup]
+2026-08-07T17:03:23.6833657Z Temporarily overriding HOME='/home/runner/work/_temp/7e3e399e-a44e-4604-a260-d5a5d001b4f1' before making global git config changes
+2026-08-07T17:03:23.6835736Z Adding repository directory to the temporary git global config as a safe directory
+2026-08-07T17:03:23.6841555Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/LovelyToon/LovelyToon
+2026-08-07T17:03:23.6903854Z Deleting the contents of '/home/runner/work/LovelyToon/LovelyToon'
+2026-08-07T17:03:23.6906072Z ##[group]Initializing the repository
+2026-08-07T17:03:23.6923649Z [command]/usr/bin/git init /home/runner/work/LovelyToon/LovelyToon
+2026-08-07T17:03:23.7005871Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-08-07T17:03:23.7007714Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-08-07T17:03:23.7009313Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-08-07T17:03:23.7010746Z hint: call:
+2026-08-07T17:03:23.7011419Z hint:
+2026-08-07T17:03:23.7012402Z hint: 	git config --global init.defaultBranch <name>
+2026-08-07T17:03:23.7013000Z hint:
+2026-08-07T17:03:23.7013558Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-08-07T17:03:23.7014428Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-08-07T17:03:23.7015169Z hint:
+2026-08-07T17:03:23.7015602Z hint: 	git branch -m <name>
+2026-08-07T17:03:23.7016086Z hint:
+2026-08-07T17:03:23.7016695Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-08-07T17:03:23.7023397Z Initialized empty Git repository in /home/runner/work/LovelyToon/LovelyToon/.git/
+2026-08-07T17:03:23.7033430Z [command]/usr/bin/git remote add origin https://github.com/local-over/LovelyToon
+2026-08-07T17:03:23.7066406Z ##[endgroup]
+2026-08-07T17:03:23.7067900Z ##[group]Disabling automatic garbage collection
+2026-08-07T17:03:23.7071240Z [command]/usr/bin/git config --local gc.auto 0
+2026-08-07T17:03:23.7099313Z ##[endgroup]
+2026-08-07T17:03:23.7100798Z ##[group]Setting up auth
+2026-08-07T17:03:23.7107562Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-08-07T17:03:23.7139680Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-08-07T17:03:23.7484340Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-08-07T17:03:23.7515951Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-08-07T17:03:23.7709461Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-08-07T17:03:23.7740518Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-08-07T17:03:23.7919144Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-08-07T17:03:23.7953740Z ##[endgroup]
+2026-08-07T17:03:23.7954665Z ##[group]Fetching the repository
+2026-08-07T17:03:23.7962778Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +ebb462cdfa1a2cfcca24c5d66df8ed81d1955da9:refs/remotes/origin/main
+2026-08-07T17:03:24.4266718Z From https://github.com/local-over/LovelyToon
+2026-08-07T17:03:24.4268337Z  * [new ref]         ebb462cdfa1a2cfcca24c5d66df8ed81d1955da9 -> origin/main
+2026-08-07T17:03:24.4306941Z ##[endgroup]
+2026-08-07T17:03:24.4309162Z ##[group]Determining the checkout info
+2026-08-07T17:03:24.4311838Z ##[endgroup]
+2026-08-07T17:03:24.4316559Z [command]/usr/bin/git sparse-checkout disable
+2026-08-07T17:03:24.4361076Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-08-07T17:03:24.4389564Z ##[group]Checking out the ref
+2026-08-07T17:03:24.4394001Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2026-08-07T17:03:24.4540075Z Switched to a new branch 'main'
+2026-08-07T17:03:24.4542169Z branch 'main' set up to track 'origin/main'.
+2026-08-07T17:03:24.4547069Z ##[endgroup]
+2026-08-07T17:03:24.4587925Z [command]/usr/bin/git log -1 --format=%H
+2026-08-07T17:03:24.4610445Z ebb462cdfa1a2cfcca24c5d66df8ed81d1955da9
+2026-08-07T17:03:24.4959077Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-08-07T17:03:24.4964683Z ##[group]Run actions/setup-node@v4
+2026-08-07T17:03:24.4965753Z with:
+2026-08-07T17:03:24.4966573Z   node-version: 20
+2026-08-07T17:03:24.4967447Z   cache: npm
+2026-08-07T17:03:24.4968380Z   cache-dependency-path: package-lock.json
+2026-08-07T17:03:24.4969556Z   always-auth: false
+2026-08-07T17:03:24.4970467Z   check-latest: false
+2026-08-07T17:03:24.4980006Z   token: ***
+2026-08-07T17:03:24.4980860Z ##[endgroup]
+2026-08-07T17:03:24.6407824Z Attempting to download 20...
+2026-08-07T17:03:24.6512364Z (node:2180) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-08-07T17:03:24.6514963Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-08-07T17:03:25.3167827Z Acquiring 20.20.2 - x64 from https://github.com/actions/node-versions/releases/download/20.20.2-23521894959/node-20.20.2-linux-x64.tar.gz
+2026-08-07T17:03:41.5838410Z Extracting ...
+2026-08-07T17:03:41.5952476Z [command]/usr/bin/tar xz --strip 1 --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/8b66ae16-c214-4057-befd-59bde8d2753b -f /home/runner/work/_temp/fd7b81c3-cf89-4997-8d5e-9ad7043abd9a
+2026-08-07T17:03:42.5622419Z Adding to the cache ...
+2026-08-07T17:03:43.8237459Z ##[group]Environment details
+2026-08-07T17:03:44.0388574Z node: v20.20.2
+2026-08-07T17:03:44.0389039Z npm: 10.8.2
+2026-08-07T17:03:44.0389349Z yarn: 1.22.22
+2026-08-07T17:03:44.0390075Z ##[endgroup]
+2026-08-07T17:03:44.0416234Z [command]/opt/hostedtoolcache/node/20.20.2/x64/bin/npm config get cache
+2026-08-07T17:03:44.1375279Z /home/runner/.npm
+2026-08-07T17:03:44.3072454Z Cache hit for: node-cache-Linux-x64-npm-65238dd8b8020356143b0bf1691d9662ea55f56dc1a5e4371ad81244580b7297
+2026-08-07T17:03:44.3183260Z (node:2180) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-08-07T17:03:45.4363304Z Received 113246208 of 148044168 (76.5%), 107.7 MBs/sec
+2026-08-07T17:03:45.7113531Z Received 148044168 of 148044168 (100.0%), 110.6 MBs/sec
+2026-08-07T17:03:45.7122844Z Cache Size: ~141 MB (148044168 B)
+2026-08-07T17:03:45.7215277Z [command]/usr/bin/tar -xf /home/runner/work/_temp/0171a91d-84ca-4be3-98cb-e049e22c5850/cache.tzst -P -C /home/runner/work/LovelyToon/LovelyToon --use-compress-program unzstd
+2026-08-07T17:03:45.9155515Z Cache restored successfully
+2026-08-07T17:03:45.9216279Z Cache restored from key: node-cache-Linux-x64-npm-65238dd8b8020356143b0bf1691d9662ea55f56dc1a5e4371ad81244580b7297
+2026-08-07T17:03:45.9409777Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-08-07T17:03:45.9410987Z ##[group]Run actions/setup-java@v4
+2026-08-07T17:03:45.9411229Z with:
+2026-08-07T17:03:45.9411439Z   java-version: 17
+2026-08-07T17:03:45.9411645Z   distribution: temurin
+2026-08-07T17:03:45.9411858Z   java-package: jdk
+2026-08-07T17:03:45.9412309Z   check-latest: false
+2026-08-07T17:03:45.9412578Z   server-id: github
+2026-08-07T17:03:45.9412796Z   server-username: GITHUB_ACTOR
+2026-08-07T17:03:45.9413044Z   server-password: GITHUB_TOKEN
+2026-08-07T17:03:45.9413291Z   overwrite-settings: true
+2026-08-07T17:03:45.9413542Z   job-status: success
+2026-08-07T17:03:45.9416282Z   token: ***
+2026-08-07T17:03:45.9416477Z ##[endgroup]
+2026-08-07T17:03:46.1066733Z ##[warning]setup-java v4 is deprecated and will no longer receive updates. Please migrate to actions/setup-java@v5.
+2026-08-07T17:03:46.1073802Z ##[group]Installed distributions
+2026-08-07T17:03:46.1112856Z Resolved Java 17.0.19+10 from tool-cache
+2026-08-07T17:03:46.1113289Z Setting Java 17.0.19+10 as the default
+2026-08-07T17:03:46.1117415Z (node:2231) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-08-07T17:03:46.1118160Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-08-07T17:03:46.1120898Z Creating toolchains.xml for JDK version 17 from temurin
+2026-08-07T17:03:46.1190003Z Writing to /home/runner/.m2/toolchains.xml
+2026-08-07T17:03:46.1190423Z 
+2026-08-07T17:03:46.1190618Z Java configuration:
+2026-08-07T17:03:46.1191010Z   Distribution: temurin
+2026-08-07T17:03:46.1191407Z   Version: 17.0.19+10
+2026-08-07T17:03:46.1192300Z   Path: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.19-10/x64
+2026-08-07T17:03:46.1192642Z 
+2026-08-07T17:03:46.1192961Z ##[endgroup]
+2026-08-07T17:03:46.1196604Z Creating settings.xml with server-id: github
+2026-08-07T17:03:46.1230924Z Writing to /home/runner/.m2/settings.xml
+2026-08-07T17:03:46.1379387Z ##[group]Run npm ci --legacy-peer-deps
+2026-08-07T17:03:46.1379836Z [36;1mnpm ci --legacy-peer-deps[0m
+2026-08-07T17:03:46.1412531Z shell: /usr/bin/bash -e {0}
+2026-08-07T17:03:46.1412897Z env:
+2026-08-07T17:03:46.1413371Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.19-10/x64
+2026-08-07T17:03:46.1413931Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.19-10/x64
+2026-08-07T17:03:46.1414486Z ##[endgroup]
+2026-08-07T17:03:49.7911872Z npm warn deprecated text-encoding@0.7.0: no longer maintained
+2026-08-07T17:03:49.9338633Z npm warn deprecated uuid@7.0.3: uuid@10 and below is no longer supported.  For ESM codebases, update to uuid@latest.  For CommonJS codebases, use uuid@11 (but be aware this version will likely be deprecated in 2028).
+2026-08-07T17:03:53.5497849Z 
+2026-08-07T17:03:53.5498639Z added 575 packages, and audited 576 packages in 7s
+2026-08-07T17:03:53.5499142Z 
+2026-08-07T17:03:53.5499491Z 59 packages are looking for funding
+2026-08-07T17:03:53.5500706Z   run `npm fund` for details
+2026-08-07T17:03:53.6054720Z 
+2026-08-07T17:03:53.6055675Z 11 moderate severity vulnerabilities
+2026-08-07T17:03:53.6056132Z 
+2026-08-07T17:03:53.6056556Z To address issues that do not require attention, run:
+2026-08-07T17:03:53.6057250Z   npm audit fix
+2026-08-07T17:03:53.6057612Z 
+2026-08-07T17:03:53.6058145Z To address all issues (including breaking changes), run:
+2026-08-07T17:03:53.6058752Z   npm audit fix --force
+2026-08-07T17:03:53.6058914Z 
+2026-08-07T17:03:53.6059085Z Run `npm audit` for details.
+2026-08-07T17:03:53.6367594Z ##[group]Run npx expo prebuild --clean
+2026-08-07T17:03:53.6367995Z [36;1mnpx expo prebuild --clean[0m
+2026-08-07T17:03:53.6398695Z shell: /usr/bin/bash -e {0}
+2026-08-07T17:03:53.6399084Z env:
+2026-08-07T17:03:53.6399504Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.19-10/x64
+2026-08-07T17:03:53.6400050Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.19-10/x64
+2026-08-07T17:03:53.6400550Z ##[endgroup]
+2026-08-07T17:03:54.0909087Z - Creating native directories (./ios and ./android)
+2026-08-07T17:03:54.4485377Z ✔ Created native directories
+2026-08-07T17:03:54.4489607Z - Updating package.json
+2026-08-07T17:03:54.4614998Z ✔ Updated package.json | no changes
+2026-08-07T17:03:54.4615745Z - Running prebuild
+2026-08-07T17:03:57.0241194Z » android: userInterfaceStyle: Install expo-system-ui in your project to enable this feature.
+2026-08-07T17:03:57.0242464Z - Running prebuild
+2026-08-07T17:03:57.4139680Z ✔ Finished prebuild
+2026-08-07T17:03:57.4149790Z - Installing CocoaPods...
+2026-08-07T17:03:57.4150959Z ✔ Skipped installing CocoaPods because operating system is not on macOS.
+2026-08-07T17:03:57.4510379Z ##[group]Run chmod +x android/gradlew
+2026-08-07T17:03:57.4510683Z [36;1mchmod +x android/gradlew[0m
+2026-08-07T17:03:57.4536035Z shell: /usr/bin/bash -e {0}
+2026-08-07T17:03:57.4536300Z env:
+2026-08-07T17:03:57.4536608Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.19-10/x64
+2026-08-07T17:03:57.4537079Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.19-10/x64
+2026-08-07T17:03:57.4537438Z ##[endgroup]
+2026-08-07T17:03:57.4631158Z ##[group]Run echo "org.gradle.jvmargs=-Xmx3g -XX:MaxMetaspaceSize=1024m -XX:+HeapDumpOnOutOfMemoryError" >> android/gradle.properties
+2026-08-07T17:03:57.4633036Z [36;1mecho "org.gradle.jvmargs=-Xmx3g -XX:MaxMetaspaceSize=1024m -XX:+HeapDumpOnOutOfMemoryError" >> android/gradle.properties[0m
+2026-08-07T17:03:57.4634131Z [36;1mcd android && ./gradlew assembleRelease[0m
+2026-08-07T17:03:57.4672182Z shell: /usr/bin/bash -e {0}
+2026-08-07T17:03:57.4672614Z env:
+2026-08-07T17:03:57.4673141Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.19-10/x64
+2026-08-07T17:03:57.4674015Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.19-10/x64
+2026-08-07T17:03:57.4674673Z ##[endgroup]
+2026-08-07T17:03:58.0371137Z Downloading https://services.gradle.org/distributions/gradle-9.3.1-bin.zip
+2026-08-07T17:04:00.7288171Z .............10%.............20%.............30%.............40%.............50%.............60%.............70%.............80%.............90%.............100%
+2026-08-07T17:04:02.0847772Z 
+2026-08-07T17:04:02.0848806Z Welcome to Gradle 9.3.1!
+2026-08-07T17:04:02.0849294Z 
+2026-08-07T17:04:02.0849758Z Here are the highlights of this release:
+2026-08-07T17:04:02.0850882Z  - Test reporting improvements
+2026-08-07T17:04:02.0851446Z  - Error and warning improvements
+2026-08-07T17:04:02.0851961Z  - Build authoring improvements
+2026-08-07T17:04:02.0852459Z 
+2026-08-07T17:04:02.0852937Z For more details see https://docs.gradle.org/9.3.1/release-notes.html
+2026-08-07T17:04:02.0853418Z 
+2026-08-07T17:04:02.1831763Z Starting a Gradle Daemon (subsequent builds will be faster)
+2026-08-07T17:04:54.9889279Z > Task :gradle-plugin:settings-plugin:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-08-07T17:04:54.9903974Z > Task :expo-gradle-plugin:expo-autolinking-plugin-shared:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-08-07T17:04:54.9928723Z > Task :expo-gradle-plugin:expo-autolinking-settings-plugin:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-08-07T17:04:54.9959954Z > Task :gradle-plugin:shared:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-08-07T17:04:55.0860109Z > Task :expo-gradle-plugin:expo-autolinking-settings-plugin:pluginDescriptors
+2026-08-07T17:04:55.0861613Z > Task :gradle-plugin:settings-plugin:pluginDescriptors
+2026-08-07T17:04:55.0867473Z > Task :gradle-plugin:settings-plugin:processResources
+2026-08-07T17:04:55.0868596Z > Task :expo-gradle-plugin:expo-autolinking-settings-plugin:processResources
+2026-08-07T17:05:00.9846730Z > Task :gradle-plugin:shared:processResources NO-SOURCE
+2026-08-07T17:05:01.3850403Z > Task :expo-gradle-plugin:expo-autolinking-plugin-shared:processResources NO-SOURCE
+2026-08-07T17:05:08.0853543Z > Task :gradle-plugin:shared:compileKotlin
+2026-08-07T17:05:08.0883350Z > Task :gradle-plugin:shared:compileJava NO-SOURCE
+2026-08-07T17:05:08.0884551Z > Task :gradle-plugin:shared:classes UP-TO-DATE
+2026-08-07T17:05:08.0903408Z > Task :gradle-plugin:shared:jar
+2026-08-07T17:05:08.4853713Z > Task :expo-gradle-plugin:expo-autolinking-plugin-shared:compileKotlin
+2026-08-07T17:05:08.4913645Z > Task :expo-gradle-plugin:expo-autolinking-plugin-shared:compileJava NO-SOURCE
+2026-08-07T17:05:08.4943528Z > Task :expo-gradle-plugin:expo-autolinking-plugin-shared:classes UP-TO-DATE
+2026-08-07T17:05:08.4973464Z > Task :expo-gradle-plugin:expo-autolinking-plugin-shared:jar
+2026-08-07T17:05:18.4863336Z > Task :gradle-plugin:settings-plugin:compileKotlin
+2026-08-07T17:05:18.4886329Z > Task :gradle-plugin:settings-plugin:compileJava NO-SOURCE
+2026-08-07T17:05:18.4943184Z > Task :gradle-plugin:settings-plugin:classes
+2026-08-07T17:05:18.4972914Z > Task :gradle-plugin:settings-plugin:jar
+2026-08-07T17:05:19.5847913Z > Task :expo-gradle-plugin:expo-autolinking-settings-plugin:compileKotlin
+2026-08-07T17:05:19.5849342Z > Task :expo-gradle-plugin:expo-autolinking-settings-plugin:compileJava NO-SOURCE
+2026-08-07T17:05:19.5850384Z > Task :expo-gradle-plugin:expo-autolinking-settings-plugin:classes
+2026-08-07T17:05:19.5851693Z > Task :expo-gradle-plugin:expo-autolinking-settings-plugin:jar
+2026-08-07T17:05:36.1858488Z > Task :expo-gradle-plugin:expo-autolinking-plugin:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-08-07T17:05:36.1870200Z > Task :gradle-plugin:react-native-gradle-plugin:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-08-07T17:05:36.1871681Z > Task :expo-module-gradle-plugin:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-08-07T17:05:36.2853287Z > Task :expo-gradle-plugin:expo-max-sdk-override-plugin:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-08-07T17:05:36.2883531Z > Task :expo-module-gradle-plugin:pluginDescriptors
+2026-08-07T17:05:36.2913607Z > Task :expo-module-gradle-plugin:processResources
+2026-08-07T17:05:36.2914644Z > Task :expo-gradle-plugin:expo-autolinking-plugin:pluginDescriptors
+2026-08-07T17:05:36.2930132Z > Task :expo-gradle-plugin:expo-autolinking-plugin:processResources
+2026-08-07T17:05:36.2953228Z > Task :expo-gradle-plugin:expo-max-sdk-override-plugin:pluginDescriptors
+2026-08-07T17:05:36.2983405Z > Task :expo-gradle-plugin:expo-max-sdk-override-plugin:processResources
+2026-08-07T17:05:40.5854833Z > Task :expo-gradle-plugin:expo-max-sdk-override-plugin:compileKotlin
+2026-08-07T17:05:40.5913424Z > Task :expo-gradle-plugin:expo-max-sdk-override-plugin:compileJava NO-SOURCE
+2026-08-07T17:05:40.5973238Z > Task :expo-gradle-plugin:expo-max-sdk-override-plugin:classes
+2026-08-07T17:05:40.6003109Z > Task :expo-gradle-plugin:expo-max-sdk-override-plugin:jar
+2026-08-07T17:05:40.7853289Z > Task :expo-gradle-plugin:expo-autolinking-plugin:compileKotlin
+2026-08-07T17:05:40.7854385Z > Task :expo-gradle-plugin:expo-autolinking-plugin:compileJava NO-SOURCE
+2026-08-07T17:05:40.7855395Z > Task :expo-gradle-plugin:expo-autolinking-plugin:classes
+2026-08-07T17:05:40.7856209Z > Task :expo-gradle-plugin:expo-autolinking-plugin:jar
+2026-08-07T17:05:41.1853642Z > Task :gradle-plugin:react-native-gradle-plugin:pluginDescriptors
+2026-08-07T17:05:41.1857204Z > Task :gradle-plugin:react-native-gradle-plugin:processResources
+2026-08-07T17:05:45.5831563Z > Task :gradle-plugin:react-native-gradle-plugin:compileKotlin
+2026-08-07T17:05:45.5844146Z > Task :gradle-plugin:react-native-gradle-plugin:compileJava NO-SOURCE
+2026-08-07T17:05:45.5845158Z > Task :gradle-plugin:react-native-gradle-plugin:classes
+2026-08-07T17:05:45.5846166Z > Task :gradle-plugin:react-native-gradle-plugin:jar
+2026-08-07T17:05:47.3835133Z 
+2026-08-07T17:05:47.3835967Z > Task :expo-module-gradle-plugin:compileKotlin
+2026-08-07T17:05:47.3838825Z w: file:///home/runner/work/LovelyToon/LovelyToon/node_modules/expo-modules-core/expo-module-gradle-plugin/src/main/kotlin/expo/modules/plugin/android/AndroidLibraryExtension.kt:9:24 'var targetSdk: Int?' is deprecated. Will be removed from library DSL in v9.0. Use testOptions.targetSdk or/and lint.targetSdk instead.
+2026-08-07T17:05:47.3840967Z 
+2026-08-07T17:05:47.3841679Z > Task :expo-module-gradle-plugin:compileJava NO-SOURCE
+2026-08-07T17:05:47.3842527Z > Task :expo-module-gradle-plugin:classes
+2026-08-07T17:05:47.3843071Z > Task :expo-module-gradle-plugin:jar
+2026-08-07T17:05:56.6842733Z 
+2026-08-07T17:05:56.6853050Z > Configure project :
+2026-08-07T17:05:56.6873443Z [32m[ExpoRootProject][0m Using the following versions:
+2026-08-07T17:05:56.6911919Z   - buildTools:  [32m36.0.0[0m
+2026-08-07T17:05:56.6916895Z   - minSdk:      [32m24[0m
+2026-08-07T17:05:56.6917705Z   - compileSdk:  [32m36[0m
+2026-08-07T17:05:56.6918326Z   - targetSdk:   [32m36[0m
+2026-08-07T17:05:56.6919034Z   - ndk:         [32m27.1.12297006[0m
+2026-08-07T17:05:56.6920276Z   - kotlin:      [32m2.1.20[0m
+2026-08-07T17:05:56.6920968Z   - ksp:         [32m2.1.20-2.0.1[0m
+2026-08-07T17:06:14.3832465Z 
+2026-08-07T17:06:14.3863497Z > Configure project :app
+2026-08-07T17:06:14.3893456Z  ℹ️  [33mApplying gradle plugin[0m '[32mexpo-max-sdk-override-plugin[0m'
+2026-08-07T17:06:14.3897111Z   [expo-max-sdk-override-plugin] This plugin will find all permissions declared with `android:maxSdkVersion`. If there exists a declaration with the `android:maxSdkVersion` annotation and another one without, the plugin will remove the annotation from the final merged manifest. In order to see a log with the changes run a clean build of the app.
+2026-08-07T17:06:14.3923536Z Checking the license for package NDK (Side by side) 27.1.12297006 in /usr/local/lib/android/sdk/licenses
+2026-08-07T17:06:14.3924839Z License for package NDK (Side by side) 27.1.12297006 accepted.
+2026-08-07T17:06:14.3928406Z Preparing "Install NDK (Side by side) 27.1.12297006 v.27.1.12297006".
+2026-08-07T17:06:14.3929834Z "Install NDK (Side by side) 27.1.12297006 v.27.1.12297006" ready.
+2026-08-07T17:06:14.3931073Z Installing NDK (Side by side) 27.1.12297006 in /usr/local/lib/android/sdk/ndk/27.1.12297006
+2026-08-07T17:06:14.3932572Z "Install NDK (Side by side) 27.1.12297006 v.27.1.12297006" complete.
+2026-08-07T17:06:14.3933668Z "Install NDK (Side by side) 27.1.12297006 v.27.1.12297006" finished.
+2026-08-07T17:06:16.2830845Z 
+2026-08-07T17:06:16.2863329Z > Configure project :expo
+2026-08-07T17:06:16.2873346Z 
+2026-08-07T17:06:16.2874140Z Using expo modules
+2026-08-07T17:06:16.2875067Z   - [32mexpo-log-box[0m (57.0.2)
+2026-08-07T17:06:16.2875942Z   - [32mexpo-constants[0m (57.0.9)
+2026-08-07T17:06:16.2876703Z   - [32mexpo-modules-core[0m (57.0.9)
+2026-08-07T17:06:16.2877558Z   - [33m[📦][0m [32mexpo-dom-webview[0m (57.0.1)
+2026-08-07T17:06:16.2878425Z   - [33m[📦][0m [32mexpo-application[0m (57.0.2)
+2026-08-07T17:06:16.2879234Z   - [33m[📦][0m [32mexpo-asset[0m (57.0.8)
+2026-08-07T17:06:16.2880078Z   - [33m[📦][0m [32mexpo-camera[0m (57.0.3)
+2026-08-07T17:06:16.2880924Z   - [33m[📦][0m [32mexpo-file-system[0m (57.0.1)
+2026-08-07T17:06:16.2881751Z   - [33m[📦][0m [32mexpo-font[0m (57.0.1)
+2026-08-07T17:06:16.2882746Z   - [33m[📦][0m [32mexpo-keep-awake[0m (57.0.1)
+2026-08-07T17:06:16.2883638Z   - [33m[📦][0m [32mexpo-linear-gradient[0m (57.0.1)
+2026-08-07T17:06:16.2884501Z   - [33m[📦][0m [32mexpo-linking[0m (57.0.5)
+2026-08-07T17:06:16.2885384Z   - [33m[📦][0m [32mexpo-notifications[0m (57.0.8)
+2026-08-07T17:06:16.2886369Z   - [33m[📦][0m [32mexpo-sharing[0m (57.0.8)
+2026-08-07T17:06:16.2887374Z   - [33m[📦][0m [32mexpo-status-bar[0m (57.0.1)
+2026-08-07T17:06:16.2887922Z 
+2026-08-07T17:07:02.9830365Z 
+2026-08-07T17:07:02.9841559Z 
+2026-08-07T17:07:02.9842994Z [Incubating] Problems report is available at: file:///home/runner/work/LovelyToon/LovelyToon/android/build/reports/problems/problems-report.html
+2026-08-07T17:07:02.9844367Z 
+2026-08-07T17:07:02.9845047Z Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+2026-08-07T17:07:02.9845723Z 
+2026-08-07T17:07:02.9846670Z You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+2026-08-07T17:07:02.9847351Z 
+2026-08-07T17:07:02.9848301Z For more on this, please refer to https://docs.gradle.org/9.3.1/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+2026-08-07T17:07:02.9849240Z 28 actionable tasks: 28 executed
+2026-08-07T17:07:02.9849590Z FAILURE: Build failed with an exception.
+2026-08-07T17:07:02.9849781Z 
+2026-08-07T17:07:02.9849887Z * What went wrong:
+2026-08-07T17:07:02.9850219Z Process 'command 'node'' finished with non-zero exit value 1
+2026-08-07T17:07:02.9850457Z 
+2026-08-07T17:07:02.9850540Z * Try:
+2026-08-07T17:07:02.9850830Z > Run with --stacktrace option to get the stack trace.
+2026-08-07T17:07:02.9851238Z > Run with --info or --debug option to get more log output.
+2026-08-07T17:07:02.9852289Z > Run with --scan to get full insights from a Build Scan (powered by Develocity).
+2026-08-07T17:07:02.9852792Z > Get more help at https://help.gradle.org.
+2026-08-07T17:07:02.9852980Z 
+2026-08-07T17:07:02.9853092Z BUILD FAILED in 3m 5s
+2026-08-07T17:07:03.4095359Z ##[error]Process completed with exit code 1.
+2026-08-07T17:07:03.4217465Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-08-07T17:07:03.4218599Z Post job cleanup.
+2026-08-07T17:07:03.5513938Z (node:3593) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-08-07T17:07:03.5515274Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-08-07T17:07:03.5643132Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-08-07T17:07:03.5644294Z Post job cleanup.
+2026-08-07T17:07:03.6526942Z [command]/usr/bin/git version
+2026-08-07T17:07:03.6564954Z git version 2.54.0
+2026-08-07T17:07:03.6601769Z Temporarily overriding HOME='/home/runner/work/_temp/7dcdd9eb-580c-4ece-8e57-ca5db698b5e8' before making global git config changes
+2026-08-07T17:07:03.6603454Z Adding repository directory to the temporary git global config as a safe directory
+2026-08-07T17:07:03.6608577Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/LovelyToon/LovelyToon
+2026-08-07T17:07:03.6643408Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-08-07T17:07:03.6674460Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-08-07T17:07:03.6877413Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-08-07T17:07:03.6903699Z http.https://github.com/.extraheader
+2026-08-07T17:07:03.6915726Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-08-07T17:07:03.6953592Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-08-07T17:07:03.7165923Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-08-07T17:07:03.7238793Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-08-07T17:07:03.7656728Z Cleaning up orphan processes
+2026-08-07T17:07:03.7897597Z Terminate orphan process: pid (2387) (java)
+2026-08-07T17:07:03.7944356Z Terminate orphan process: pid (3260) (java)
+2026-08-07T17:07:03.8035781Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-java@v4, actions/setup-node@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

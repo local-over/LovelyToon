@@ -1,0 +1,1102 @@
+﻿2026-08-07T15:27:46.8529838Z Current runner version: '2.336.0'
+2026-08-07T15:27:46.8557769Z ##[group]Runner Image Provisioner
+2026-08-07T15:27:46.8558733Z Hosted Compute Agent
+2026-08-07T15:27:46.8559450Z Version: 20260707.563
+2026-08-07T15:27:46.8560250Z Commit: 02667638d2b423fbc733a8e32a88b44996a3ba6e
+2026-08-07T15:27:46.8561343Z Build Date: 2026-07-07T19:33:50Z
+2026-08-07T15:27:46.8562076Z Worker ID: {8fff2461-2bc0-4dc8-95d0-4eebbd781f4d}
+2026-08-07T15:27:46.8562826Z Azure Region: eastus
+2026-08-07T15:27:46.8563429Z ##[endgroup]
+2026-08-07T15:27:46.8564939Z ##[group]Operating System
+2026-08-07T15:27:46.8565963Z Ubuntu
+2026-08-07T15:27:46.8566542Z 24.04.4
+2026-08-07T15:27:46.8567052Z LTS
+2026-08-07T15:27:46.8567661Z ##[endgroup]
+2026-08-07T15:27:46.8568238Z ##[group]Runner Image
+2026-08-07T15:27:46.8569033Z Image: ubuntu-24.04
+2026-08-07T15:27:46.8569665Z Version: 20260720.247.2
+2026-08-07T15:27:46.8571020Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260720.247/images/ubuntu/Ubuntu2404-Readme.md
+2026-08-07T15:27:46.8572595Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260720.247
+2026-08-07T15:27:46.8573587Z ##[endgroup]
+2026-08-07T15:27:46.8574839Z ##[group]GITHUB_TOKEN Permissions
+2026-08-07T15:27:46.8577522Z Contents: read
+2026-08-07T15:27:46.8578170Z Metadata: read
+2026-08-07T15:27:46.8579092Z Packages: read
+2026-08-07T15:27:46.8579869Z ##[endgroup]
+2026-08-07T15:27:46.8582315Z Secret source: Actions
+2026-08-07T15:27:46.8583608Z Prepare workflow directory
+2026-08-07T15:27:46.8907998Z Prepare all required actions
+2026-08-07T15:27:46.8955956Z Getting action download info
+2026-08-07T15:27:47.1018780Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+2026-08-07T15:27:47.3099934Z Download action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+2026-08-07T15:27:47.4413297Z Download action repository 'actions/setup-java@v4' (SHA:cf277c60eb25467037889841efdb72551f06f6c3)
+2026-08-07T15:27:47.6540428Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-08-07T15:27:47.8830567Z Complete job name: Build APK
+2026-08-07T15:27:47.9609382Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-08-07T15:27:47.9618135Z ##[group]Run actions/checkout@v4
+2026-08-07T15:27:47.9619122Z with:
+2026-08-07T15:27:47.9619564Z   repository: local-over/LovelyToon
+2026-08-07T15:27:47.9623495Z   token: ***
+2026-08-07T15:27:47.9623917Z   ssh-strict: true
+2026-08-07T15:27:47.9624459Z   ssh-user: git
+2026-08-07T15:27:47.9625174Z   persist-credentials: true
+2026-08-07T15:27:47.9625782Z   clean: true
+2026-08-07T15:27:47.9626416Z   sparse-checkout-cone-mode: true
+2026-08-07T15:27:47.9627061Z   fetch-depth: 1
+2026-08-07T15:27:47.9627638Z   fetch-tags: false
+2026-08-07T15:27:47.9628262Z   show-progress: true
+2026-08-07T15:27:47.9628963Z   lfs: false
+2026-08-07T15:27:47.9629731Z   submodules: false
+2026-08-07T15:27:47.9630297Z   set-safe-directory: true
+2026-08-07T15:27:47.9630890Z   allow-unsafe-pr-checkout: false
+2026-08-07T15:27:47.9631939Z ##[endgroup]
+2026-08-07T15:27:48.0652211Z Syncing repository: local-over/LovelyToon
+2026-08-07T15:27:48.0654825Z ##[group]Getting Git version info
+2026-08-07T15:27:48.0655777Z Working directory is '/home/runner/work/LovelyToon/LovelyToon'
+2026-08-07T15:27:48.0657765Z [command]/usr/bin/git version
+2026-08-07T15:27:48.0694865Z git version 2.54.0
+2026-08-07T15:27:48.0717954Z ##[endgroup]
+2026-08-07T15:27:48.0734241Z Temporarily overriding HOME='/home/runner/work/_temp/b9f321d5-fb24-4af1-a5e5-9a1144cf03be' before making global git config changes
+2026-08-07T15:27:48.0736694Z Adding repository directory to the temporary git global config as a safe directory
+2026-08-07T15:27:48.0746201Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/LovelyToon/LovelyToon
+2026-08-07T15:27:48.0790669Z Deleting the contents of '/home/runner/work/LovelyToon/LovelyToon'
+2026-08-07T15:27:48.0795190Z ##[group]Initializing the repository
+2026-08-07T15:27:48.0802322Z [command]/usr/bin/git init /home/runner/work/LovelyToon/LovelyToon
+2026-08-07T15:27:48.0879919Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-08-07T15:27:48.0881454Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-08-07T15:27:48.0883177Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-08-07T15:27:48.0884435Z hint: call:
+2026-08-07T15:27:48.0885479Z hint:
+2026-08-07T15:27:48.0887061Z hint: 	git config --global init.defaultBranch <name>
+2026-08-07T15:27:48.0888399Z hint:
+2026-08-07T15:27:48.0889847Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-08-07T15:27:48.0892011Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-08-07T15:27:48.0893566Z hint:
+2026-08-07T15:27:48.0894393Z hint: 	git branch -m <name>
+2026-08-07T15:27:48.0895288Z hint:
+2026-08-07T15:27:48.0896515Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-08-07T15:27:48.0898294Z Initialized empty Git repository in /home/runner/work/LovelyToon/LovelyToon/.git/
+2026-08-07T15:27:48.0904736Z [command]/usr/bin/git remote add origin https://github.com/local-over/LovelyToon
+2026-08-07T15:27:48.0981821Z ##[endgroup]
+2026-08-07T15:27:48.0983310Z ##[group]Disabling automatic garbage collection
+2026-08-07T15:27:48.0986475Z [command]/usr/bin/git config --local gc.auto 0
+2026-08-07T15:27:48.1022367Z ##[endgroup]
+2026-08-07T15:27:48.1023836Z ##[group]Setting up auth
+2026-08-07T15:27:48.1029458Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-08-07T15:27:48.1071901Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-08-07T15:27:48.1425100Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-08-07T15:27:48.1473435Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-08-07T15:27:48.1732813Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-08-07T15:27:48.1772596Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-08-07T15:27:48.2017328Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-08-07T15:27:48.2058988Z ##[endgroup]
+2026-08-07T15:27:48.2060733Z ##[group]Fetching the repository
+2026-08-07T15:27:48.2068026Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +52aca068e8672c651e2d0c171d6000396ce2b15e:refs/tags/v3.0.0
+2026-08-07T15:27:48.8624824Z From https://github.com/local-over/LovelyToon
+2026-08-07T15:27:48.8626597Z  * [new ref]         52aca068e8672c651e2d0c171d6000396ce2b15e -> v3.0.0
+2026-08-07T15:27:48.8667487Z ##[endgroup]
+2026-08-07T15:27:48.8669618Z ##[group]Determining the checkout info
+2026-08-07T15:27:48.8671960Z ##[endgroup]
+2026-08-07T15:27:48.8679500Z [command]/usr/bin/git sparse-checkout disable
+2026-08-07T15:27:48.8738997Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-08-07T15:27:48.8779882Z ##[group]Checking out the ref
+2026-08-07T15:27:48.8785457Z [command]/usr/bin/git checkout --progress --force refs/tags/v3.0.0
+2026-08-07T15:27:48.8950509Z Note: switching to 'refs/tags/v3.0.0'.
+2026-08-07T15:27:48.8951907Z 
+2026-08-07T15:27:48.8953042Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-08-07T15:27:48.8955839Z changes and commit them, and you can discard any commits you make in this
+2026-08-07T15:27:48.8957978Z state without impacting any branches by switching back to a branch.
+2026-08-07T15:27:48.8959501Z 
+2026-08-07T15:27:48.8960330Z If you want to create a new branch to retain commits you create, you may
+2026-08-07T15:27:48.8962452Z do so (now or later) by using -c with the switch command. Example:
+2026-08-07T15:27:48.8963832Z 
+2026-08-07T15:27:48.8964641Z   git switch -c <new-branch-name>
+2026-08-07T15:27:48.8965790Z 
+2026-08-07T15:27:48.8966589Z Or undo this operation with:
+2026-08-07T15:27:48.8967555Z 
+2026-08-07T15:27:48.8968219Z   git switch -
+2026-08-07T15:27:48.8969313Z 
+2026-08-07T15:27:48.8970478Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-08-07T15:27:48.9049429Z 
+2026-08-07T15:27:48.9055214Z HEAD is now at 52aca06 feat: complete identity, pairing link, QR code, and partner filtering system overhaul
+2026-08-07T15:27:48.9061284Z ##[endgroup]
+2026-08-07T15:27:48.9064212Z [command]/usr/bin/git log -1 --format=%H
+2026-08-07T15:27:48.9065910Z 52aca068e8672c651e2d0c171d6000396ce2b15e
+2026-08-07T15:27:48.9519620Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-08-07T15:27:48.9527856Z ##[group]Run actions/setup-node@v4
+2026-08-07T15:27:48.9529611Z with:
+2026-08-07T15:27:48.9530526Z   node-version: 20
+2026-08-07T15:27:48.9531449Z   cache: npm
+2026-08-07T15:27:48.9532432Z   cache-dependency-path: package-lock.json
+2026-08-07T15:27:48.9533687Z   always-auth: false
+2026-08-07T15:27:48.9534646Z   check-latest: false
+2026-08-07T15:27:48.9544224Z   token: ***
+2026-08-07T15:27:48.9545115Z ##[endgroup]
+2026-08-07T15:27:49.1045254Z Attempting to download 20...
+2026-08-07T15:27:49.1155721Z (node:2241) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-08-07T15:27:49.1159292Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-08-07T15:27:49.5600620Z Acquiring 20.20.2 - x64 from https://github.com/actions/node-versions/releases/download/20.20.2-23521894959/node-20.20.2-linux-x64.tar.gz
+2026-08-07T15:27:49.8904073Z Extracting ...
+2026-08-07T15:27:49.9045584Z [command]/usr/bin/tar xz --strip 1 --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/e584800c-fd03-4dc1-9db0-6a5d4c4fcb08 -f /home/runner/work/_temp/a0bd5007-5ad3-4a32-92b6-f20a269dfe5b
+2026-08-07T15:27:51.0199792Z Adding to the cache ...
+2026-08-07T15:27:53.6700640Z ##[group]Environment details
+2026-08-07T15:27:53.8922909Z node: v20.20.2
+2026-08-07T15:27:53.8923322Z npm: 10.8.2
+2026-08-07T15:27:53.8923612Z yarn: 1.22.22
+2026-08-07T15:27:53.8924588Z ##[endgroup]
+2026-08-07T15:27:53.8942782Z [command]/opt/hostedtoolcache/node/20.20.2/x64/bin/npm config get cache
+2026-08-07T15:27:53.9990565Z /home/runner/.npm
+2026-08-07T15:27:54.0750373Z npm cache is not found
+2026-08-07T15:27:54.1000178Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-08-07T15:27:54.1001438Z ##[group]Run actions/setup-java@v4
+2026-08-07T15:27:54.1001717Z with:
+2026-08-07T15:27:54.1001937Z   java-version: 17
+2026-08-07T15:27:54.1002160Z   distribution: temurin
+2026-08-07T15:27:54.1002393Z   java-package: jdk
+2026-08-07T15:27:54.1002610Z   check-latest: false
+2026-08-07T15:27:54.1002830Z   server-id: github
+2026-08-07T15:27:54.1003064Z   server-username: GITHUB_ACTOR
+2026-08-07T15:27:54.1003321Z   server-password: GITHUB_TOKEN
+2026-08-07T15:27:54.1003573Z   overwrite-settings: true
+2026-08-07T15:27:54.1004024Z   job-status: success
+2026-08-07T15:27:54.1006371Z   token: ***
+2026-08-07T15:27:54.1006600Z ##[endgroup]
+2026-08-07T15:27:54.2714546Z ##[warning]setup-java v4 is deprecated and will no longer receive updates. Please migrate to actions/setup-java@v5.
+2026-08-07T15:27:54.2722617Z ##[group]Installed distributions
+2026-08-07T15:27:54.2840256Z Resolved Java 17.0.19+10 from tool-cache
+2026-08-07T15:27:54.2840764Z Setting Java 17.0.19+10 as the default
+2026-08-07T15:27:54.2846848Z (node:2290) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-08-07T15:27:54.2847641Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-08-07T15:27:54.2850459Z Creating toolchains.xml for JDK version 17 from temurin
+2026-08-07T15:27:54.2923169Z Writing to /home/runner/.m2/toolchains.xml
+2026-08-07T15:27:54.2923562Z 
+2026-08-07T15:27:54.2923735Z Java configuration:
+2026-08-07T15:27:54.2924115Z   Distribution: temurin
+2026-08-07T15:27:54.2924510Z   Version: 17.0.19+10
+2026-08-07T15:27:54.2925095Z   Path: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.19-10/x64
+2026-08-07T15:27:54.2925560Z 
+2026-08-07T15:27:54.2925979Z ##[endgroup]
+2026-08-07T15:27:54.2929995Z Creating settings.xml with server-id: github
+2026-08-07T15:27:54.2945700Z Writing to /home/runner/.m2/settings.xml
+2026-08-07T15:27:54.3159718Z ##[group]Run npm ci --legacy-peer-deps
+2026-08-07T15:27:54.3160319Z [36;1mnpm ci --legacy-peer-deps[0m
+2026-08-07T15:27:54.3230194Z shell: /usr/bin/bash -e {0}
+2026-08-07T15:27:54.3230628Z env:
+2026-08-07T15:27:54.3231134Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.19-10/x64
+2026-08-07T15:27:54.3231969Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.19-10/x64
+2026-08-07T15:27:54.3232613Z ##[endgroup]
+2026-08-07T15:27:58.4233442Z npm warn deprecated uuid@7.0.3: uuid@10 and below is no longer supported.  For ESM codebases, update to uuid@latest.  For CommonJS codebases, use uuid@11 (but be aware this version will likely be deprecated in 2028).
+2026-08-07T15:27:58.6314977Z npm warn deprecated text-encoding@0.7.0: no longer maintained
+2026-08-07T15:28:05.9339540Z 
+2026-08-07T15:28:05.9340694Z added 575 packages, and audited 576 packages in 12s
+2026-08-07T15:28:05.9341169Z 
+2026-08-07T15:28:05.9341623Z 59 packages are looking for funding
+2026-08-07T15:28:05.9342266Z   run `npm fund` for details
+2026-08-07T15:28:06.0019932Z 
+2026-08-07T15:28:06.0020948Z 11 moderate severity vulnerabilities
+2026-08-07T15:28:06.0021468Z 
+2026-08-07T15:28:06.0022145Z To address issues that do not require attention, run:
+2026-08-07T15:28:06.0022872Z   npm audit fix
+2026-08-07T15:28:06.0023079Z 
+2026-08-07T15:28:06.0023518Z To address all issues (including breaking changes), run:
+2026-08-07T15:28:06.0024096Z   npm audit fix --force
+2026-08-07T15:28:06.0024329Z 
+2026-08-07T15:28:06.0024502Z Run `npm audit` for details.
+2026-08-07T15:28:06.0412653Z ##[group]Run npx expo prebuild --clean
+2026-08-07T15:28:06.0413008Z [36;1mnpx expo prebuild --clean[0m
+2026-08-07T15:28:06.0462661Z shell: /usr/bin/bash -e {0}
+2026-08-07T15:28:06.0462920Z env:
+2026-08-07T15:28:06.0463243Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.19-10/x64
+2026-08-07T15:28:06.0463749Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.19-10/x64
+2026-08-07T15:28:06.0464124Z ##[endgroup]
+2026-08-07T15:28:06.6490046Z - Creating native directories (./ios and ./android)
+2026-08-07T15:28:07.1826224Z ✔ Created native directories
+2026-08-07T15:28:07.1829724Z - Updating package.json
+2026-08-07T15:28:07.2026584Z ✔ Updated package.json | no changes
+2026-08-07T15:28:07.2027107Z - Running prebuild
+2026-08-07T15:28:09.8150246Z » android: userInterfaceStyle: Install expo-system-ui in your project to enable this feature.
+2026-08-07T15:28:09.8151123Z - Running prebuild
+2026-08-07T15:28:10.2305325Z ✔ Finished prebuild
+2026-08-07T15:28:10.2315799Z - Installing CocoaPods...
+2026-08-07T15:28:10.2317061Z ✔ Skipped installing CocoaPods because operating system is not on macOS.
+2026-08-07T15:28:10.2704557Z ##[group]Run chmod +x android/gradlew
+2026-08-07T15:28:10.2705125Z [36;1mchmod +x android/gradlew[0m
+2026-08-07T15:28:10.2773306Z shell: /usr/bin/bash -e {0}
+2026-08-07T15:28:10.2773700Z env:
+2026-08-07T15:28:10.2774210Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.19-10/x64
+2026-08-07T15:28:10.2775061Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.19-10/x64
+2026-08-07T15:28:10.2775710Z ##[endgroup]
+2026-08-07T15:28:10.2921784Z ##[group]Run cd android && ./gradlew assembleRelease
+2026-08-07T15:28:10.2922443Z [36;1mcd android && ./gradlew assembleRelease[0m
+2026-08-07T15:28:10.2985251Z shell: /usr/bin/bash -e {0}
+2026-08-07T15:28:10.2985637Z env:
+2026-08-07T15:28:10.2986127Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.19-10/x64
+2026-08-07T15:28:10.2986917Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.19-10/x64
+2026-08-07T15:28:10.2987527Z ##[endgroup]
+2026-08-07T15:28:14.6866190Z Downloading https://services.gradle.org/distributions/gradle-9.3.1-bin.zip
+2026-08-07T15:28:17.9205819Z .............10%.............20%.............30%.............40%.............50%.............60%.............70%.............80%.............90%.............100%
+2026-08-07T15:28:19.6191035Z 
+2026-08-07T15:28:19.6192499Z Welcome to Gradle 9.3.1!
+2026-08-07T15:28:19.6192845Z 
+2026-08-07T15:28:19.6194195Z Here are the highlights of this release:
+2026-08-07T15:28:19.6200998Z  - Test reporting improvements
+2026-08-07T15:28:19.6201698Z  - Error and warning improvements
+2026-08-07T15:28:19.6202279Z  - Build authoring improvements
+2026-08-07T15:28:19.6202671Z 
+2026-08-07T15:28:19.6203256Z For more details see https://docs.gradle.org/9.3.1/release-notes.html
+2026-08-07T15:28:19.6203871Z 
+2026-08-07T15:28:19.7184412Z Starting a Gradle Daemon (subsequent builds will be faster)
+2026-08-07T15:29:26.4230882Z > Task :expo-gradle-plugin:expo-autolinking-plugin-shared:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-08-07T15:29:26.4255046Z > Task :expo-gradle-plugin:expo-autolinking-settings-plugin:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-08-07T15:29:26.4276135Z > Task :gradle-plugin:shared:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-08-07T15:29:26.4295202Z > Task :gradle-plugin:settings-plugin:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-08-07T15:29:26.5240115Z > Task :gradle-plugin:settings-plugin:pluginDescriptors
+2026-08-07T15:29:26.5282164Z > Task :expo-gradle-plugin:expo-autolinking-settings-plugin:pluginDescriptors
+2026-08-07T15:29:26.6200313Z > Task :gradle-plugin:settings-plugin:processResources
+2026-08-07T15:29:26.6219867Z > Task :expo-gradle-plugin:expo-autolinking-settings-plugin:processResources
+2026-08-07T15:29:32.0182727Z > Task :expo-gradle-plugin:expo-autolinking-plugin-shared:processResources NO-SOURCE
+2026-08-07T15:29:32.0184133Z > Task :gradle-plugin:shared:processResources NO-SOURCE
+2026-08-07T15:29:39.4210329Z > Task :gradle-plugin:shared:compileKotlin
+2026-08-07T15:29:39.4234116Z > Task :gradle-plugin:shared:compileJava NO-SOURCE
+2026-08-07T15:29:39.4286375Z > Task :gradle-plugin:shared:classes UP-TO-DATE
+2026-08-07T15:29:39.5220440Z > Task :gradle-plugin:shared:jar
+2026-08-07T15:29:39.7230382Z > Task :expo-gradle-plugin:expo-autolinking-plugin-shared:compileKotlin
+2026-08-07T15:29:39.7245184Z > Task :expo-gradle-plugin:expo-autolinking-plugin-shared:compileJava NO-SOURCE
+2026-08-07T15:29:39.7259609Z > Task :expo-gradle-plugin:expo-autolinking-plugin-shared:classes UP-TO-DATE
+2026-08-07T15:29:39.8202488Z > Task :expo-gradle-plugin:expo-autolinking-plugin-shared:jar
+2026-08-07T15:29:49.8183410Z > Task :gradle-plugin:settings-plugin:compileKotlin
+2026-08-07T15:29:49.8210017Z > Task :gradle-plugin:settings-plugin:compileJava NO-SOURCE
+2026-08-07T15:29:49.8239982Z > Task :gradle-plugin:settings-plugin:classes
+2026-08-07T15:29:49.8245658Z > Task :gradle-plugin:settings-plugin:jar
+2026-08-07T15:29:51.0182183Z > Task :expo-gradle-plugin:expo-autolinking-settings-plugin:compileKotlin
+2026-08-07T15:29:51.0186410Z > Task :expo-gradle-plugin:expo-autolinking-settings-plugin:compileJava NO-SOURCE
+2026-08-07T15:29:51.0187701Z > Task :expo-gradle-plugin:expo-autolinking-settings-plugin:classes
+2026-08-07T15:29:51.0189017Z > Task :expo-gradle-plugin:expo-autolinking-settings-plugin:jar
+2026-08-07T15:30:00.0219989Z > Task :expo-gradle-plugin:expo-autolinking-plugin:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-08-07T15:30:00.0315073Z > Task :expo-module-gradle-plugin:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-08-07T15:30:00.0370377Z > Task :gradle-plugin:react-native-gradle-plugin:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-08-07T15:30:00.0458930Z > Task :expo-gradle-plugin:expo-max-sdk-override-plugin:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-08-07T15:30:00.0469775Z > Task :expo-module-gradle-plugin:pluginDescriptors
+2026-08-07T15:30:00.0546394Z > Task :expo-module-gradle-plugin:processResources
+2026-08-07T15:30:00.6260546Z > Task :expo-gradle-plugin:expo-autolinking-plugin:pluginDescriptors
+2026-08-07T15:30:00.6269991Z > Task :expo-gradle-plugin:expo-autolinking-plugin:processResources
+2026-08-07T15:30:00.6319783Z > Task :expo-gradle-plugin:expo-max-sdk-override-plugin:pluginDescriptors
+2026-08-07T15:30:00.6369575Z > Task :expo-gradle-plugin:expo-max-sdk-override-plugin:processResources
+2026-08-07T15:30:03.8209989Z > Task :expo-gradle-plugin:expo-autolinking-plugin:compileKotlin
+2026-08-07T15:30:03.8249824Z > Task :expo-gradle-plugin:expo-autolinking-plugin:compileJava NO-SOURCE
+2026-08-07T15:30:03.8309576Z > Task :expo-gradle-plugin:expo-autolinking-plugin:classes
+2026-08-07T15:30:03.9203577Z > Task :expo-gradle-plugin:expo-autolinking-plugin:jar
+2026-08-07T15:30:04.3190184Z > Task :expo-gradle-plugin:expo-max-sdk-override-plugin:compileKotlin
+2026-08-07T15:30:04.3262310Z > Task :expo-gradle-plugin:expo-max-sdk-override-plugin:compileJava NO-SOURCE
+2026-08-07T15:30:04.3309657Z > Task :expo-gradle-plugin:expo-max-sdk-override-plugin:classes
+2026-08-07T15:30:04.3369737Z > Task :expo-gradle-plugin:expo-max-sdk-override-plugin:jar
+2026-08-07T15:30:04.7199547Z > Task :gradle-plugin:react-native-gradle-plugin:pluginDescriptors
+2026-08-07T15:30:04.7220066Z > Task :gradle-plugin:react-native-gradle-plugin:processResources
+2026-08-07T15:30:09.6181497Z > Task :gradle-plugin:react-native-gradle-plugin:compileKotlin
+2026-08-07T15:30:09.6182228Z > Task :gradle-plugin:react-native-gradle-plugin:compileJava NO-SOURCE
+2026-08-07T15:30:09.6183247Z > Task :gradle-plugin:react-native-gradle-plugin:classes
+2026-08-07T15:30:09.6205707Z > Task :gradle-plugin:react-native-gradle-plugin:jar
+2026-08-07T15:30:11.3212030Z 
+2026-08-07T15:30:11.3212882Z > Task :expo-module-gradle-plugin:compileKotlin
+2026-08-07T15:30:11.3215826Z w: file:///home/runner/work/LovelyToon/LovelyToon/node_modules/expo-modules-core/expo-module-gradle-plugin/src/main/kotlin/expo/modules/plugin/android/AndroidLibraryExtension.kt:9:24 'var targetSdk: Int?' is deprecated. Will be removed from library DSL in v9.0. Use testOptions.targetSdk or/and lint.targetSdk instead.
+2026-08-07T15:30:11.3217964Z 
+2026-08-07T15:30:11.3218795Z > Task :expo-module-gradle-plugin:compileJava NO-SOURCE
+2026-08-07T15:30:11.3219448Z > Task :expo-module-gradle-plugin:classes
+2026-08-07T15:30:11.3220015Z > Task :expo-module-gradle-plugin:jar
+2026-08-07T15:30:19.8183170Z 
+2026-08-07T15:30:19.8184224Z > Configure project :
+2026-08-07T15:30:19.8185566Z [32m[ExpoRootProject][0m Using the following versions:
+2026-08-07T15:30:19.8186507Z   - buildTools:  [32m36.0.0[0m
+2026-08-07T15:30:19.8187255Z   - minSdk:      [32m24[0m
+2026-08-07T15:30:19.8187901Z   - compileSdk:  [32m36[0m
+2026-08-07T15:30:19.8188536Z   - targetSdk:   [32m36[0m
+2026-08-07T15:30:19.8189495Z   - ndk:         [32m27.1.12297006[0m
+2026-08-07T15:30:19.8190246Z   - kotlin:      [32m2.1.20[0m
+2026-08-07T15:30:19.8190975Z   - ksp:         [32m2.1.20-2.0.1[0m
+2026-08-07T15:30:39.8187326Z 
+2026-08-07T15:30:39.8200180Z > Configure project :app
+2026-08-07T15:30:39.8202079Z  ℹ️  [33mApplying gradle plugin[0m '[32mexpo-max-sdk-override-plugin[0m'
+2026-08-07T15:30:39.8205220Z   [expo-max-sdk-override-plugin] This plugin will find all permissions declared with `android:maxSdkVersion`. If there exists a declaration with the `android:maxSdkVersion` annotation and another one without, the plugin will remove the annotation from the final merged manifest. In order to see a log with the changes run a clean build of the app.
+2026-08-07T15:30:39.8208950Z Checking the license for package NDK (Side by side) 27.1.12297006 in /usr/local/lib/android/sdk/licenses
+2026-08-07T15:30:39.8210326Z License for package NDK (Side by side) 27.1.12297006 accepted.
+2026-08-07T15:30:39.8211448Z Preparing "Install NDK (Side by side) 27.1.12297006 v.27.1.12297006".
+2026-08-07T15:30:39.8212530Z "Install NDK (Side by side) 27.1.12297006 v.27.1.12297006" ready.
+2026-08-07T15:30:39.8213729Z Installing NDK (Side by side) 27.1.12297006 in /usr/local/lib/android/sdk/ndk/27.1.12297006
+2026-08-07T15:30:39.8214905Z "Install NDK (Side by side) 27.1.12297006 v.27.1.12297006" complete.
+2026-08-07T15:30:39.8215934Z "Install NDK (Side by side) 27.1.12297006 v.27.1.12297006" finished.
+2026-08-07T15:30:41.8183548Z 
+2026-08-07T15:30:41.8189939Z > Configure project :expo
+2026-08-07T15:30:41.8190495Z 
+2026-08-07T15:30:41.8190914Z Using expo modules
+2026-08-07T15:30:41.8191779Z   - [32mexpo-log-box[0m (57.0.2)
+2026-08-07T15:30:41.8192510Z   - [32mexpo-constants[0m (57.0.9)
+2026-08-07T15:30:42.1184347Z   - [32mexpo-modules-core[0m (57.0.9)
+2026-08-07T15:30:42.1186037Z   - [33m[📦][0m [32mexpo-dom-webview[0m (57.0.1)
+2026-08-07T15:30:42.1186735Z   - [33m[📦][0m [32mexpo-application[0m (57.0.2)
+2026-08-07T15:30:42.1187373Z   - [33m[📦][0m [32mexpo-asset[0m (57.0.8)
+2026-08-07T15:30:42.1187980Z   - [33m[📦][0m [32mexpo-camera[0m (57.0.3)
+2026-08-07T15:30:42.1188853Z   - [33m[📦][0m [32mexpo-file-system[0m (57.0.1)
+2026-08-07T15:30:42.1189496Z   - [33m[📦][0m [32mexpo-font[0m (57.0.1)
+2026-08-07T15:30:42.1190125Z   - [33m[📦][0m [32mexpo-keep-awake[0m (57.0.1)
+2026-08-07T15:30:42.1190804Z   - [33m[📦][0m [32mexpo-linear-gradient[0m (57.0.1)
+2026-08-07T15:30:42.1191513Z   - [33m[📦][0m [32mexpo-linking[0m (57.0.5)
+2026-08-07T15:30:42.1209948Z   - [33m[📦][0m [32mexpo-notifications[0m (57.0.8)
+2026-08-07T15:30:42.1247604Z   - [33m[📦][0m [32mexpo-sharing[0m (57.0.8)
+2026-08-07T15:30:42.1270197Z   - [33m[📦][0m [32mexpo-status-bar[0m (57.0.1)
+2026-08-07T15:30:42.1274919Z 
+2026-08-07T15:31:37.2189299Z 
+2026-08-07T15:31:37.2210306Z > Task :expo-log-box:preBuild UP-TO-DATE
+2026-08-07T15:31:37.2230503Z > Task :expo-modules-core:preBuild UP-TO-DATE
+2026-08-07T15:31:37.2238720Z > Task :react-native-android-notification-listener:preBuild UP-TO-DATE
+2026-08-07T15:31:37.2239723Z > Task :expo:generatePackagesList
+2026-08-07T15:31:37.2240263Z > Task :expo:preBuild
+2026-08-07T15:31:37.3219193Z > Task :app:generateAutolinkingNewArchitectureFiles
+2026-08-07T15:31:37.3280496Z > Task :app:generateAutolinkingPackageList
+2026-08-07T15:31:37.3344116Z > Task :app:generateCodegenSchemaFromJavaScript SKIPPED
+2026-08-07T15:31:37.3389370Z > Task :app:generateCodegenArtifactsFromSchema SKIPPED
+2026-08-07T15:31:37.3419252Z > Task :app:generateReactNativeEntryPoint
+2026-08-07T15:31:37.5220826Z The NODE_ENV environment variable is required but was not specified. Ensure the project is bundled with Expo CLI or NODE_ENV is set. Using only .env.local and .env
+2026-08-07T15:31:37.5221877Z 
+2026-08-07T15:31:37.5259418Z > Task :expo-constants:createExpoConfig
+2026-08-07T15:31:37.5279186Z 
+2026-08-07T15:31:37.5309597Z > Task :expo-constants:preBuild
+2026-08-07T15:31:37.6190345Z > Task :react-native-android-widget:generateCodegenSchemaFromJavaScript
+2026-08-07T15:31:37.6220164Z > Task :react-native-safe-area-context:generateCodegenSchemaFromJavaScript
+2026-08-07T15:31:37.6249843Z > Task :react-native-async-storage_async-storage:generateCodegenSchemaFromJavaScript
+2026-08-07T15:31:38.0185774Z > Task :react-native-svg:generateCodegenSchemaFromJavaScript
+2026-08-07T15:31:38.0199739Z > Task :react-native-async-storage_async-storage:generateCodegenArtifactsFromSchema
+2026-08-07T15:31:38.0229344Z > Task :react-native-async-storage_async-storage:preBuild
+2026-08-07T15:31:38.0237121Z > Task :expo:preReleaseBuild
+2026-08-07T15:31:38.0259605Z > Task :react-native-safe-area-context:generateCodegenArtifactsFromSchema
+2026-08-07T15:31:38.0289473Z > Task :react-native-safe-area-context:preBuild
+2026-08-07T15:31:38.0311329Z > Task :expo-constants:preReleaseBuild
+2026-08-07T15:31:38.0374756Z > Task :react-native-android-widget:generateCodegenArtifactsFromSchema
+2026-08-07T15:31:38.0399394Z > Task :react-native-android-widget:preBuild
+2026-08-07T15:31:38.0459383Z > Task :expo-log-box:preReleaseBuild UP-TO-DATE
+2026-08-07T15:31:38.1193750Z > Task :expo:mergeReleaseJniLibFolders
+2026-08-07T15:31:38.1267255Z > Task :expo-constants:mergeReleaseJniLibFolders
+2026-08-07T15:31:38.1314356Z > Task :expo-log-box:mergeReleaseJniLibFolders
+2026-08-07T15:31:38.1346558Z > Task :expo-log-box:mergeReleaseNativeLibs NO-SOURCE
+2026-08-07T15:31:38.1365952Z > Task :expo-constants:mergeReleaseNativeLibs NO-SOURCE
+2026-08-07T15:31:38.1419650Z > Task :expo:mergeReleaseNativeLibs NO-SOURCE
+2026-08-07T15:31:38.1449646Z > Task :expo-constants:copyReleaseJniLibsProjectOnly
+2026-08-07T15:31:38.1470379Z > Task :expo-modules-core:preReleaseBuild UP-TO-DATE
+2026-08-07T15:31:38.1490689Z > Task :expo-log-box:copyReleaseJniLibsProjectOnly
+2026-08-07T15:31:38.1508478Z > Task :react-native-android-notification-listener:preReleaseBuild UP-TO-DATE
+2026-08-07T15:31:38.1522419Z > Task :expo:copyReleaseJniLibsProjectOnly
+2026-08-07T15:31:38.1546964Z > Task :react-native-android-widget:preReleaseBuild
+2026-08-07T15:31:38.1569677Z > Task :react-native-android-widget:mergeReleaseJniLibFolders
+2026-08-07T15:31:38.1599841Z > Task :react-native-android-notification-listener:mergeReleaseJniLibFolders
+2026-08-07T15:31:38.1615596Z > Task :react-native-android-notification-listener:mergeReleaseNativeLibs NO-SOURCE
+2026-08-07T15:31:38.1644600Z > Task :react-native-android-widget:mergeReleaseNativeLibs NO-SOURCE
+2026-08-07T15:31:38.1689985Z > Task :react-native-android-notification-listener:copyReleaseJniLibsProjectOnly
+2026-08-07T15:31:38.1728510Z > Task :react-native-async-storage_async-storage:preReleaseBuild
+2026-08-07T15:31:38.1753724Z > Task :react-native-android-widget:copyReleaseJniLibsProjectOnly
+2026-08-07T15:31:38.1755142Z > Task :react-native-safe-area-context:preReleaseBuild
+2026-08-07T15:31:38.1756221Z > Task :react-native-async-storage_async-storage:mergeReleaseJniLibFolders
+2026-08-07T15:31:38.1757346Z > Task :react-native-safe-area-context:mergeReleaseJniLibFolders
+2026-08-07T15:31:38.1758453Z > Task :react-native-safe-area-context:mergeReleaseNativeLibs NO-SOURCE
+2026-08-07T15:31:38.1759911Z > Task :react-native-async-storage_async-storage:mergeReleaseNativeLibs NO-SOURCE
+2026-08-07T15:31:38.1761188Z > Task :react-native-async-storage_async-storage:copyReleaseJniLibsProjectOnly
+2026-08-07T15:31:38.1762910Z > Task :react-native-async-storage_async-storage:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-08-07T15:31:38.1764254Z > Task :react-native-safe-area-context:copyReleaseJniLibsProjectOnly
+2026-08-07T15:31:38.1765543Z > Task :react-native-safe-area-context:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-08-07T15:31:38.2181242Z > Task :react-native-async-storage_async-storage:generateReleaseBuildConfig
+2026-08-07T15:31:38.2182159Z > Task :react-native-safe-area-context:generateReleaseBuildConfig
+2026-08-07T15:31:38.2183212Z > Task :react-native-safe-area-context:generateReleaseResValues
+2026-08-07T15:31:38.2184078Z > Task :react-native-async-storage_async-storage:generateReleaseResValues
+2026-08-07T15:31:38.2184992Z > Task :react-native-safe-area-context:generateReleaseResources
+2026-08-07T15:31:38.2185900Z > Task :react-native-async-storage_async-storage:generateReleaseResources
+2026-08-07T15:31:38.2186871Z > Task :react-native-async-storage_async-storage:packageReleaseResources
+2026-08-07T15:31:38.2188175Z > Task :react-native-safe-area-context:packageReleaseResources
+2026-08-07T15:31:38.2189529Z > Task :react-native-svg:generateCodegenArtifactsFromSchema
+2026-08-07T15:31:38.2190599Z > Task :react-native-svg:preBuild
+2026-08-07T15:31:38.2191338Z > Task :app:preBuild
+2026-08-07T15:31:38.2191966Z > Task :app:preReleaseBuild
+2026-08-07T15:31:40.2180012Z 
+2026-08-07T15:31:40.2181393Z > Task :expo-modules-core:configureCMakeRelWithDebInfo[arm64-v8a]
+2026-08-07T15:31:40.2196451Z Checking the license for package CMake 3.22.1 in /usr/local/lib/android/sdk/licenses
+2026-08-07T15:31:40.2197298Z License for package CMake 3.22.1 accepted.
+2026-08-07T15:31:40.2197912Z Preparing "Install CMake 3.22.1 v.3.22.1".
+2026-08-07T15:31:41.1215387Z 
+2026-08-07T15:31:41.1240649Z > Task :react-native-safe-area-context:parseReleaseLocalResources
+2026-08-07T15:31:41.1269792Z > Task :react-native-async-storage_async-storage:parseReleaseLocalResources
+2026-08-07T15:31:41.1299383Z > Task :react-native-svg:preReleaseBuild
+2026-08-07T15:31:41.1300342Z > Task :react-native-svg:mergeReleaseJniLibFolders
+2026-08-07T15:31:41.1329387Z > Task :react-native-svg:mergeReleaseNativeLibs NO-SOURCE
+2026-08-07T15:31:41.1351275Z > Task :react-native-svg:copyReleaseJniLibsProjectOnly
+2026-08-07T15:31:41.3182063Z > Task :react-native-async-storage_async-storage:generateReleaseRFile
+2026-08-07T15:31:42.2183082Z 
+2026-08-07T15:31:42.2184433Z > Task :expo-modules-core:configureCMakeRelWithDebInfo[arm64-v8a]
+2026-08-07T15:31:42.2185382Z "Install CMake 3.22.1 v.3.22.1" ready.
+2026-08-07T15:31:42.2186242Z Installing CMake 3.22.1 in /usr/local/lib/android/sdk/cmake/3.22.1
+2026-08-07T15:31:42.2187091Z "Install CMake 3.22.1 v.3.22.1" complete.
+2026-08-07T15:31:42.2187800Z "Install CMake 3.22.1 v.3.22.1" finished.
+2026-08-07T15:31:42.7194868Z 
+2026-08-07T15:31:42.7230101Z > Task :react-native-safe-area-context:generateReleaseRFile
+2026-08-07T15:31:45.0200173Z > Task :react-native-async-storage_async-storage:javaPreCompileRelease
+2026-08-07T15:31:54.1222053Z 
+2026-08-07T15:31:54.1270976Z > Task :react-native-safe-area-context:compileReleaseKotlin
+2026-08-07T15:31:54.1334954Z w: file:///home/runner/work/LovelyToon/LovelyToon/node_modules/react-native-safe-area-context/android/src/main/java/com/th3rdwave/safeareacontext/SafeAreaProviderManager.kt:39:19 'fun getEventDispatcherForReactTag(context: ReactContext, reactTag: Int): EventDispatcher?' is deprecated. reactTag is no longer needed.
+2026-08-07T15:31:54.1390294Z w: file:///home/runner/work/LovelyToon/LovelyToon/node_modules/react-native-safe-area-context/android/src/main/java/com/th3rdwave/safeareacontext/SafeAreaView.kt:9:8 'class UIManagerModule : ReactContextBaseJavaModule, LifecycleEventListener, UIManager' is deprecated. Deprecated in Java.
+2026-08-07T15:31:54.1394730Z w: file:///home/runner/work/LovelyToon/LovelyToon/node_modules/react-native-safe-area-context/android/src/main/java/com/th3rdwave/safeareacontext/SafeAreaView.kt:50:54 'class UIManagerModule : ReactContextBaseJavaModule, LifecycleEventListener, UIManager' is deprecated. Deprecated in Java.
+2026-08-07T15:31:54.1464148Z w: file:///home/runner/work/LovelyToon/LovelyToon/node_modules/react-native-safe-area-context/android/src/main/java/com/th3rdwave/safeareacontext/SafeAreaView.kt:59:23 'val uiImplementation: UIImplementation!' is deprecated. Deprecated in Java.
+2026-08-07T15:31:54.1483125Z w: file:///home/runner/work/LovelyToon/LovelyToon/node_modules/react-native-safe-area-context/android/src/main/java/com/th3rdwave/safeareacontext/SafeAreaViewShadowNode.kt:9:32 'class LayoutShadowNode : ReactShadowNodeImpl' is deprecated. This class is part of Legacy Architecture and will be removed in a future release.
+2026-08-07T15:31:54.1543138Z w: file:///home/runner/work/LovelyToon/LovelyToon/node_modules/react-native-safe-area-context/android/src/main/java/com/th3rdwave/safeareacontext/SafeAreaViewShadowNode.kt:110:61 'class NativeViewHierarchyOptimizer : Any' is deprecated. This class is part of Legacy Architecture and will be removed in a future release.
+2026-08-07T15:31:54.1562310Z 
+2026-08-07T15:31:54.1599734Z > Task :react-native-safe-area-context:javaPreCompileRelease
+2026-08-07T15:31:59.0261743Z > Task :app:configureCMakeRelWithDebInfo[arm64-v8a]
+2026-08-07T15:32:12.2210945Z > Task :react-native-async-storage_async-storage:kspReleaseKotlin
+2026-08-07T15:32:16.1240421Z > Task :react-native-safe-area-context:compileReleaseJavaWithJavac
+2026-08-07T15:32:16.3240673Z > Task :react-native-safe-area-context:bundleLibRuntimeToDirRelease
+2026-08-07T15:32:24.3233101Z 
+2026-08-07T15:32:24.3319997Z > Task :react-native-async-storage_async-storage:compileReleaseKotlin
+2026-08-07T15:32:24.3371185Z w: file:///home/runner/work/LovelyToon/LovelyToon/node_modules/@react-native-async-storage/async-storage/android/src/main/kotlin/org/asyncstorage/legacy_storage/LegacyStorageSupplier.kt:63:69 Java type mismatch: inferred type is 'String?', but 'String' was expected.
+2026-08-07T15:32:24.3431665Z w: file:///home/runner/work/LovelyToon/LovelyToon/node_modules/@react-native-async-storage/async-storage/android/src/main/kotlin/org/asyncstorage/legacy_storage/LegacyStorageSupplier.kt:91:26 The corresponding parameter in the supertype 'Migration' is named 'db'. This may cause problems when calling this function with named arguments.
+2026-08-07T15:32:24.3511513Z w: file:///home/runner/work/LovelyToon/LovelyToon/node_modules/@react-native-async-storage/async-storage/android/src/main/kotlin/org/asyncstorage/legacy_storage/LegacyStorageSupplier.kt:202:17 Unchecked cast of 'ArrayList<Any?>' to 'List<String>'.
+2026-08-07T15:32:27.8183322Z 
+2026-08-07T15:32:27.8370076Z > Task :expo:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-08-07T15:32:27.8429631Z > Task :expo:generateReleaseBuildConfig
+2026-08-07T15:32:27.9239884Z > Task :expo:generateReleaseResValues
+2026-08-07T15:32:27.9269520Z > Task :expo:generateReleaseResources
+2026-08-07T15:32:27.9329342Z > Task :expo:packageReleaseResources
+2026-08-07T15:32:28.6250109Z > Task :expo:parseReleaseLocalResources
+2026-08-07T15:32:28.8181342Z > Task :expo:generateReleaseRFile
+2026-08-07T15:32:28.8239898Z > Task :expo-constants:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-08-07T15:32:28.8310449Z > Task :expo-constants:generateReleaseBuildConfig
+2026-08-07T15:32:28.8364719Z > Task :expo-constants:generateReleaseResValues
+2026-08-07T15:32:28.8439803Z > Task :expo-constants:generateReleaseResources
+2026-08-07T15:32:28.8491400Z > Task :expo-modules-core:buildCMakeRelWithDebInfo[arm64-v8a]
+2026-08-07T15:32:28.9219928Z > Task :expo-constants:packageReleaseResources
+2026-08-07T15:32:28.9279609Z > Task :expo-constants:parseReleaseLocalResources
+2026-08-07T15:32:28.9342044Z > Task :expo-constants:generateReleaseRFile
+2026-08-07T15:32:29.0210080Z > Task :expo-constants:javaPreCompileRelease
+2026-08-07T15:32:29.0309965Z > Task :expo-log-box:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-08-07T15:32:29.0754143Z > Task :expo-log-box:generateReleaseBuildConfig
+2026-08-07T15:32:29.0810100Z > Task :expo-log-box:generateReleaseResValues
+2026-08-07T15:32:29.0839347Z > Task :expo-log-box:generateReleaseResources
+2026-08-07T15:32:29.1045569Z > Task :app:buildCMakeRelWithDebInfo[arm64-v8a]
+2026-08-07T15:32:29.1199057Z > Task :expo-log-box:packageReleaseResources
+2026-08-07T15:32:29.2194523Z > Task :expo-log-box:parseReleaseLocalResources
+2026-08-07T15:32:29.2260098Z > Task :expo-log-box:generateReleaseRFile
+2026-08-07T15:32:29.2362092Z > Task :expo-log-box:javaPreCompileRelease
+2026-08-07T15:32:29.3269656Z > Task :expo:javaPreCompileRelease
+2026-08-07T15:32:29.3332441Z > Task :react-native-android-notification-listener:generateReleaseBuildConfig
+2026-08-07T15:32:29.3419915Z > Task :react-native-android-notification-listener:generateReleaseResValues
+2026-08-07T15:32:29.3509810Z > Task :react-native-android-notification-listener:generateReleaseResources
+2026-08-07T15:32:29.4230205Z > Task :react-native-android-notification-listener:packageReleaseResources
+2026-08-07T15:32:29.4309908Z > Task :react-native-android-notification-listener:parseReleaseLocalResources
+2026-08-07T15:32:29.5250306Z > Task :react-native-android-notification-listener:generateReleaseRFile
+2026-08-07T15:32:29.5339991Z > Task :react-native-android-notification-listener:javaPreCompileRelease
+2026-08-07T15:32:30.0200282Z > Task :react-native-async-storage_async-storage:compileReleaseJavaWithJavac
+2026-08-07T15:32:30.1220210Z > Task :react-native-async-storage_async-storage:bundleLibRuntimeToDirRelease
+2026-08-07T15:32:31.2190911Z Note: Some input files use or override a deprecated API.
+2026-08-07T15:32:31.2191397Z 
+2026-08-07T15:32:31.2280090Z > Task :react-native-android-notification-listener:compileReleaseJavaWithJavac
+2026-08-07T15:32:31.2339811Z Note: Recompile with -Xlint:deprecation for details.
+2026-08-07T15:32:31.2340248Z 
+2026-08-07T15:32:31.2399901Z > Task :react-native-android-notification-listener:bundleLibRuntimeToDirRelease
+2026-08-07T15:32:31.6220133Z > Task :react-native-android-widget:generateReleaseBuildConfig
+2026-08-07T15:32:31.6279964Z > Task :react-native-android-widget:generateReleaseResValues
+2026-08-07T15:32:31.6370010Z > Task :react-native-android-widget:generateReleaseResources
+2026-08-07T15:32:31.9200483Z > Task :react-native-android-widget:packageReleaseResources
+2026-08-07T15:32:32.0180384Z > Task :react-native-android-widget:parseReleaseLocalResources
+2026-08-07T15:32:32.0299962Z > Task :react-native-android-widget:generateReleaseRFile
+2026-08-07T15:32:32.1220137Z > Task :react-native-android-widget:javaPreCompileRelease
+2026-08-07T15:32:33.9189973Z > Task :react-native-svg:generateReleaseBuildConfig
+2026-08-07T15:32:33.9290061Z > Task :react-native-svg:generateReleaseResValues
+2026-08-07T15:32:33.9339702Z > Task :react-native-svg:generateReleaseResources
+2026-08-07T15:32:34.0233954Z > Task :react-native-svg:packageReleaseResources
+2026-08-07T15:32:34.0319846Z > Task :react-native-svg:parseReleaseLocalResources
+2026-08-07T15:32:34.1219937Z > Task :react-native-svg:generateReleaseRFile
+2026-08-07T15:32:34.1339950Z > Task :react-native-svg:javaPreCompileRelease
+2026-08-07T15:32:38.0190072Z Note: Some input files use or override a deprecated API.
+2026-08-07T15:32:38.0190558Z 
+2026-08-07T15:32:38.0229661Z Note: Recompile with -Xlint:deprecation for details.
+2026-08-07T15:32:38.0230423Z > Task :react-native-android-widget:compileReleaseJavaWithJavac
+2026-08-07T15:32:39.2209148Z 
+2026-08-07T15:32:39.2300163Z > Task :react-native-android-widget:bundleLibRuntimeToDirRelease
+2026-08-07T15:32:43.9244904Z > Task :expo:writeReleaseAarMetadata
+2026-08-07T15:32:43.9329757Z > Task :expo-constants:writeReleaseAarMetadata
+2026-08-07T15:32:43.9446359Z > Task :expo-log-box:writeReleaseAarMetadata
+2026-08-07T15:32:43.9499867Z > Task :react-native-android-notification-listener:writeReleaseAarMetadata
+2026-08-07T15:32:43.9547026Z > Task :react-native-android-widget:writeReleaseAarMetadata
+2026-08-07T15:32:44.0202102Z > Task :react-native-async-storage_async-storage:writeReleaseAarMetadata
+2026-08-07T15:32:44.0299916Z > Task :react-native-safe-area-context:writeReleaseAarMetadata
+2026-08-07T15:32:44.0301062Z > Task :expo:extractDeepLinksRelease
+2026-08-07T15:32:44.6220177Z > Task :expo:processReleaseManifest
+2026-08-07T15:32:44.6249729Z > Task :expo-constants:extractDeepLinksRelease
+2026-08-07T15:32:44.6279546Z > Task :expo-constants:processReleaseManifest
+2026-08-07T15:32:44.7180540Z > Task :expo-log-box:extractDeepLinksRelease
+2026-08-07T15:32:44.7199551Z > Task :expo-log-box:processReleaseManifest
+2026-08-07T15:32:44.8235333Z > Task :react-native-android-notification-listener:extractDeepLinksRelease
+2026-08-07T15:32:44.9201876Z 
+2026-08-07T15:32:44.9290274Z > Task :react-native-android-notification-listener:processReleaseManifest
+2026-08-07T15:32:44.9381101Z package="com.lesimoes.androidnotificationlistener" found in source AndroidManifest.xml: /home/runner/work/LovelyToon/LovelyToon/node_modules/react-native-android-notification-listener/android/src/main/AndroidManifest.xml.
+2026-08-07T15:32:44.9461417Z Setting the namespace via the package attribute in the source AndroidManifest.xml is no longer supported, and the value is ignored.
+2026-08-07T15:32:44.9571222Z Recommendation: remove package="com.lesimoes.androidnotificationlistener" from the source AndroidManifest.xml: /home/runner/work/LovelyToon/LovelyToon/node_modules/react-native-android-notification-listener/android/src/main/AndroidManifest.xml.
+2026-08-07T15:32:44.9639098Z 
+2026-08-07T15:32:44.9639694Z > Task :react-native-android-widget:extractDeepLinksRelease
+2026-08-07T15:32:45.0201080Z > Task :react-native-android-widget:processReleaseManifest
+2026-08-07T15:32:45.0279809Z > Task :react-native-async-storage_async-storage:extractDeepLinksRelease
+2026-08-07T15:32:45.0359735Z > Task :react-native-async-storage_async-storage:processReleaseManifest
+2026-08-07T15:32:45.1180410Z > Task :react-native-safe-area-context:extractDeepLinksRelease
+2026-08-07T15:32:45.2239181Z 
+2026-08-07T15:32:45.2330080Z > Task :react-native-safe-area-context:processReleaseManifest
+2026-08-07T15:32:45.2403503Z package="com.th3rdwave.safeareacontext" found in source AndroidManifest.xml: /home/runner/work/LovelyToon/LovelyToon/node_modules/react-native-safe-area-context/android/src/main/AndroidManifest.xml.
+2026-08-07T15:32:45.2590266Z Setting the namespace via the package attribute in the source AndroidManifest.xml is no longer supported, and the value is ignored.
+2026-08-07T15:32:45.2639418Z Recommendation: remove package="com.th3rdwave.safeareacontext" from the source AndroidManifest.xml: /home/runner/work/LovelyToon/LovelyToon/node_modules/react-native-safe-area-context/android/src/main/AndroidManifest.xml.
+2026-08-07T15:32:46.1181793Z Note: Some input files use or override a deprecated API.
+2026-08-07T15:32:46.1182265Z 
+2026-08-07T15:32:46.1211942Z Note: Recompile with -Xlint:deprecation for details.
+2026-08-07T15:32:46.1212669Z > Task :react-native-svg:compileReleaseJavaWithJavac
+2026-08-07T15:32:46.1330116Z Note: Some input files use unchecked or unsafe operations.
+2026-08-07T15:32:46.1500305Z Note: Recompile with -Xlint:unchecked for details.
+2026-08-07T15:32:46.3219785Z 
+2026-08-07T15:32:46.3311395Z > Task :expo:compileReleaseLibraryResources
+2026-08-07T15:32:46.3419850Z > Task :expo-constants:compileReleaseLibraryResources
+2026-08-07T15:32:46.4192639Z > Task :expo-log-box:compileReleaseLibraryResources
+2026-08-07T15:32:46.4239777Z > Task :react-native-android-notification-listener:compileReleaseLibraryResources
+2026-08-07T15:32:47.4189948Z > Task :react-native-android-widget:compileReleaseLibraryResources
+2026-08-07T15:32:47.4269629Z > Task :react-native-svg:writeReleaseAarMetadata
+2026-08-07T15:32:47.4339833Z > Task :react-native-svg:extractDeepLinksRelease
+2026-08-07T15:32:47.5201509Z > Task :react-native-svg:processReleaseManifest
+2026-08-07T15:32:47.5249729Z > Task :react-native-async-storage_async-storage:compileReleaseLibraryResources
+2026-08-07T15:32:47.6184104Z > Task :react-native-safe-area-context:compileReleaseLibraryResources
+2026-08-07T15:32:47.6211230Z > Task :react-native-svg:compileReleaseLibraryResources
+2026-08-07T15:32:47.7260130Z > Task :react-native-android-notification-listener:bundleLibCompileToJarRelease
+2026-08-07T15:32:47.7319800Z > Task :react-native-android-widget:bundleLibCompileToJarRelease
+2026-08-07T15:32:47.7390669Z > Task :react-native-svg:bundleLibRuntimeToDirRelease
+2026-08-07T15:32:47.8240064Z > Task :react-native-async-storage_async-storage:bundleLibCompileToJarRelease
+2026-08-07T15:32:47.8295180Z > Task :react-native-safe-area-context:bundleLibCompileToJarRelease
+2026-08-07T15:32:47.9200393Z > Task :react-native-svg:bundleLibCompileToJarRelease
+2026-08-07T15:32:47.9309682Z > Task :expo:prepareReleaseArtProfile
+2026-08-07T15:32:47.9310430Z > Task :expo-constants:prepareReleaseArtProfile
+2026-08-07T15:32:47.9459734Z > Task :expo-log-box:prepareReleaseArtProfile
+2026-08-07T15:32:48.0242024Z > Task :react-native-android-notification-listener:prepareReleaseArtProfile
+2026-08-07T15:32:48.0319776Z > Task :react-native-android-widget:prepareReleaseArtProfile
+2026-08-07T15:32:48.0409881Z > Task :react-native-async-storage_async-storage:prepareReleaseArtProfile
+2026-08-07T15:32:48.0463449Z > Task :react-native-safe-area-context:prepareReleaseArtProfile
+2026-08-07T15:32:48.0549540Z > Task :react-native-svg:prepareReleaseArtProfile
+2026-08-07T15:32:48.1252476Z > Task :react-native-async-storage_async-storage:bundleLibRuntimeToJarRelease
+2026-08-07T15:32:49.9210029Z > Task :react-native-safe-area-context:bundleLibRuntimeToJarRelease
+2026-08-07T15:32:50.9230813Z > Task :react-native-android-notification-listener:bundleLibRuntimeToJarRelease
+2026-08-07T15:32:51.2180376Z > Task :react-native-android-widget:bundleLibRuntimeToJarRelease
+2026-08-07T15:32:53.5258118Z > Task :react-native-svg:bundleLibRuntimeToJarRelease
+2026-08-07T15:33:00.3249933Z > Task :expo:mergeReleaseShaders
+2026-08-07T15:33:00.3259572Z > Task :expo:compileReleaseShaders NO-SOURCE
+2026-08-07T15:33:00.3349504Z > Task :expo:generateReleaseAssets UP-TO-DATE
+2026-08-07T15:33:00.4209794Z > Task :expo:mergeReleaseAssets
+2026-08-07T15:33:00.4259676Z > Task :expo-constants:mergeReleaseShaders
+2026-08-07T15:33:00.4319803Z > Task :expo-constants:compileReleaseShaders NO-SOURCE
+2026-08-07T15:33:00.4409687Z > Task :expo-constants:generateReleaseAssets UP-TO-DATE
+2026-08-07T15:33:00.5202239Z > Task :expo-constants:mergeReleaseAssets
+2026-08-07T15:33:00.5319947Z > Task :expo-log-box:mergeReleaseShaders
+2026-08-07T15:33:00.5340659Z > Task :expo-log-box:compileReleaseShaders NO-SOURCE
+2026-08-07T15:33:00.5431380Z > Task :expo-log-box:generateReleaseAssets UP-TO-DATE
+2026-08-07T15:33:00.5449721Z > Task :expo-log-box:mergeReleaseAssets
+2026-08-07T15:33:00.5501643Z > Task :react-native-android-notification-listener:mergeReleaseShaders
+2026-08-07T15:33:00.5620052Z > Task :react-native-android-notification-listener:compileReleaseShaders NO-SOURCE
+2026-08-07T15:33:00.5680175Z > Task :react-native-android-notification-listener:generateReleaseAssets UP-TO-DATE
+2026-08-07T15:33:00.6202054Z > Task :react-native-android-notification-listener:mergeReleaseAssets
+2026-08-07T15:33:00.6219417Z > Task :react-native-android-widget:mergeReleaseShaders
+2026-08-07T15:33:00.6290017Z > Task :react-native-android-widget:compileReleaseShaders NO-SOURCE
+2026-08-07T15:33:00.6380375Z > Task :react-native-android-widget:generateReleaseAssets UP-TO-DATE
+2026-08-07T15:33:00.6436331Z > Task :react-native-android-widget:mergeReleaseAssets
+2026-08-07T15:33:00.7210296Z > Task :react-native-async-storage_async-storage:mergeReleaseShaders
+2026-08-07T15:33:00.7300106Z > Task :react-native-async-storage_async-storage:compileReleaseShaders NO-SOURCE
+2026-08-07T15:33:00.7420183Z > Task :react-native-async-storage_async-storage:generateReleaseAssets UP-TO-DATE
+2026-08-07T15:33:00.7480007Z > Task :react-native-async-storage_async-storage:mergeReleaseAssets
+2026-08-07T15:33:00.8180082Z > Task :react-native-safe-area-context:mergeReleaseShaders
+2026-08-07T15:33:00.8310121Z > Task :react-native-safe-area-context:compileReleaseShaders NO-SOURCE
+2026-08-07T15:33:00.8400017Z > Task :react-native-safe-area-context:generateReleaseAssets UP-TO-DATE
+2026-08-07T15:33:00.8429561Z > Task :react-native-safe-area-context:mergeReleaseAssets
+2026-08-07T15:33:00.8539913Z > Task :react-native-svg:mergeReleaseShaders
+2026-08-07T15:33:00.8639813Z > Task :react-native-svg:compileReleaseShaders NO-SOURCE
+2026-08-07T15:33:00.8750079Z > Task :react-native-svg:generateReleaseAssets UP-TO-DATE
+2026-08-07T15:33:00.8849712Z > Task :react-native-svg:mergeReleaseAssets
+2026-08-07T15:33:00.9299934Z > Task :expo:extractProguardFiles
+2026-08-07T15:33:00.9335790Z > Task :expo-constants:extractProguardFiles
+2026-08-07T15:33:00.9461808Z > Task :expo-constants:prepareLintJarForPublish
+2026-08-07T15:33:00.9549824Z > Task :expo-log-box:extractProguardFiles
+2026-08-07T15:33:01.0219912Z > Task :expo-log-box:prepareLintJarForPublish
+2026-08-07T15:33:01.0359761Z > Task :expo:prepareLintJarForPublish
+2026-08-07T15:33:01.0399871Z > Task :react-native-android-notification-listener:processReleaseJavaRes NO-SOURCE
+2026-08-07T15:33:01.0419451Z > Task :react-native-android-notification-listener:createFullJarRelease
+2026-08-07T15:33:01.0539954Z > Task :react-native-android-notification-listener:extractProguardFiles
+2026-08-07T15:33:03.3250039Z > Task :react-native-android-widget:processReleaseJavaRes NO-SOURCE
+2026-08-07T15:33:03.3310004Z > Task :react-native-android-widget:createFullJarRelease
+2026-08-07T15:33:03.3419970Z > Task :react-native-android-widget:extractProguardFiles
+2026-08-07T15:33:06.3199145Z 
+2026-08-07T15:33:06.3210260Z > Task :expo-modules-core:buildCMakeRelWithDebInfo[arm64-v8a]
+2026-08-07T15:33:06.3211837Z C/C++: ninja: Entering directory `/home/runner/work/LovelyToon/LovelyToon/node_modules/expo-modules-core/android/.cxx/RelWithDebInfo/716u2w2j/arm64-v8a'
+2026-08-07T15:33:06.3214445Z C/C++: /home/runner/work/LovelyToon/LovelyToon/node_modules/expo-modules-core/android/src/main/cpp/fabric/ExpoComponentDescriptorFactory.cpp:17:5: warning: 'RawPropsParser' is deprecated [-Wdeprecated-declarations]
+2026-08-07T15:33:06.3216312Z C/C++:    17 |     react::RawPropsParser(/*useRawPropsJsiValue=*/true)
+2026-08-07T15:33:06.3216938Z C/C++:       |     ^
+2026-08-07T15:33:06.3219396Z C/C++: /home/runner/.gradle/caches/9.3.1/transforms/b37ffe1efa1b10ee957b7bd9b0325943/transformed/react-android-0.86.2-release/prefab/modules/reactnative/include/react/renderer/core/RawPropsParser.h:31:5: note: 'RawPropsParser' has been explicitly marked deprecated here
+2026-08-07T15:33:06.3221647Z C/C++:    31 |   [[deprecated]] explicit RawPropsParser(bool /* ignored */) : RawPropsParser() {}
+2026-08-07T15:33:06.3222386Z C/C++:       |     ^
+2026-08-07T15:33:06.3222770Z C/C++: 1 warning generated.
+2026-08-07T15:33:09.5219258Z 
+2026-08-07T15:33:09.5339981Z > Task :expo-modules-core:configureCMakeRelWithDebInfo[armeabi-v7a]
+2026-08-07T15:33:15.6220231Z > Task :react-native-android-notification-listener:generateReleaseLintModel
+2026-08-07T15:33:15.6249781Z > Task :react-native-android-widget:generateReleaseLintModel
+2026-08-07T15:33:15.6309672Z > Task :react-native-android-widget:prepareLintJarForPublish
+2026-08-07T15:33:15.6379817Z > Task :react-native-android-notification-listener:prepareLintJarForPublish
+2026-08-07T15:33:15.6426632Z > Task :react-native-safe-area-context:processReleaseJavaRes
+2026-08-07T15:33:15.6499621Z > Task :react-native-async-storage_async-storage:processReleaseJavaRes
+2026-08-07T15:33:15.6589717Z > Task :react-native-async-storage_async-storage:createFullJarRelease
+2026-08-07T15:33:15.7190064Z > Task :react-native-safe-area-context:createFullJarRelease
+2026-08-07T15:33:15.7249646Z > Task :react-native-safe-area-context:extractProguardFiles
+2026-08-07T15:33:15.7294175Z > Task :react-native-async-storage_async-storage:extractProguardFiles
+2026-08-07T15:33:15.8210204Z > Task :react-native-safe-area-context:generateReleaseLintModel
+2026-08-07T15:33:15.8299791Z > Task :react-native-safe-area-context:prepareLintJarForPublish
+2026-08-07T15:33:15.8389739Z > Task :react-native-svg:processReleaseJavaRes NO-SOURCE
+2026-08-07T15:33:15.8429500Z > Task :react-native-svg:createFullJarRelease
+2026-08-07T15:33:15.8510176Z > Task :react-native-svg:extractProguardFiles
+2026-08-07T15:33:15.9205798Z > Task :react-native-svg:generateReleaseLintModel
+2026-08-07T15:33:15.9257995Z > Task :react-native-svg:prepareLintJarForPublish
+2026-08-07T15:33:15.9350023Z > Task :react-native-safe-area-context:stripReleaseDebugSymbols NO-SOURCE
+2026-08-07T15:33:16.0220601Z > Task :react-native-safe-area-context:copyReleaseJniLibsProjectAndLocalJars
+2026-08-07T15:33:16.0279830Z > Task :react-native-safe-area-context:extractDeepLinksForAarRelease
+2026-08-07T15:33:20.1187106Z > Task :react-native-async-storage_async-storage:generateReleaseLintModel
+2026-08-07T15:33:20.1240130Z > Task :react-native-async-storage_async-storage:prepareLintJarForPublish
+2026-08-07T15:33:20.1330140Z > Task :react-native-async-storage_async-storage:stripReleaseDebugSymbols NO-SOURCE
+2026-08-07T15:33:20.2210296Z > Task :react-native-async-storage_async-storage:copyReleaseJniLibsProjectAndLocalJars
+2026-08-07T15:33:20.2279797Z > Task :react-native-async-storage_async-storage:extractDeepLinksForAarRelease
+2026-08-07T15:33:32.4190196Z > Task :react-native-async-storage_async-storage:extractReleaseAnnotations
+2026-08-07T15:33:32.4269792Z > Task :react-native-safe-area-context:extractReleaseAnnotations
+2026-08-07T15:33:32.4279615Z > Task :react-native-safe-area-context:mergeReleaseGeneratedProguardFiles
+2026-08-07T15:33:32.4349975Z > Task :react-native-async-storage_async-storage:mergeReleaseGeneratedProguardFiles
+2026-08-07T15:33:32.4390537Z > Task :react-native-async-storage_async-storage:mergeReleaseConsumerProguardFiles
+2026-08-07T15:33:32.4391971Z > Task :react-native-safe-area-context:mergeReleaseConsumerProguardFiles
+2026-08-07T15:33:32.7210092Z > Task :react-native-safe-area-context:mergeReleaseJavaResource
+2026-08-07T15:33:32.7269331Z > Task :react-native-async-storage_async-storage:mergeReleaseJavaResource
+2026-08-07T15:33:32.7319521Z > Task :react-native-safe-area-context:syncReleaseLibJars
+2026-08-07T15:33:32.8210099Z > Task :react-native-async-storage_async-storage:syncReleaseLibJars
+2026-08-07T15:33:32.8239987Z > Task :react-native-safe-area-context:bundleReleaseLocalLintAar
+2026-08-07T15:33:32.8319848Z > Task :react-native-async-storage_async-storage:bundleReleaseLocalLintAar
+2026-08-07T15:33:32.8340996Z > Task :react-native-android-notification-listener:stripReleaseDebugSymbols NO-SOURCE
+2026-08-07T15:33:32.9219931Z > Task :expo:stripReleaseDebugSymbols NO-SOURCE
+2026-08-07T15:33:32.9275285Z > Task :react-native-android-notification-listener:copyReleaseJniLibsProjectAndLocalJars
+2026-08-07T15:33:32.9359898Z > Task :react-native-android-notification-listener:extractDeepLinksForAarRelease
+2026-08-07T15:33:32.9418401Z > Task :expo:copyReleaseJniLibsProjectAndLocalJars
+2026-08-07T15:33:32.9481113Z > Task :expo:extractDeepLinksForAarRelease
+2026-08-07T15:33:32.9577180Z > Task :react-native-android-widget:stripReleaseDebugSymbols NO-SOURCE
+2026-08-07T15:33:32.9649752Z > Task :react-native-android-widget:copyReleaseJniLibsProjectAndLocalJars
+2026-08-07T15:33:32.9739751Z > Task :react-native-android-widget:extractDeepLinksForAarRelease
+2026-08-07T15:33:32.9830131Z > Task :react-native-android-notification-listener:extractReleaseAnnotations
+2026-08-07T15:33:33.0180775Z > Task :react-native-android-notification-listener:mergeReleaseGeneratedProguardFiles
+2026-08-07T15:33:33.0259787Z > Task :react-native-android-widget:extractReleaseAnnotations
+2026-08-07T15:33:33.0309791Z > Task :react-native-android-notification-listener:mergeReleaseConsumerProguardFiles
+2026-08-07T15:33:33.0340914Z > Task :react-native-android-widget:mergeReleaseGeneratedProguardFiles
+2026-08-07T15:33:33.0379755Z > Task :react-native-android-widget:mergeReleaseConsumerProguardFiles
+2026-08-07T15:33:33.0468290Z > Task :react-native-android-widget:mergeReleaseJavaResource
+2026-08-07T15:33:33.0543106Z > Task :react-native-android-notification-listener:mergeReleaseJavaResource
+2026-08-07T15:33:33.0592417Z > Task :react-native-android-notification-listener:syncReleaseLibJars
+2026-08-07T15:33:33.1199989Z > Task :react-native-android-widget:syncReleaseLibJars
+2026-08-07T15:33:33.1224434Z > Task :react-native-android-notification-listener:bundleReleaseLocalLintAar
+2026-08-07T15:33:33.1279557Z > Task :react-native-android-widget:bundleReleaseLocalLintAar
+2026-08-07T15:33:33.1309617Z > Task :react-native-svg:stripReleaseDebugSymbols NO-SOURCE
+2026-08-07T15:33:33.1369625Z > Task :react-native-svg:copyReleaseJniLibsProjectAndLocalJars
+2026-08-07T15:33:33.1399468Z > Task :react-native-svg:extractDeepLinksForAarRelease
+2026-08-07T15:33:33.2200305Z > Task :expo-log-box:stripReleaseDebugSymbols NO-SOURCE
+2026-08-07T15:33:33.2259570Z > Task :expo-log-box:copyReleaseJniLibsProjectAndLocalJars
+2026-08-07T15:33:33.2349571Z > Task :expo-log-box:extractDeepLinksForAarRelease
+2026-08-07T15:33:33.2379691Z > Task :react-native-svg:extractReleaseAnnotations
+2026-08-07T15:33:33.2439588Z > Task :expo-constants:stripReleaseDebugSymbols NO-SOURCE
+2026-08-07T15:33:33.2469580Z > Task :expo-constants:copyReleaseJniLibsProjectAndLocalJars
+2026-08-07T15:33:33.2540602Z > Task :react-native-svg:mergeReleaseGeneratedProguardFiles
+2026-08-07T15:33:33.3187860Z > Task :expo-constants:extractDeepLinksForAarRelease
+2026-08-07T15:33:33.3219667Z > Task :react-native-svg:mergeReleaseConsumerProguardFiles
+2026-08-07T15:33:33.3279472Z > Task :expo-constants:writeReleaseLintModelMetadata
+2026-08-07T15:33:33.3310691Z > Task :react-native-svg:mergeReleaseJavaResource
+2026-08-07T15:33:33.3369755Z > Task :expo-log-box:writeReleaseLintModelMetadata
+2026-08-07T15:33:33.3399427Z > Task :expo:writeReleaseLintModelMetadata
+2026-08-07T15:33:33.6179765Z > Task :react-native-svg:syncReleaseLibJars
+2026-08-07T15:33:33.7209951Z > Task :react-native-svg:bundleReleaseLocalLintAar
+2026-08-07T15:33:33.7239673Z > Task :react-native-android-notification-listener:writeReleaseLintModelMetadata
+2026-08-07T15:33:39.5210348Z > Task :expo-modules-core:buildCMakeRelWithDebInfo[armeabi-v7a]
+2026-08-07T15:33:49.6180379Z > Task :react-native-android-notification-listener:lintVitalAnalyzeRelease
+2026-08-07T15:33:49.6269953Z > Task :react-native-android-widget:writeReleaseLintModelMetadata
+2026-08-07T15:33:52.7250213Z > Task :react-native-android-widget:lintVitalAnalyzeRelease
+2026-08-07T15:33:52.7279768Z > Task :react-native-async-storage_async-storage:writeReleaseLintModelMetadata
+2026-08-07T15:33:55.2209190Z 
+2026-08-07T15:33:55.2239887Z > Task :expo-modules-core:buildCMakeRelWithDebInfo[armeabi-v7a]
+2026-08-07T15:33:55.2260278Z C/C++: ninja: Entering directory `/home/runner/work/LovelyToon/LovelyToon/node_modules/expo-modules-core/android/.cxx/RelWithDebInfo/716u2w2j/armeabi-v7a'
+2026-08-07T15:33:55.2262870Z C/C++: /home/runner/work/LovelyToon/LovelyToon/node_modules/expo-modules-core/android/src/main/cpp/fabric/ExpoComponentDescriptorFactory.cpp:17:5: warning: 'RawPropsParser' is deprecated [-Wdeprecated-declarations]
+2026-08-07T15:33:55.2264697Z C/C++:    17 |     react::RawPropsParser(/*useRawPropsJsiValue=*/true)
+2026-08-07T15:33:55.2265262Z C/C++:       |     ^
+2026-08-07T15:33:55.2267448Z C/C++: /home/runner/.gradle/caches/9.3.1/transforms/b37ffe1efa1b10ee957b7bd9b0325943/transformed/react-android-0.86.2-release/prefab/modules/reactnative/include/react/renderer/core/RawPropsParser.h:31:5: note: 'RawPropsParser' has been explicitly marked deprecated here
+2026-08-07T15:33:55.2270151Z C/C++:    31 |   [[deprecated]] explicit RawPropsParser(bool /* ignored */) : RawPropsParser() {}
+2026-08-07T15:33:55.2270818Z C/C++:       |     ^
+2026-08-07T15:33:55.2271205Z C/C++: 1 warning generated.
+2026-08-07T15:33:57.1239331Z 
+2026-08-07T15:33:57.1269708Z > Task :expo-modules-core:configureCMakeRelWithDebInfo[x86]
+2026-08-07T15:34:01.5190376Z The Daemon will expire after the build after running out of JVM Metaspace.
+2026-08-07T15:34:01.5217740Z The project memory settings are likely not configured or are configured to an insufficient value.
+2026-08-07T15:34:01.5269801Z The daemon will restart for the next build, which may increase subsequent build times.
+2026-08-07T15:34:01.5309787Z These settings can be adjusted by setting 'org.gradle.jvmargs' in 'gradle.properties'.
+2026-08-07T15:34:01.5369651Z The currently configured max heap space is '2 GiB' and the configured max metaspace is '512 MiB'.
+2026-08-07T15:34:01.5400482Z For more information on how to set these values, please refer to https://docs.gradle.org/9.3.1/userguide/build_environment.html#sec:configuring_jvm_memory in the Gradle documentation.
+2026-08-07T15:34:01.5449637Z To disable this warning, set 'org.gradle.daemon.performance.disable-logging=true'.
+2026-08-07T15:34:01.5489755Z Daemon will be stopped at the end of the build after running out of JVM Metaspace
+2026-08-07T15:34:03.4202169Z > Task :app:configureCMakeRelWithDebInfo[armeabi-v7a]
+2026-08-07T15:34:15.4190088Z > Task :react-native-async-storage_async-storage:lintVitalAnalyzeRelease
+2026-08-07T15:34:15.4309915Z > Task :react-native-safe-area-context:lintVitalAnalyzeRelease
+2026-08-07T15:34:15.4359748Z > Task :react-native-safe-area-context:writeReleaseLintModelMetadata
+2026-08-07T15:34:15.5230356Z > Task :react-native-android-notification-listener:generateReleaseLintVitalModel
+2026-08-07T15:34:15.5265146Z > Task :react-native-svg:writeReleaseLintModelMetadata
+2026-08-07T15:34:15.6210078Z > Task :react-native-android-widget:generateReleaseLintVitalModel
+2026-08-07T15:34:15.7179742Z > Task :react-native-async-storage_async-storage:generateReleaseLintVitalModel
+2026-08-07T15:34:15.7270415Z > Task :react-native-safe-area-context:generateReleaseLintVitalModel
+2026-08-07T15:34:15.8210005Z > Task :react-native-svg:generateReleaseLintVitalModel
+2026-08-07T15:34:15.8269626Z > Task :expo-constants:mapReleaseSourceSetPaths
+2026-08-07T15:34:15.8334876Z > Task :expo-constants:mergeReleaseResources
+2026-08-07T15:34:17.2189859Z > Task :expo-constants:verifyReleaseResources
+2026-08-07T15:34:21.1210112Z > Task :expo-log-box:mapReleaseSourceSetPaths
+2026-08-07T15:34:27.1209972Z > Task :expo-modules-core:buildCMakeRelWithDebInfo[x86]
+2026-08-07T15:34:29.7190048Z > Task :expo-log-box:mergeReleaseResources
+2026-08-07T15:34:33.4199970Z > Task :app:buildCMakeRelWithDebInfo[armeabi-v7a]
+2026-08-07T15:34:37.8204359Z > Task :react-native-svg:lintVitalAnalyzeRelease
+2026-08-07T15:34:37.9183030Z > Task :react-native-android-notification-listener:bundleReleaseAar
+2026-08-07T15:34:38.3230017Z > Task :react-native-android-notification-listener:mapReleaseSourceSetPaths
+2026-08-07T15:34:40.8190335Z > Task :react-native-android-notification-listener:mergeReleaseResources
+2026-08-07T15:34:43.7189926Z > Task :expo-log-box:verifyReleaseResources
+2026-08-07T15:34:43.7279751Z > Task :react-native-android-widget:bundleReleaseAar
+2026-08-07T15:34:43.8250019Z > Task :react-native-android-widget:mapReleaseSourceSetPaths
+2026-08-07T15:34:45.0190255Z > Task :react-native-android-notification-listener:verifyReleaseResources
+2026-08-07T15:34:45.0259751Z > Task :react-native-android-notification-listener:assembleRelease
+2026-08-07T15:34:45.0381294Z > Task :react-native-async-storage_async-storage:bundleReleaseAar
+2026-08-07T15:34:45.1240180Z > Task :react-native-async-storage_async-storage:mapReleaseSourceSetPaths
+2026-08-07T15:34:46.6217495Z > Task :react-native-android-widget:mergeReleaseResources
+2026-08-07T15:34:47.5201420Z > Task :react-native-async-storage_async-storage:mergeReleaseResources
+2026-08-07T15:34:50.5210022Z > Task :react-native-android-widget:verifyReleaseResources
+2026-08-07T15:34:50.5317009Z > Task :react-native-android-widget:assembleRelease
+2026-08-07T15:34:50.5359607Z > Task :react-native-safe-area-context:bundleReleaseAar
+2026-08-07T15:34:50.6183121Z > Task :react-native-safe-area-context:mapReleaseSourceSetPaths
+2026-08-07T15:34:50.9191755Z > Task :react-native-async-storage_async-storage:verifyReleaseResources
+2026-08-07T15:34:50.9244854Z > Task :react-native-async-storage_async-storage:assembleRelease
+2026-08-07T15:34:51.0190076Z > Task :react-native-svg:bundleReleaseAar
+2026-08-07T15:34:51.1201242Z > Task :react-native-svg:mapReleaseSourceSetPaths
+2026-08-07T15:34:52.6209986Z > Task :react-native-safe-area-context:mergeReleaseResources
+2026-08-07T15:34:53.1209871Z > Task :react-native-svg:mergeReleaseResources
+2026-08-07T15:34:55.0209171Z 
+2026-08-07T15:34:55.0239664Z > Task :expo-modules-core:buildCMakeRelWithDebInfo[x86]
+2026-08-07T15:34:55.0329698Z C/C++: ninja: Entering directory `/home/runner/work/LovelyToon/LovelyToon/node_modules/expo-modules-core/android/.cxx/RelWithDebInfo/716u2w2j/x86'
+2026-08-07T15:34:55.0407393Z C/C++: /home/runner/work/LovelyToon/LovelyToon/node_modules/expo-modules-core/android/src/main/cpp/fabric/ExpoComponentDescriptorFactory.cpp:17:5: warning: 'RawPropsParser' is deprecated [-Wdeprecated-declarations]
+2026-08-07T15:34:55.0452248Z C/C++:    17 |     react::RawPropsParser(/*useRawPropsJsiValue=*/true)
+2026-08-07T15:34:55.0501137Z C/C++:       |     ^
+2026-08-07T15:34:55.0583207Z C/C++: /home/runner/.gradle/caches/9.3.1/transforms/b37ffe1efa1b10ee957b7bd9b0325943/transformed/react-android-0.86.2-release/prefab/modules/reactnative/include/react/renderer/core/RawPropsParser.h:31:5: note: 'RawPropsParser' has been explicitly marked deprecated here
+2026-08-07T15:34:55.0603511Z C/C++:    31 |   [[deprecated]] explicit RawPropsParser(bool /* ignored */) : RawPropsParser() {}
+2026-08-07T15:34:55.0704526Z C/C++:       |     ^
+2026-08-07T15:34:55.0777622Z C/C++: 1 warning generated.
+2026-08-07T15:34:55.3201390Z 
+2026-08-07T15:34:55.3260203Z > Task :react-native-safe-area-context:verifyReleaseResources
+2026-08-07T15:34:55.3289823Z > Task :react-native-safe-area-context:assembleRelease
+2026-08-07T15:34:56.2219962Z > Task :react-native-svg:verifyReleaseResources
+2026-08-07T15:34:56.2279377Z > Task :react-native-svg:assembleRelease
+2026-08-07T15:34:57.9240025Z > Task :expo-modules-core:configureCMakeRelWithDebInfo[x86_64]
+2026-08-07T15:35:27.9200040Z > Task :expo-modules-core:buildCMakeRelWithDebInfo[x86_64]
+2026-08-07T15:35:34.5181821Z C/C++: ninja: Entering directory `/home/runner/work/LovelyToon/LovelyToon/node_modules/expo-modules-core/android/.cxx/RelWithDebInfo/716u2w2j/x86_64'
+2026-08-07T15:35:34.5186730Z C/C++: /home/runner/work/LovelyToon/LovelyToon/node_modules/expo-modules-core/android/src/main/cpp/fabric/ExpoComponentDescriptorFactory.cpp:17:5: warning: 'RawPropsParser' is deprecated [-Wdeprecated-declarations]
+2026-08-07T15:35:34.5188918Z C/C++:    17 |     react::RawPropsParser(/*useRawPropsJsiValue=*/true)
+2026-08-07T15:35:34.5189523Z C/C++:       |     ^
+2026-08-07T15:35:34.5191825Z C/C++: /home/runner/.gradle/caches/9.3.1/transforms/b37ffe1efa1b10ee957b7bd9b0325943/transformed/react-android-0.86.2-release/prefab/modules/reactnative/include/react/renderer/core/RawPropsParser.h:31:5: note: 'RawPropsParser' has been explicitly marked deprecated here
+2026-08-07T15:35:34.5194190Z C/C++:    31 |   [[deprecated]] explicit RawPropsParser(bool /* ignored */) : RawPropsParser() {}
+2026-08-07T15:35:34.5194944Z C/C++:       |     ^
+2026-08-07T15:35:34.5195325Z C/C++: 1 warning generated.
+2026-08-07T15:35:35.1179314Z 
+2026-08-07T15:35:35.1190533Z > Task :expo-modules-core:mergeReleaseJniLibFolders
+2026-08-07T15:35:35.1191724Z > Task :expo-modules-core:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-08-07T15:35:35.1192843Z > Task :expo-modules-core:generateReleaseBuildConfig
+2026-08-07T15:35:35.1193803Z > Task :expo-modules-core:generateReleaseResValues
+2026-08-07T15:35:35.1194632Z > Task :expo-modules-core:generateReleaseResources
+2026-08-07T15:35:35.1195472Z > Task :expo-modules-core:packageReleaseResources
+2026-08-07T15:35:35.4182922Z > Task :expo-modules-core:mergeReleaseNativeLibs
+2026-08-07T15:35:35.9189964Z > Task :expo-modules-core:parseReleaseLocalResources
+2026-08-07T15:35:35.9216382Z > Task :expo-modules-core:generateReleaseRFile
+2026-08-07T15:35:36.5184546Z > Task :expo-modules-core:copyReleaseJniLibsProjectOnly
+2026-08-07T15:35:37.2209735Z > Task :expo-modules-core:javaPreCompileRelease
+2026-08-07T15:35:37.2261408Z > Task :expo-modules-core:writeReleaseAarMetadata
+2026-08-07T15:35:37.3192650Z > Task :expo-modules-core:extractDeepLinksRelease
+2026-08-07T15:35:37.3209774Z 
+2026-08-07T15:35:37.3259658Z > Task :expo-modules-core:processReleaseManifest
+2026-08-07T15:35:37.3321265Z /home/runner/work/LovelyToon/LovelyToon/node_modules/expo-modules-core/android/src/main/AndroidManifest.xml:8:9-11:45 Warning:
+2026-08-07T15:35:37.3370876Z 	meta-data#com.facebook.soloader.enabled@android:value was tagged at AndroidManifest.xml:8 to replace other declarations but no other declaration present
+2026-08-07T15:35:37.3388894Z 
+2026-08-07T15:35:37.3410331Z > Task :expo-modules-core:compileReleaseLibraryResources
+2026-08-07T15:35:37.3439337Z > Task :expo-modules-core:prepareReleaseArtProfile
+2026-08-07T15:35:37.3489403Z > Task :expo-modules-core:mergeReleaseShaders
+2026-08-07T15:35:37.3529345Z > Task :expo-modules-core:compileReleaseShaders NO-SOURCE
+2026-08-07T15:35:37.3549535Z > Task :expo-modules-core:generateReleaseAssets UP-TO-DATE
+2026-08-07T15:35:37.4185293Z > Task :expo-modules-core:mergeReleaseAssets
+2026-08-07T15:35:37.4259762Z > Task :expo-modules-core:extractProguardFiles
+2026-08-07T15:35:37.4299770Z > Task :expo-modules-core:prepareLintJarForPublish
+2026-08-07T15:35:37.8180021Z > Task :expo-modules-core:stripReleaseDebugSymbols
+2026-08-07T15:35:37.9210280Z > Task :expo-modules-core:copyReleaseJniLibsProjectAndLocalJars
+2026-08-07T15:35:37.9211670Z > Task :expo-modules-core:extractDeepLinksForAarRelease
+2026-08-07T15:35:37.9233741Z > Task :expo:mapReleaseSourceSetPaths
+2026-08-07T15:35:37.9256883Z > Task :expo-modules-core:writeReleaseLintModelMetadata
+2026-08-07T15:35:38.0210752Z > Task :expo-modules-core:mapReleaseSourceSetPaths
+2026-08-07T15:35:39.0199918Z > Task :expo-modules-core:mergeReleaseResources
+2026-08-07T15:35:39.8216495Z > Task :expo:mergeReleaseResources
+2026-08-07T15:35:43.1189975Z > Task :expo-modules-core:verifyReleaseResources
+2026-08-07T15:35:43.3179642Z > Task :expo:verifyReleaseResources
+2026-08-07T15:35:45.6245787Z > Task :app:configureCMakeRelWithDebInfo[x86]
+2026-08-07T15:36:05.9189860Z > Task :expo-modules-core:compileReleaseKotlin
+2026-08-07T15:36:15.6189889Z > Task :app:buildCMakeRelWithDebInfo[x86]
+2026-08-07T15:36:33.0219432Z 
+2026-08-07T15:36:33.0279702Z > Task :expo-modules-core:compileReleaseKotlin
+2026-08-07T15:36:33.0281891Z w: file:///home/runner/work/LovelyToon/LovelyToon/node_modules/expo-modules-core/android/src/main/java/expo/modules/apploader/AppLoaderProvider.kt:34:52 Unchecked cast of 'Class<*>!' to 'Class<out HeadlessAppLoader>'.
+2026-08-07T15:36:33.0341162Z w: file:///home/runner/work/LovelyToon/LovelyToon/node_modules/expo-modules-core/android/src/main/java/expo/modules/kotlin/AppContext.kt:14:8 'class UIManagerModule : ReactContextBaseJavaModule, LifecycleEventListener, UIManager' is deprecated. Deprecated in Java.
+2026-08-07T15:36:33.0400919Z w: file:///home/runner/work/LovelyToon/LovelyToon/node_modules/expo-modules-core/android/src/main/java/expo/modules/kotlin/AppContext.kt:22:8 'typealias ErrorManagerModule = JSLoggerModule' is deprecated. Use JSLoggerModule instead.
+2026-08-07T15:36:33.0430784Z w: file:///home/runner/work/LovelyToon/LovelyToon/node_modules/expo-modules-core/android/src/main/java/expo/modules/kotlin/AppContext.kt:61:13 'val hostingRuntimeContext: MainRuntime' is deprecated. Use AppContext.runtimeContext instead.
+2026-08-07T15:36:33.0460716Z w: file:///home/runner/work/LovelyToon/LovelyToon/node_modules/expo-modules-core/android/src/main/java/expo/modules/kotlin/AppContext.kt:271:21 'typealias ErrorManagerModule = JSLoggerModule' is deprecated. Use JSLoggerModule instead.
+2026-08-07T15:36:33.0464432Z w: file:///home/runner/work/LovelyToon/LovelyToon/node_modules/expo-modules-core/android/src/main/java/expo/modules/kotlin/AppContext.kt:380:21 'val DEFAULT: Int' is deprecated. UIManagerType.DEFAULT will be deleted in the next release of React Native. Use [LEGACY] instead.
+2026-08-07T15:36:33.0491087Z w: file:///home/runner/work/LovelyToon/LovelyToon/node_modules/expo-modules-core/android/src/main/java/expo/modules/kotlin/AppContext.kt:381:10 'class UIManagerModule : ReactContextBaseJavaModule, LifecycleEventListener, UIManager' is deprecated. Deprecated in Java.
+2026-08-07T15:36:33.0521257Z w: file:///home/runner/work/LovelyToon/LovelyToon/node_modules/expo-modules-core/android/src/main/java/expo/modules/kotlin/defaultmodules/NativeModulesProxyModule.kt:16:5 'fun Constants(legacyConstantsProvider: () -> Map<String, Any?>): Unit' is deprecated. Use `Constant` or `Property` instead.
+2026-08-07T15:36:33.0551336Z w: file:///home/runner/work/LovelyToon/LovelyToon/node_modules/expo-modules-core/android/src/main/java/expo/modules/kotlin/events/KModuleEventEmitterWrapper.kt:99:21 'fun getEventDispatcherForReactTag(context: ReactContext, reactTag: Int): EventDispatcher?' is deprecated. reactTag is no longer needed.
+2026-08-07T15:36:33.0581336Z w: file:///home/runner/work/LovelyToon/LovelyToon/node_modules/expo-modules-core/android/src/main/java/expo/modules/kotlin/events/KModuleEventEmitterWrapper.kt:108:21 'fun getEventDispatcherForReactTag(context: ReactContext, reactTag: Int): EventDispatcher?' is deprecated. reactTag is no longer needed.
+2026-08-07T15:36:33.0610719Z w: file:///home/runner/work/LovelyToon/LovelyToon/node_modules/expo-modules-core/android/src/main/java/expo/modules/kotlin/views/ViewDefinitionBuilder.kt:470:16 'val errorManager: JSLoggerModule?' is deprecated. Use AppContext.jsLogger instead.
+2026-08-07T15:36:33.0631520Z w: file:///home/runner/work/LovelyToon/LovelyToon/node_modules/expo-modules-core/android/src/main/java/expo/modules/kotlin/views/ViewDefinitionBuilder.kt:470:30 'fun reportExceptionToLogBox(codedException: CodedException): Unit' is deprecated. Use appContext.jsLogger.error(...) instead.
+2026-08-07T15:36:33.0640942Z w: file:///home/runner/work/LovelyToon/LovelyToon/node_modules/expo-modules-core/android/src/main/java/expo/modules/kotlin/views/ViewManagerDefinition.kt:41:16 'val errorManager: JSLoggerModule?' is deprecated. Use AppContext.jsLogger instead.
+2026-08-07T15:36:33.0761435Z w: file:///home/runner/work/LovelyToon/LovelyToon/node_modules/expo-modules-core/android/src/main/java/expo/modules/kotlin/views/ViewManagerDefinition.kt:41:30 'fun reportExceptionToLogBox(codedException: CodedException): Unit' is deprecated. Use appContext.jsLogger.error(...) instead.
+2026-08-07T15:36:35.0199896Z Note: Some input files use or override a deprecated API.
+2026-08-07T15:36:35.0200652Z Note: Recompile with -Xlint:deprecation for details.
+2026-08-07T15:36:35.0201072Z 
+2026-08-07T15:36:35.0259658Z > Task :expo-modules-core:compileReleaseJavaWithJavac
+2026-08-07T15:36:37.2179410Z 
+2026-08-07T15:36:37.2250068Z > Task :expo-modules-core:bundleLibCompileToJarRelease
+2026-08-07T15:36:37.2309749Z > Task :expo-modules-core:bundleLibRuntimeToJarRelease
+2026-08-07T15:36:38.3260101Z > Task :expo-modules-core:bundleLibRuntimeToDirRelease
+2026-08-07T15:36:39.8249251Z 
+2026-08-07T15:36:39.8349862Z > Task :expo-constants:compileReleaseKotlin
+2026-08-07T15:36:39.8461505Z w: file:///home/runner/work/LovelyToon/LovelyToon/node_modules/expo-constants/android/src/main/java/expo/modules/constants/ConstantsModule.kt:13:5 'fun Constants(legacyConstantsProvider: () -> Map<String, Any?>): Unit' is deprecated. Use `Constant` or `Property` instead.
+2026-08-07T15:36:40.7219593Z 
+2026-08-07T15:36:40.7309897Z > Task :expo-constants:compileReleaseJavaWithJavac
+2026-08-07T15:36:40.8180079Z > Task :expo-constants:bundleLibCompileToJarRelease
+2026-08-07T15:36:40.8230994Z > Task :expo-constants:bundleLibRuntimeToDirRelease
+2026-08-07T15:36:42.5219773Z > Task :expo-log-box:compileReleaseKotlin
+2026-08-07T15:36:45.2189958Z > Task :expo-log-box:compileReleaseJavaWithJavac
+2026-08-07T15:36:45.3199931Z > Task :expo-log-box:bundleLibCompileToJarRelease
+2026-08-07T15:36:52.5180323Z 
+2026-08-07T15:36:52.5191037Z > Task :expo:compileReleaseKotlin
+2026-08-07T15:36:52.5241400Z w: file:///home/runner/work/LovelyToon/LovelyToon/node_modules/expo/android/src/main/java/expo/modules/ExpoModulesPackage.kt:34:16 This declaration overrides a deprecated member but is not marked as deprecated itself. Add the '@Deprecated' annotation or suppress the diagnostic.
+2026-08-07T15:36:52.5281328Z w: file:///home/runner/work/LovelyToon/LovelyToon/node_modules/expo/android/src/main/java/expo/modules/ReactActivityDelegateWrapper.kt:22:8 'class ReactInstanceManager : Any' is deprecated. Deprecated in Java.
+2026-08-07T15:36:52.5284658Z w: file:///home/runner/work/LovelyToon/LovelyToon/node_modules/expo/android/src/main/java/expo/modules/ReactActivityDelegateWrapper.kt:102:16 This declaration overrides a deprecated member but is not marked as deprecated itself. Add the '@Deprecated' annotation or suppress the diagnostic.
+2026-08-07T15:36:52.5287700Z w: file:///home/runner/work/LovelyToon/LovelyToon/node_modules/expo/android/src/main/java/expo/modules/ReactActivityDelegateWrapper.kt:102:43 'class ReactInstanceManager : Any' is deprecated. Deprecated in Java.
+2026-08-07T15:36:52.5291586Z w: file:///home/runner/work/LovelyToon/LovelyToon/node_modules/expo/android/src/main/java/expo/modules/ReactActivityDelegateWrapper.kt:103:21 'val reactInstanceManager: ReactInstanceManager' is deprecated. Deprecated in Java.
+2026-08-07T15:36:52.5295188Z w: file:///home/runner/work/LovelyToon/LovelyToon/node_modules/expo/android/src/main/java/expo/modules/fetch/ExpoFetchModule.kt:33:39 'constructor(reactContext: ReactContext): ForwardingCookieHandler' is deprecated. Use the default constructor.
+2026-08-07T15:36:52.5319760Z w: file:///home/runner/work/LovelyToon/LovelyToon/node_modules/expo/android/src/main/java/expo/modules/fetch/NativeResponse.kt:44:16 This declaration overrides a deprecated member but is not marked as deprecated itself. Add the '@Deprecated' annotation or suppress the diagnostic.
+2026-08-07T15:36:52.5322974Z w: file:///home/runner/work/LovelyToon/LovelyToon/node_modules/expo/android/src/main/java/expo/modules/fetch/NativeResponse.kt:46:11 'fun deallocate(): Unit' is deprecated. Use sharedObjectDidRelease() instead.
+2026-08-07T15:36:55.0201747Z 
+2026-08-07T15:36:55.0209923Z > Task :expo:compileReleaseJavaWithJavac
+2026-08-07T15:36:55.1179852Z > Task :expo:bundleLibRuntimeToDirRelease
+2026-08-07T15:36:55.7219862Z > Task :expo-log-box:bundleLibRuntimeToDirRelease
+2026-08-07T15:36:55.9183869Z > Task :expo:bundleLibCompileToJarRelease
+2026-08-07T15:36:55.9209517Z > Task :expo:bundleLibRuntimeToJarRelease
+2026-08-07T15:36:56.4189886Z > Task :expo-log-box:bundleLibRuntimeToJarRelease
+2026-08-07T15:36:56.7190283Z > Task :expo-constants:bundleLibRuntimeToJarRelease
+2026-08-07T15:36:56.8189926Z > Task :expo:processReleaseJavaRes
+2026-08-07T15:36:56.8219568Z > Task :expo:createFullJarRelease
+2026-08-07T15:36:56.8220241Z > Task :expo-constants:processReleaseJavaRes
+2026-08-07T15:36:56.8249150Z > Task :expo-constants:createFullJarRelease
+2026-08-07T15:36:56.9219943Z > Task :expo-log-box:processReleaseJavaRes
+2026-08-07T15:36:56.9249177Z > Task :expo-log-box:createFullJarRelease
+2026-08-07T15:36:56.9279199Z > Task :expo-modules-core:processReleaseJavaRes
+2026-08-07T15:36:56.9309403Z > Task :expo-log-box:extractReleaseAnnotations
+2026-08-07T15:36:56.9339226Z > Task :expo-log-box:mergeReleaseGeneratedProguardFiles
+2026-08-07T15:36:56.9400694Z > Task :expo-log-box:mergeReleaseConsumerProguardFiles
+2026-08-07T15:36:56.9429240Z > Task :expo:extractReleaseAnnotations
+2026-08-07T15:36:56.9489247Z > Task :expo:mergeReleaseGeneratedProguardFiles
+2026-08-07T15:36:56.9489845Z > Task :expo:mergeReleaseConsumerProguardFiles
+2026-08-07T15:36:56.9490420Z > Task :expo-log-box:mergeReleaseJavaResource
+2026-08-07T15:36:56.9490963Z > Task :expo:mergeReleaseJavaResource
+2026-08-07T15:36:56.9491499Z > Task :expo-log-box:syncReleaseLibJars
+2026-08-07T15:36:57.0195009Z > Task :expo-log-box:bundleReleaseLocalLintAar
+2026-08-07T15:36:57.0233730Z > Task :expo-modules-core:createFullJarRelease
+2026-08-07T15:36:57.0289593Z > Task :expo-constants:extractReleaseAnnotations
+2026-08-07T15:36:57.0290238Z > Task :expo:syncReleaseLibJars
+2026-08-07T15:36:57.0328534Z > Task :expo-constants:mergeReleaseGeneratedProguardFiles
+2026-08-07T15:36:57.0371306Z > Task :expo-constants:mergeReleaseConsumerProguardFiles
+2026-08-07T15:36:57.0375706Z > Task :expo:bundleReleaseLocalLintAar
+2026-08-07T15:36:57.0409370Z > Task :expo-constants:mergeReleaseJavaResource
+2026-08-07T15:36:57.0439171Z > Task :expo-constants:syncReleaseLibJars
+2026-08-07T15:36:57.0469344Z > Task :expo-constants:bundleReleaseLocalLintAar
+2026-08-07T15:36:57.0519326Z > Task :expo-constants:bundleReleaseAar
+2026-08-07T15:36:57.0549215Z > Task :expo-constants:assembleRelease
+2026-08-07T15:36:57.1179774Z > Task :expo-log-box:bundleReleaseAar
+2026-08-07T15:36:57.1208000Z > Task :expo:bundleReleaseAar
+2026-08-07T15:36:57.1235561Z > Task :expo-log-box:assembleRelease
+2026-08-07T15:36:57.1260652Z > Task :expo:assembleRelease
+2026-08-07T15:36:57.1316693Z > Task :expo-modules-core:generateReleaseLintModel
+2026-08-07T15:36:57.1333333Z > Task :expo-modules-core:extractReleaseAnnotations
+2026-08-07T15:36:57.1379505Z > Task :expo-modules-core:mergeReleaseGeneratedProguardFiles
+2026-08-07T15:36:57.1409334Z > Task :expo-modules-core:mergeReleaseConsumerProguardFiles
+2026-08-07T15:36:57.2190013Z > Task :expo-modules-core:mergeReleaseJavaResource
+2026-08-07T15:36:57.2233850Z > Task :expo-constants:generateReleaseLintModel
+2026-08-07T15:36:57.2259332Z > Task :expo-constants:generateReleaseLintVitalModel
+2026-08-07T15:36:57.5179961Z > Task :expo-log-box:generateReleaseLintModel
+2026-08-07T15:36:57.5180829Z > Task :expo-log-box:generateReleaseLintVitalModel
+2026-08-07T15:36:57.6190117Z > Task :expo-modules-core:syncReleaseLibJars
+2026-08-07T15:36:57.7200424Z > Task :expo-modules-core:bundleReleaseLocalLintAar
+2026-08-07T15:36:59.5183904Z > Task :expo-constants:lintVitalAnalyzeRelease
+2026-08-07T15:36:59.7189863Z > Task :expo:generateReleaseLintModel
+2026-08-07T15:37:10.5180128Z > Task :app:configureCMakeRelWithDebInfo[x86_64]
+2026-08-07T15:37:12.4219919Z > Task :expo-log-box:lintVitalAnalyzeRelease
+2026-08-07T15:37:12.5259990Z > Task :expo:generateReleaseLintVitalModel
+2026-08-07T15:37:12.6219895Z > Task :expo-modules-core:generateReleaseLintVitalModel
+2026-08-07T15:37:13.4209862Z > Task :expo-modules-core:bundleReleaseAar
+2026-08-07T15:37:13.4239551Z > Task :expo-modules-core:assembleRelease
+2026-08-07T15:37:25.0199881Z > Task :expo:lintVitalAnalyzeRelease
+2026-08-07T15:37:29.5239924Z > Task :expo-modules-core:lintVitalAnalyzeRelease
+2026-08-07T15:37:40.5199949Z > Task :app:buildCMakeRelWithDebInfo[x86_64]
+2026-08-07T15:38:18.8191358Z > Task :app:mergeReleaseJniLibFolders
+2026-08-07T15:38:22.1219608Z > Task :app:mergeReleaseNativeLibs
+2026-08-07T15:38:22.2179927Z > Task :app:buildKotlinToolingMetadata
+2026-08-07T15:38:22.2200491Z > Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-08-07T15:38:22.2207408Z > Task :app:generateReleaseBuildConfig
+2026-08-07T15:38:22.6180233Z > Task :app:checkReleaseDuplicateClasses
+2026-08-07T15:38:22.8200152Z > Task :app:checkReleaseAarMetadata
+2026-08-07T15:38:23.0179117Z > Task :app:stripReleaseDebugSymbols
+2026-08-07T15:38:24.8179898Z 
+2026-08-07T15:38:24.8210263Z > Task :app:createBundleReleaseJsAndAssets
+2026-08-07T15:38:24.8229560Z Starting Metro Bundler
+2026-08-07T15:38:24.8229878Z 
+2026-08-07T15:38:35.5183659Z Android Bundled 11440ms index.js (1099 modules)
+2026-08-07T15:38:35.5185005Z Writing bundle output to: /home/runner/work/LovelyToon/LovelyToon/android/app/build/generated/assets/react/release/index.android.bundle
+2026-08-07T15:38:35.5186295Z Writing sourcemap output to: /home/runner/work/LovelyToon/LovelyToon/android/app/build/intermediates/sourcemaps/react/release/index.android.bundle.packager.map
+2026-08-07T15:38:35.6180670Z Copying 19 asset files
+2026-08-07T15:38:35.6181739Z Done writing bundle output
+2026-08-07T15:38:35.6182710Z Done writing sourcemap output
+2026-08-07T15:38:44.3190613Z 
+2026-08-07T15:38:44.3220000Z > Task :app:generateReleaseResValues
+2026-08-07T15:38:44.3243381Z > Task :app:mapReleaseSourceSetPaths
+2026-08-07T15:38:44.3273203Z > Task :app:generateReleaseResources
+2026-08-07T15:38:45.2209939Z > Task :app:extractReleaseNativeSymbolTables
+2026-08-07T15:38:45.3186368Z > Task :app:packageReleaseResources
+2026-08-07T15:38:45.8219730Z > Task :app:parseReleaseLocalResources
+2026-08-07T15:38:45.8280125Z > Task :app:createReleaseCompatibleScreenManifests
+2026-08-07T15:38:45.8298045Z > Task :app:extractDeepLinksRelease
+2026-08-07T15:38:46.2181528Z > Task :app:mergeReleaseResources
+2026-08-07T15:38:46.7179113Z 
+2026-08-07T15:38:46.7180612Z > Task :app:processReleaseMainManifest
+2026-08-07T15:38:46.7181791Z /home/runner/work/LovelyToon/LovelyToon/android/app/src/main/AndroidManifest.xml Warning:
+2026-08-07T15:38:46.7183778Z 	provider#expo.modules.filesystem.FileSystemFileProvider@android:authorities was tagged at AndroidManifest.xml:0 to replace other declarations but no other declaration present
+2026-08-07T15:38:46.8209236Z 
+2026-08-07T15:38:46.8216770Z > Task :app:expoReleaseOverrideMaxSdkConflicts
+2026-08-07T15:38:46.8217907Z [33m---------- Expo Max Sdk Override Plugin ----------[0m
+2026-08-07T15:38:46.8218890Z [32m>>> No 'android:maxSdkVersion' conflicts found[0m
+2026-08-07T15:38:46.8219767Z [33m--------------------------------------------------[0m
+2026-08-07T15:38:46.8220477Z 
+2026-08-07T15:38:46.8220721Z > Task :app:processReleaseManifest
+2026-08-07T15:38:46.9195046Z > Task :app:javaPreCompileRelease
+2026-08-07T15:38:46.9239409Z > Task :app:desugarReleaseFileDependencies
+2026-08-07T15:38:46.9269165Z > Task :app:mergeReleaseStartupProfile
+2026-08-07T15:38:52.4200177Z > Task :app:mergeReleaseNativeDebugMetadata
+2026-08-07T15:39:16.8190113Z > Task :app:processReleaseManifestForPackage
+2026-08-07T15:39:16.9198169Z > Task :app:mergeExtDexRelease
+2026-08-07T15:39:38.6181470Z > Task :app:mergeReleaseArtProfile
+2026-08-07T15:39:39.0180273Z > Task :app:mergeReleaseShaders
+2026-08-07T15:39:39.0209799Z > Task :app:compileReleaseShaders NO-SOURCE
+2026-08-07T15:39:39.0210743Z > Task :app:generateReleaseAssets UP-TO-DATE
+2026-08-07T15:39:39.3179720Z > Task :app:mergeReleaseAssets
+2026-08-07T15:39:39.4182597Z > Task :app:compressReleaseAssets
+2026-08-07T15:39:39.5182155Z > Task :app:extractReleaseVersionControlInfo
+2026-08-07T15:39:39.5220065Z > Task :app:extractProguardFiles
+2026-08-07T15:39:40.0180002Z > Task :app:collectReleaseDependencies
+2026-08-07T15:39:40.1182779Z > Task :app:sdkReleaseDependencyData
+2026-08-07T15:39:40.1209182Z > Task :app:validateSigningRelease
+2026-08-07T15:39:40.1239286Z > Task :app:writeReleaseAppMetadata
+2026-08-07T15:39:40.2239812Z > Task :app:writeReleaseSigningConfigVersions
+2026-08-07T15:39:40.6190023Z > Task :app:processReleaseResources
+2026-08-07T15:39:42.6190038Z > Task :app:optimizeReleaseResources
+2026-08-07T15:39:43.5250058Z > Task :app:compileReleaseKotlin
+2026-08-07T15:39:45.8189929Z > Task :app:compileReleaseJavaWithJavac
+2026-08-07T15:39:48.2189942Z > Task :app:dexBuilderRelease
+2026-08-07T15:39:48.7179901Z > Task :app:mergeReleaseGlobalSynthetics
+2026-08-07T15:39:50.8180555Z > Task :app:generateReleaseLintVitalReportModel
+2026-08-07T15:39:50.8247550Z > Task :app:processReleaseJavaRes
+2026-08-07T15:39:53.9180006Z > Task :app:lintVitalAnalyzeRelease
+2026-08-07T15:39:54.1179644Z > Task :app:lintVitalReportRelease
+2026-08-07T15:39:54.1209245Z > Task :app:lintVitalRelease
+2026-08-07T15:39:55.4179769Z > Task :app:mergeReleaseJavaResource
+2026-08-07T15:40:00.0199783Z > Task :app:mergeDexRelease
+2026-08-07T15:40:00.7180022Z > Task :app:compileReleaseArtProfile
+2026-08-07T15:40:03.5209883Z > Task :app:packageRelease
+2026-08-07T15:40:03.5213064Z > Task :app:createReleaseApkListingFileRedirect
+2026-08-07T15:40:03.5213813Z > Task :app:assembleRelease
+2026-08-07T15:40:03.5214447Z 
+2026-08-07T15:40:03.5215615Z [Incubating] Problems report is available at: file:///home/runner/work/LovelyToon/LovelyToon/android/build/reports/problems/problems-report.html
+2026-08-07T15:40:03.5216589Z 
+2026-08-07T15:40:03.5217283Z Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+2026-08-07T15:40:03.5217967Z 
+2026-08-07T15:40:03.5219173Z You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+2026-08-07T15:40:03.5220233Z 
+2026-08-07T15:40:03.5221376Z For more on this, please refer to https://docs.gradle.org/9.3.1/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+2026-08-07T15:40:03.5222386Z 
+2026-08-07T15:40:04.5179751Z BUILD SUCCESSFUL in 11m 49s
+2026-08-07T15:40:04.5206837Z 476 actionable tasks: 476 executed
+2026-08-07T15:40:15.1810030Z The message received from the daemon indicates that the daemon has disappeared.
+2026-08-07T15:40:15.1847201Z Build request sent: Build{id=43ce599a-d9e4-4125-ae4a-aaccda3c07a5, currentDir=/home/runner/work/LovelyToon/LovelyToon/android}
+2026-08-07T15:40:15.1892725Z Attempting to read last messages from the daemon log...
+2026-08-07T15:40:15.1919173Z Daemon pid: 2451
+2026-08-07T15:40:15.1979263Z   log file: /home/runner/.gradle/daemon/9.3.1/daemon-2451.out.log
+2026-08-07T15:40:15.2019264Z ----- Last 20 lines from daemon log file - daemon-2451.out.log -----
+2026-08-07T15:40:15.2040336Z 2026-08-07T15:40:13.390+0000 [DEBUG] [org.gradle.launcher.daemon.server.DaemonStateCoordinator] Marking daemon stopped due to command completed and stop requested. The daemon is not running a build
+2026-08-07T15:40:15.2071232Z 2026-08-07T15:40:13.390+0000 [DEBUG] [org.gradle.launcher.daemon.server.DaemonStateCoordinator] daemon has stopped.
+2026-08-07T15:40:15.2091411Z 2026-08-07T15:40:13.391+0000 [DEBUG] [org.gradle.launcher.daemon.server.Daemon] stop() called on daemon
+2026-08-07T15:40:15.2130505Z 2026-08-07T15:40:13.391+0000 [INFO] [org.gradle.launcher.daemon.server.Daemon] Stop requested. Daemon is removing its presence from the registry...
+2026-08-07T15:40:15.2140063Z 2026-08-07T15:40:13.391+0000 [DEBUG] [org.gradle.launcher.daemon.server.exec.CleanUpVirtualFileSystemAfterBuild] Cleaning virtual file system after build finished
+2026-08-07T15:40:15.2170808Z 2026-08-07T15:40:13.391+0000 [DEBUG] [org.gradle.launcher.daemon.server.DaemonRegistryUpdater] Removing our presence to clients, eg. removing this address from the registry: [c0cd5bfa-54fa-403c-b192-0afb15579824 port:45011, addresses:[localhost/127.0.0.1]]
+2026-08-07T15:40:15.2191576Z 2026-08-07T15:40:13.391+0000 [WARN] [org.gradle.launcher.daemon.server.DefaultIncomingConnectionHandler] Unable to execute command Build{id=43ce599a-d9e4-4125-ae4a-aaccda3c07a5, currentDir=/home/runner/work/LovelyToon/LovelyToon/android} from socket connection from /127.0.0.1:45011 to /127.0.0.1:53016. Dispatching the failure to the daemon client
+2026-08-07T15:40:15.2219091Z java.lang.OutOfMemoryError: Metaspace
+2026-08-07T15:40:15.2230604Z 2026-08-07T15:40:13.392+0000 [DEBUG] [org.gradle.launcher.daemon.registry.PersistentDaemonRegistry] Removing daemon address: [c0cd5bfa-54fa-403c-b192-0afb15579824 port:45011, addresses:[localhost/127.0.0.1]]
+2026-08-07T15:40:15.2260448Z 2026-08-07T15:40:13.392+0000 [DEBUG] [org.gradle.launcher.daemon.server.SynchronizedDispatchConnection] thread 19: dispatching Failure[value=java.lang.OutOfMemoryError: Metaspace]
+2026-08-07T15:40:15.2281815Z 2026-08-07T15:40:13.393+0000 [DEBUG] [org.gradle.cache.internal.DefaultFileLockManager] Waiting to acquire exclusive lock on daemon addresses registry.
+2026-08-07T15:40:15.2283074Z 2026-08-07T15:40:13.393+0000 [DEBUG] [org.gradle.cache.internal.DefaultFileLockManager] Lock acquired on daemon addresses registry.
+2026-08-07T15:40:15.2284117Z 2026-08-07T15:40:13.393+0000 [DEBUG] [org.gradle.cache.internal.DefaultFileLockManager] Releasing lock on daemon addresses registry.
+2026-08-07T15:40:15.2285088Z 2026-08-07T15:40:13.394+0000 [DEBUG] [org.gradle.launcher.daemon.server.DaemonRegistryUpdater] Address removed from registry.
+2026-08-07T15:40:15.2286580Z 2026-08-07T15:40:15.151+0000 [DEBUG] [org.gradle.launcher.daemon.server.DefaultIncomingConnectionHandler] Finishing executing command: Build{id=43ce599a-d9e4-4125-ae4a-aaccda3c07a5, currentDir=/home/runner/work/LovelyToon/LovelyToon/android}
+2026-08-07T15:40:15.2287986Z 2026-08-07T15:40:15.151+0000 [DEBUG] [org.gradle.launcher.daemon.server.SynchronizedDispatchConnection] thread 19: stopping connection
+2026-08-07T15:40:15.2289327Z 2026-08-07T15:40:15.156+0000 [DEBUG] [org.gradle.internal.remote.internal.inet.SocketConnection] Discarding EOFException: java.io.EOFException
+2026-08-07T15:40:15.2290369Z 2026-08-07T15:40:15.157+0000 [DEBUG] [org.gradle.launcher.daemon.server.SynchronizedDispatchConnection] thread 20: received null
+2026-08-07T15:40:15.2291392Z 2026-08-07T15:40:15.157+0000 [DEBUG] [org.gradle.launcher.daemon.server.DefaultDaemonConnection] thread 20: Received end-of-input from client.
+2026-08-07T15:40:15.2292560Z 2026-08-07T15:40:15.157+0000 [DEBUG] [org.gradle.launcher.daemon.server.SynchronizedDispatchConnection] thread 19: stopping connection----- End of the daemon log -----
+2026-08-07T15:40:15.2293160Z 
+2026-08-07T15:40:15.2293166Z 
+2026-08-07T15:40:15.2293341Z FAILURE: Build failed with an exception.
+2026-08-07T15:40:15.2293543Z 
+2026-08-07T15:40:15.2293650Z * What went wrong:
+2026-08-07T15:40:15.2294129Z Gradle build daemon disappeared unexpectedly (it may have been killed or may have crashed)
+2026-08-07T15:40:15.2294478Z 
+2026-08-07T15:40:15.2294938Z * Try:
+2026-08-07T15:40:15.2295243Z > Run with --stacktrace option to get the stack trace.
+2026-08-07T15:40:15.2295683Z > Run with --info or --debug option to get more log output.
+2026-08-07T15:40:15.2296206Z > Run with --scan to get full insights from a Build Scan (powered by Develocity).
+2026-08-07T15:40:15.2296666Z > Get more help at https://help.gradle.org.
+2026-08-07T15:40:15.5520549Z ##[error]Process completed with exit code 1.
+2026-08-07T15:40:15.5750208Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-08-07T15:40:15.5752086Z Post job cleanup.
+2026-08-07T15:40:16.0266290Z (node:5129) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-08-07T15:40:16.0289340Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-08-07T15:40:16.0850779Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-08-07T15:40:16.0852665Z Post job cleanup.
+2026-08-07T15:40:16.2509694Z [command]/usr/bin/git version
+2026-08-07T15:40:16.2589300Z git version 2.54.0
+2026-08-07T15:40:16.2713975Z Temporarily overriding HOME='/home/runner/work/_temp/a226d98d-49d2-480a-ae7a-6615010a4d19' before making global git config changes
+2026-08-07T15:40:16.2715589Z Adding repository directory to the temporary git global config as a safe directory
+2026-08-07T15:40:16.2746893Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/LovelyToon/LovelyToon
+2026-08-07T15:40:16.2783581Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-08-07T15:40:16.2786667Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-08-07T15:40:16.3376261Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-08-07T15:40:16.3549822Z http.https://github.com/.extraheader
+2026-08-07T15:40:16.3671417Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-08-07T15:40:16.3822119Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-08-07T15:40:16.4419644Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-08-07T15:40:16.4560061Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-08-07T15:40:16.5869067Z Cleaning up orphan processes
+2026-08-07T15:40:16.6547152Z Terminate orphan process: pid (2451) (java)
+2026-08-07T15:40:16.6586314Z Terminate orphan process: pid (2679) (java)
+2026-08-07T15:40:16.6611874Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-java@v4, actions/setup-node@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

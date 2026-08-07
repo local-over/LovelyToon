@@ -43,7 +43,7 @@ jobs:
           NODE_OPTIONS: "--max_old_space_size=4096"
         run: |
           echo "org.gradle.jvmargs=-Xmx2g -XX:MaxMetaspaceSize=1024m" >> android/gradle.properties
-          cd android && ./gradlew assembleRelease
+          cd android && ./gradlew assembleRelease --info
 
       - name: Rename APK
         run: cp android/app/build/outputs/apk/release/app-release.apk LovelyToon.apk

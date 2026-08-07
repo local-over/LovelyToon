@@ -71,4 +71,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 Made with 💕 by Hassan Elkady.
 
 If you enjoy Lovely Toon and want to help keep the lights on, you can donate via USDT (TRC20):
-`TYourUSDTAddressHere`
+`UQBEJwLa4EGPRmUKw4O1i9d_JjJGmjkJ2myqR5lborzgceT-`

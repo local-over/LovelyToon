@@ -18,9 +18,11 @@ export const handleNotification = async (notification) => {
     const pairingCode = await StorageService.getPairingCode();
     if (!pairingCode) return;
     
+    const userId = await StorageService.getUserId();
+    
     if (notification.event === 'removed') {
       try {
-        await mqttService.publishBackgroundMessage(pairingCode, { status: 'stopped', sender: await StorageService.getDeviceId() });
+        await mqttService.publishBackgroundMessage(pairingCode, { status: 'stopped', sender: userId });
       } catch (e) {}
       lastSong = { title: null, artist: null };
       return;
@@ -29,28 +31,25 @@ export const handleNotification = async (notification) => {
     const title = notification.title || 'Unknown Title';
     const text = notification.text || 'Unknown Artist';
     
-    // Deduplicate
     if (lastSong.title === title && lastSong.artist === text) {
       return;
     }
     
     lastSong = { title, artist: text };
     
-    const nickname = await StorageService.getNickname() || 'Your partner';
-    const deviceId = await StorageService.getDeviceId();
-    
+    const nickname = await StorageService.getNickname() || 'Someone';
+
     const songData = {
       title,
       artist: text,
       app: notification.app,
       timestamp: Date.now(),
-      sender: deviceId,
+      sender: userId,
       senderName: nickname
     };
 
     try {
       await mqttService.publishBackgroundMessage(pairingCode, songData);
-      // Save to history locally as sent
       await StorageService.addHistoryItem({ ...songData, direction: 'sent' });
     } catch (e) {
       console.error('Failed to publish background message', e);
@@ -59,6 +58,5 @@ export const handleNotification = async (notification) => {
 };
 
 export const startListening = () => {
-  // In a real implementation this might be registered globally in index.js
-  // But here we expose a function just in case.
+  // Registered globally in index.js via registerHeadlessTask
 };

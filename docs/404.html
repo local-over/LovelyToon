@@ -3,114 +3,154 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Room Invite - Lovely Toon</title>
+    <title>Lovely Toon — Room Invite</title>
+    <meta name="description" content="Someone wants to share their music with you on Lovely Toon!">
     <style>
-        :root {
-            --primary: #FF4B72;
-            --secondary: #FF8BA7;
-            --background: #FFF5F7;
-            --text: #2D3748;
-            --card: #FFFFFF;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--background);
-            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(145deg, #FFF5F7 0%, #FFE0E6 50%, #FFF5F7 100%);
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
+            padding: 20px;
+        }
+        .card {
+            background: white;
+            padding: 48px 36px;
+            border-radius: 28px;
+            box-shadow: 0 20px 60px rgba(255, 75, 114, 0.12);
+            max-width: 420px;
+            width: 100%;
             text-align: center;
         }
-        .container {
-            background-color: var(--card);
-            padding: 40px;
-            border-radius: 24px;
-            box-shadow: 0 10px 25px rgba(255, 75, 114, 0.1);
-            max-width: 90%;
-            width: 400px;
-        }
-        .icon {
-            color: var(--primary);
-            margin-bottom: 20px;
+        .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #FF6B8A 0%, #FFA3B5 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            font-size: 36px;
+            color: white;
+            font-weight: 800;
         }
         h1 {
-            margin: 0 0 10px 0;
-            font-size: 24px;
+            font-size: 26px;
+            color: #2D1B2E;
+            margin-bottom: 8px;
+            font-weight: 800;
+        }
+        .inviter-name {
+            color: #FF6B8A;
         }
         p {
-            color: #718096;
-            margin-bottom: 30px;
-            line-height: 1.5;
+            color: #8B6B8D;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 28px;
         }
         .room-code {
-            font-size: 32px;
-            font-weight: 800;
-            letter-spacing: 4px;
-            color: var(--primary);
-            margin-bottom: 30px;
-            background: #FFF5F7;
-            padding: 10px 20px;
-            border-radius: 12px;
             display: inline-block;
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: 5px;
+            color: #2D1B2E;
+            background: #FFF5F7;
+            padding: 12px 28px;
+            border-radius: 14px;
+            margin-bottom: 28px;
+            border: 2px solid #FFD4E0;
         }
         .button {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
-            text-decoration: none;
-            padding: 16px 32px;
-            border-radius: 30px;
-            font-weight: bold;
-            font-size: 18px;
             display: inline-block;
-            box-shadow: 0 4px 15px rgba(255, 75, 114, 0.3);
-            transition: transform 0.2s;
+            width: 100%;
+            padding: 18px 32px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 17px;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
         }
         .button:hover {
             transform: translateY(-2px);
         }
+        .button-primary {
+            background: linear-gradient(135deg, #FF6B8A 0%, #FFA3B5 100%);
+            color: white;
+            box-shadow: 0 8px 24px rgba(255, 107, 138, 0.35);
+            margin-bottom: 12px;
+        }
+        .button-secondary {
+            background: #FFF5F7;
+            color: #FF6B8A;
+            border: 2px solid #FFD4E0;
+        }
+        .footer {
+            margin-top: 24px;
+            font-size: 13px;
+            color: #8B6B8D;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="icon">
-            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
-                <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
-            </svg>
-        </div>
-        <h1>You've been invited!</h1>
-        <p>Someone wants to share their music with you using Lovely Toon.</p>
+    <div class="card">
+        <div class="avatar" id="avatar">?</div>
+        <h1 id="heading">You've been invited!</h1>
+        <p id="description">Someone wants to share their music with you using Lovely Toon.</p>
         
         <div id="code-container" style="display: none;">
-            <div class="room-code" id="room-code">XXXXXX</div>
+            <div class="room-code" id="room-code"></div>
         </div>
 
-        <a href="https://github.com/local-over/LovelyToon/releases/latest" class="button">Download App to Join</a>
+        <a id="open-link" href="#" class="button button-primary" style="display: none;">Open in App</a>
+        <a href="https://github.com/local-over/LovelyToon/releases/latest" class="button button-secondary">Download Lovely Toon</a>
+        
+        <div class="footer">Free. No ads. No accounts.</div>
     </div>
 
     <script>
-        // Extract room code from URL: /LovelyToon/pair/ABCDEF
         const path = window.location.pathname;
+        const params = new URLSearchParams(window.location.search);
         const match = path.match(/\/pair\/([a-zA-Z0-9]+)/i);
+        
+        const inviterName = params.get('name');
+        const inviterUid = params.get('uid');
         
         if (match && match[1]) {
             const code = match[1].toUpperCase();
+            
+            // Show room code
             document.getElementById('room-code').innerText = code;
             document.getElementById('code-container').style.display = 'block';
             
-            // Try to redirect to the app if installed using custom scheme
+            // Personalize with inviter name
+            if (inviterName) {
+                const name = decodeURIComponent(inviterName);
+                document.getElementById('heading').innerHTML = `<span class="inviter-name">${name}</span> invited you!`;
+                document.getElementById('description').innerText = `${name} wants to share what they're listening to with you. Download Lovely Toon and join their room.`;
+                document.getElementById('avatar').innerText = name.charAt(0).toUpperCase();
+            }
+            
+            // Build deep link with identity params
+            let deepLink = `lovelytoon://pair/${code}`;
+            if (inviterUid && inviterName) {
+                deepLink += `?uid=${encodeURIComponent(inviterUid)}&name=${encodeURIComponent(inviterName)}`;
+            }
+            
+            // Show "Open in App" button
+            const openBtn = document.getElementById('open-link');
+            openBtn.href = deepLink;
+            openBtn.style.display = 'block';
+            
+            // Try to auto-open the app after a short delay
             setTimeout(() => {
-                window.location.href = `lovelytoon://pair/${code}`;
-            }, 500);
-        } else if (path !== '/LovelyToon' && path !== '/LovelyToon/') {
-            // It's a real 404
-            document.querySelector('h1').innerText = 'Page Not Found';
-            document.querySelector('p').innerText = 'The page you are looking for does not exist.';
-            document.querySelector('.icon').innerHTML = '<svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>';
-            document.querySelector('.button').innerText = 'Go Home';
-            document.querySelector('.button').href = '/LovelyToon/';
+                window.location.href = deepLink;
+            }, 800);
         }
     </script>
 </body>

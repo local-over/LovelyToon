@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Text, Animated } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { SongCard } from '../components/SongCard';
 import { HeartBeat } from '../components/HeartBeat';
 import { MusicInfoService } from '../services/MusicInfoService';
 import { COLORS } from '../utils/constants';
 
-export const HomeScreen = ({ currentSong, isConnected, pairingCode }) => {
+export const HomeScreen = ({ currentSong, isConnected, pairingCode, partnerName }) => {
   const [songInfo, setSongInfo] = useState(null);
 
   useEffect(() => {
@@ -17,6 +17,16 @@ export const HomeScreen = ({ currentSong, isConnected, pairingCode }) => {
       setSongInfo(null);
     }
   }, [currentSong]);
+
+  const getStatusText = () => {
+    if (!isConnected) return 'Connecting...';
+    if (currentSong) {
+      return partnerName ? `${partnerName} is listening to` : 'Now playing';
+    }
+    return partnerName 
+      ? `Waiting for ${partnerName} to play something...` 
+      : 'Waiting for your partner...';
+  };
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
@@ -29,12 +39,7 @@ export const HomeScreen = ({ currentSong, isConnected, pairingCode }) => {
       </View>
       
       <View style={styles.content}>
-        
-        <Text style={styles.statusText}>
-          {isConnected 
-            ? (currentSong ? "They're listening to..." : "Connected! Waiting for music...")
-            : "Waiting for partner to connect..."}
-        </Text>
+        <Text style={styles.statusText}>{getStatusText()}</Text>
         
         <SongCard 
           title={currentSong?.title} 
@@ -69,7 +74,7 @@ const styles = StyleSheet.create({
   roomBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: COLORS.surface,
+    backgroundColor: COLORS.accent + '80',
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 9999,
@@ -84,14 +89,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
   },
-  spacer: {
-    height: 40,
-  },
   statusText: {
     textAlign: 'center',
     color: COLORS.textSecondary,
     fontSize: 16,
-    fontWeight: '500',
+    fontWeight: '600',
     marginBottom: 16,
   },
 });

@@ -1,104 +1,158 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const STORAGE_KEYS = {
+const KEYS = {
   PAIRING_CODE: '@pairing_code',
+  USER_ID: '@user_id',
+  NICKNAME: '@nickname',
+  PARTNER_ID: '@partner_id',
+  PARTNER_NAME: '@partner_name',
   HISTORY: '@history',
   SETTINGS: '@settings',
 };
 
 export const StorageService = {
+  // ── User Identity ──
+  getUserId: async () => {
+    try {
+      let id = await AsyncStorage.getItem(KEYS.USER_ID);
+      if (!id) {
+        // Generate a permanent 8-char alphanumeric ID
+        id = Math.random().toString(36).substr(2, 4) + Math.random().toString(36).substr(2, 4);
+        await AsyncStorage.setItem(KEYS.USER_ID, id);
+      }
+      return id;
+    } catch (e) {
+      return 'fallback_' + Date.now();
+    }
+  },
+
+  getNickname: async () => {
+    try {
+      return await AsyncStorage.getItem(KEYS.NICKNAME);
+    } catch (e) {
+      return null;
+    }
+  },
+
+  setNickname: async (name) => {
+    try {
+      await AsyncStorage.setItem(KEYS.NICKNAME, name);
+    } catch (e) {
+      console.error(e);
+    }
+  },
+
+  // ── Room ──
   getPairingCode: async () => {
     try {
-      return await AsyncStorage.getItem(STORAGE_KEYS.PAIRING_CODE);
+      return await AsyncStorage.getItem(KEYS.PAIRING_CODE);
     } catch (e) {
-      console.error('Error getting pairing code', e);
       return null;
     }
   },
+
   setPairingCode: async (code) => {
     try {
-      await AsyncStorage.setItem(STORAGE_KEYS.PAIRING_CODE, code);
+      if (code) {
+        await AsyncStorage.setItem(KEYS.PAIRING_CODE, code);
+      } else {
+        await AsyncStorage.removeItem(KEYS.PAIRING_CODE);
+      }
     } catch (e) {
-      console.error('Error saving pairing code', e);
+      console.error(e);
     }
   },
+
+  // ── Partner ──
   getPartnerId: async () => {
     try {
-      return await AsyncStorage.getItem('@partner_id');
+      return await AsyncStorage.getItem(KEYS.PARTNER_ID);
     } catch (e) {
       return null;
     }
   },
+
   setPartnerId: async (id) => {
     try {
       if (id) {
-        await AsyncStorage.setItem('@partner_id', id);
+        await AsyncStorage.setItem(KEYS.PARTNER_ID, id);
       } else {
-        await AsyncStorage.removeItem('@partner_id');
+        await AsyncStorage.removeItem(KEYS.PARTNER_ID);
       }
     } catch (e) {
       console.error(e);
     }
   },
-  getNickname: async () => {
+
+  getPartnerName: async () => {
     try {
-      return await AsyncStorage.getItem('@nickname');
+      return await AsyncStorage.getItem(KEYS.PARTNER_NAME);
     } catch (e) {
       return null;
     }
   },
-  setNickname: async (name) => {
+
+  setPartnerName: async (name) => {
     try {
-      await AsyncStorage.setItem('@nickname', name);
+      if (name) {
+        await AsyncStorage.setItem(KEYS.PARTNER_NAME, name);
+      } else {
+        await AsyncStorage.removeItem(KEYS.PARTNER_NAME);
+      }
     } catch (e) {
       console.error(e);
     }
   },
+
+  // ── Full Reset ──
+  clearAllPairing: async () => {
+    try {
+      await AsyncStorage.multiRemove([KEYS.PAIRING_CODE, KEYS.PARTNER_ID, KEYS.PARTNER_NAME]);
+    } catch (e) {
+      console.error(e);
+    }
+  },
+
+  // ── History ──
   getHistory: async () => {
     try {
-      const data = await AsyncStorage.getItem(STORAGE_KEYS.HISTORY);
+      const data = await AsyncStorage.getItem(KEYS.HISTORY);
       return data ? JSON.parse(data) : [];
     } catch (e) {
-      console.error('Error getting history', e);
       return [];
     }
   },
+
   addHistoryItem: async (item) => {
     try {
       const history = await StorageService.getHistory();
-      // Keep last 30 items
       const newHistory = [item, ...history].slice(0, 30);
-      await AsyncStorage.setItem(STORAGE_KEYS.HISTORY, JSON.stringify(newHistory));
+      await AsyncStorage.setItem(KEYS.HISTORY, JSON.stringify(newHistory));
     } catch (e) {
-      console.error('Error saving history', e);
+      console.error(e);
     }
   },
+
+  // ── Settings ──
   getSettings: async () => {
     try {
-      const data = await AsyncStorage.getItem(STORAGE_KEYS.SETTINGS);
+      const data = await AsyncStorage.getItem(KEYS.SETTINGS);
       return data ? JSON.parse(data) : {};
     } catch (e) {
-      console.error('Error getting settings', e);
       return {};
     }
   },
+
   setSettings: async (settings) => {
     try {
-      await AsyncStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(settings));
+      await AsyncStorage.setItem(KEYS.SETTINGS, JSON.stringify(settings));
     } catch (e) {
-      console.error('Error saving settings', e);
+      console.error(e);
     }
   },
+
+  // ── Migration: old deviceId → userId ──
   getDeviceId: async () => {
-    try {
-      let deviceId = await AsyncStorage.getItem('@device_id');
-      if (!deviceId) {
-        deviceId = 'device_' + Math.random().toString(36).substr(2, 9);
-        await AsyncStorage.setItem('@device_id', deviceId);
-      }
-      return deviceId;
-    } catch (e) {
-      return 'fallback_device_id';
-    }
-  }
+    return StorageService.getUserId();
+  },
 };

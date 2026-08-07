@@ -1,230 +1,324 @@
-import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform, Dimensions, Animated, Share } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { View, StyleSheet, Text, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform, Dimensions, Share, ActivityIndicator, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import RNAndroidNotificationListener from 'react-native-android-notification-listener';
 import { StorageService } from '../services/StorageService';
-import { mqttService } from '../services/MqttService';
-import { COLORS } from '../utils/constants';
-import * as Sharing from 'expo-sharing';
+import { COLORS, SIZES } from '../utils/constants';
 
 const { width } = Dimensions.get('window');
 
-export const OnboardingScreen = ({ onConnect }) => {
-  const [step, setStep] = useState(1);
+// Conditionally import QR components (they may not work on web)
+let QRCode = null;
+let CameraView = null;
+let useCameraPermissions = null;
+try {
+  QRCode = require('react-native-qrcode-svg').default;
+} catch (e) {}
+try {
+  const cam = require('expo-camera');
+  CameraView = cam.CameraView;
+  useCameraPermissions = cam.useCameraPermissions;
+} catch (e) {}
+
+export const OnboardingScreen = ({ onConnect, inviteData }) => {
+  const [step, setStep] = useState(inviteData ? 'invite' : 'welcome');
   const [nickname, setNickname] = useState('');
   const [joinCode, setJoinCode] = useState('');
   const [generatedCode, setGeneratedCode] = useState(null);
+  const [userId, setUserId] = useState('');
+  const [scanning, setScanning] = useState(false);
+  const [permission, requestPermission] = useCameraPermissions ? useCameraPermissions() : [null, () => {}];
+  const scannedRef = useRef(false);
 
-  // We skip step 3 (permissions) on non-Android platforms
-  const TOTAL_STEPS = 6;
+  useEffect(() => {
+    StorageService.getUserId().then(id => setUserId(id));
+  }, []);
 
-  const handleNext = async () => {
-    if (step === 2) {
-      if (nickname.trim()) {
-        await StorageService.setNickname(nickname.trim());
-      }
-      
-      if (Platform.OS !== 'android') {
-        setStep(4); // Skip permission step
+  // ── Navigation ──
+  const goToPermissions = async () => {
+    if (Platform.OS !== 'android') {
+      setStep('room');
+      return;
+    }
+    try {
+      const status = await RNAndroidNotificationListener.getPermissionStatus();
+      if (status === 'authorized') {
+        setStep('room');
       } else {
-        const status = await RNAndroidNotificationListener.getPermissionStatus();
-        if (status === 'authorized') {
-          setStep(4);
-        } else {
-          setStep(3);
-        }
+        setStep('permissions');
       }
-    } else if (step === 3) {
-      RNAndroidNotificationListener.requestPermission();
-      setStep(4);
-    } else {
-      setStep(step + 1);
+    } catch (e) {
+      setStep('room');
     }
   };
 
-  const [isCreating, setIsCreating] = useState(false);
-
-  const handleCreateRoom = async () => {
-    setIsCreating(true);
-    let code;
-    let claimed = false;
-    
-    // Try up to 3 times to find an empty room
-    for (let i = 0; i < 3; i++) {
-      code = Math.random().toString(36).substring(2, 8).toUpperCase();
-      const success = await mqttService.checkAndClaimRoom(code);
-      if (success) {
-        claimed = true;
-        break;
-      }
-    }
-    
-    setIsCreating(false);
-    if (claimed) {
-      setGeneratedCode(code);
-    } else {
-      alert("Failed to create a room. Please try again.");
-    }
+  const handleNameSubmit = async () => {
+    if (!nickname.trim()) return;
+    await StorageService.setNickname(nickname.trim());
+    goToPermissions();
   };
 
-  const shareCode = async () => {
-    const senderName = nickname ? nickname : 'Your partner';
-    const message = `${senderName} wants to listen to music with you! Download Lovely Toon and join the room: https://local-over.github.io/LovelyToon/pair/${generatedCode}`;
+  const handleGrantPermission = () => {
+    RNAndroidNotificationListener.requestPermission();
+    setStep('room');
+  };
+
+  // ── Room Creation ──
+  const handleCreateRoom = () => {
+    const code = Math.random().toString(36).substring(2, 8).toUpperCase();
+    setGeneratedCode(code);
+  };
+
+  const getInviteUrl = (code) => {
+    const params = `?uid=${encodeURIComponent(userId)}&name=${encodeURIComponent(nickname)}`;
+    return `https://local-over.github.io/LovelyToon/pair/${code}${params}`;
+  };
+
+  const getQrData = (code) => {
+    return JSON.stringify({ code, uid: userId, name: nickname });
+  };
+
+  const shareLink = async () => {
+    const url = getInviteUrl(generatedCode);
+    const msg = `${nickname || 'Someone'} wants to listen to music with you! Join on Lovely Toon:\n${url}`;
     try {
       if (Platform.OS === 'web') {
         if (navigator.share) {
-          await navigator.share({
-            title: 'Join my Lovely Toon Room',
-            text: message,
-            url: `https://local-over.github.io/LovelyToon/pair/${generatedCode}`
-          });
+          await navigator.share({ title: 'Join my Lovely Toon Room', text: msg, url });
         } else {
-          navigator.clipboard.writeText(message);
-          alert('Link copied to clipboard!');
+          navigator.clipboard.writeText(msg);
+          alert('Link copied!');
         }
       } else {
-        await Share.share({
-          message: message,
-          title: 'Share your Magic Link'
-        });
+        await Share.share({ message: msg, title: 'Join my Lovely Toon Room' });
       }
     } catch (e) {
       console.error(e);
     }
   };
 
+  // ── QR Scanning ──
+  const handleBarCodeScanned = ({ data }) => {
+    if (scannedRef.current) return;
+    scannedRef.current = true;
+    setScanning(false);
+    try {
+      const parsed = JSON.parse(data);
+      if (parsed.code && parsed.uid) {
+        onConnect(parsed.code, parsed.uid, parsed.name || 'Partner');
+      } else {
+        alert('Invalid QR code');
+        scannedRef.current = false;
+      }
+    } catch (e) {
+      alert('Could not read QR code');
+      scannedRef.current = false;
+    }
+  };
+
+  const startScanning = async () => {
+    if (Platform.OS === 'web') {
+      alert('QR scanning is not available on web. Please enter the code manually.');
+      return;
+    }
+    if (!permission?.granted) {
+      const result = await requestPermission();
+      if (!result?.granted) {
+        alert('Camera permission is required to scan QR codes.');
+        return;
+      }
+    }
+    scannedRef.current = false;
+    setScanning(true);
+  };
+
+  // ── Invited flow (came from a deep link) ──
+  const handleInviteAccept = async () => {
+    if (!nickname.trim()) return;
+    await StorageService.setNickname(nickname.trim());
+    onConnect(inviteData.code, inviteData.partnerUid, inviteData.partnerName);
+  };
+
+  // ── RENDER ──
   return (
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
       <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-        <View style={styles.content}>
-          {step === 1 && (
+        <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled">
+
+          {/* ── SCANNING OVERLAY ── */}
+          {scanning && CameraView && (
+            <View style={styles.scanOverlay}>
+              <CameraView
+                style={styles.camera}
+                facing="back"
+                barcodeScannerSettings={{ barcodeTypes: ['qr'] }}
+                onBarcodeScanned={handleBarCodeScanned}
+              />
+              <View style={styles.scanHeader}>
+                <TouchableOpacity onPress={() => setScanning(false)} style={styles.scanClose}>
+                  <Ionicons name="close" size={28} color="white" />
+                </TouchableOpacity>
+                <Text style={styles.scanTitle}>Scan your partner's QR code</Text>
+              </View>
+            </View>
+          )}
+
+          {/* ── STEP: WELCOME ── */}
+          {step === 'welcome' && (
             <View style={styles.slide}>
               <View style={styles.iconContainer}>
                 <Ionicons name="headset-outline" size={100} color={COLORS.primary} />
                 <Ionicons name="heart" size={40} color={COLORS.accent} style={styles.floatingIcon} />
               </View>
-              <Text style={styles.title}>Welcome to Lovely Toon</Text>
-              <Text style={styles.subtitle}>See what your partner is listening to in real-time, right on your screen.</Text>
-              <TouchableOpacity style={styles.button} onPress={handleNext}>
+              <Text style={styles.title}>Lovely Toon</Text>
+              <Text style={styles.subtitle}>See what your partner is listening to, in real-time.</Text>
+              <TouchableOpacity style={styles.button} onPress={() => setStep('name')}>
                 <Text style={styles.buttonText}>Get Started</Text>
               </TouchableOpacity>
             </View>
           )}
 
-          {step === 2 && (
+          {/* ── STEP: INVITE (came from deep link) ── */}
+          {step === 'invite' && inviteData && (
             <View style={styles.slide}>
-              <Ionicons name="person-circle-outline" size={80} color={COLORS.primary} />
-              <Text style={styles.title}>Who are you?</Text>
-              <Text style={styles.subtitle}>What should your partner call you?</Text>
+              <Ionicons name="heart-circle" size={100} color={COLORS.primary} />
+              <Text style={styles.title}>{inviteData.partnerName} invited you!</Text>
+              <Text style={styles.subtitle}>They want to share music with you. Enter your name to join their room.</Text>
               <TextInput
                 style={styles.input}
                 value={nickname}
                 onChangeText={setNickname}
-                placeholder="e.g. Bestie, Babe, Alex"
+                placeholder="What's your name?"
                 placeholderTextColor={COLORS.textSecondary}
                 autoFocus
               />
-              <TouchableOpacity 
-                style={[styles.button, !nickname.trim() && styles.buttonDisabled]} 
-                onPress={handleNext}
+              <TouchableOpacity
+                style={[styles.button, !nickname.trim() && styles.buttonDisabled]}
+                onPress={handleInviteAccept}
                 disabled={!nickname.trim()}
               >
-                <Text style={styles.buttonText}>Next</Text>
+                <Text style={styles.buttonText}>Join {inviteData.partnerName}'s Room</Text>
               </TouchableOpacity>
             </View>
           )}
 
-          {step === 3 && (
+          {/* ── STEP: NAME ── */}
+          {step === 'name' && (
             <View style={styles.slide}>
-              <Ionicons name="notifications-circle-outline" size={80} color={COLORS.primary} />
-              <Text style={styles.title}>Enable Magic</Text>
-              <Text style={styles.subtitle}>To see what you are listening to, we need Notification Access so we can read your music player.</Text>
-              <TouchableOpacity style={styles.button} onPress={handleNext}>
-                <Text style={styles.buttonText}>Grant Permission</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.secondaryButton} onPress={() => setStep(4)}>
-                <Text style={styles.secondaryButtonText}>Skip for now</Text>
-              </TouchableOpacity>
-            </View>
-          )}
-
-          {step === 4 && (
-            <View style={styles.slide}>
-              <Ionicons name="apps-outline" size={80} color={COLORS.primary} />
-              <Text style={styles.title}>Widgets & Background</Text>
-              <Text style={styles.subtitle}>You can add Lovely Toon to your Android Home Screen!{'\n\n'}Note: If you have a Huawei or Xiaomi device, make sure to disable "Battery Optimization" for this app, otherwise it may stop working in the background.</Text>
-              <TouchableOpacity style={styles.button} onPress={handleNext}>
-                <Text style={styles.buttonText}>Got it!</Text>
-              </TouchableOpacity>
-            </View>
-          )}
-
-          {step === 5 && (
-            <View style={styles.slide}>
-              <Ionicons name="options-outline" size={80} color={COLORS.primary} />
-              <Text style={styles.title}>Preferences</Text>
-              <Text style={styles.subtitle}>By default, we keep a small history of songs and send a Push Notification when a new song plays. You can change these later in Settings.</Text>
-              <TouchableOpacity style={styles.button} onPress={handleNext}>
+              <Ionicons name="person-circle-outline" size={80} color={COLORS.primary} />
+              <Text style={styles.title}>What's your name?</Text>
+              <Text style={styles.subtitle}>This is what your partner will see.</Text>
+              <TextInput
+                style={styles.input}
+                value={nickname}
+                onChangeText={setNickname}
+                placeholder="e.g. Babe, Alex, Bestie"
+                placeholderTextColor={COLORS.textSecondary}
+                autoFocus
+              />
+              <TouchableOpacity
+                style={[styles.button, !nickname.trim() && styles.buttonDisabled]}
+                onPress={handleNameSubmit}
+                disabled={!nickname.trim()}
+              >
                 <Text style={styles.buttonText}>Continue</Text>
               </TouchableOpacity>
             </View>
           )}
 
-          {step === 6 && (
+          {/* ── STEP: PERMISSIONS ── */}
+          {step === 'permissions' && (
             <View style={styles.slide}>
-              <Ionicons name="people-circle-outline" size={80} color={COLORS.primary} />
-              <Text style={styles.title}>Room Setup</Text>
-              <Text style={styles.subtitle}>Join an existing room or create a new one to share.</Text>
-              
-              {!generatedCode ? (
-                <>
-                  <TextInput
-                    style={styles.input}
-                    value={joinCode}
-                    onChangeText={setJoinCode}
-                    placeholder="Enter 6-digit code to join"
-                    placeholderTextColor={COLORS.textSecondary}
-                    autoCapitalize="characters"
-                  />
-                  <TouchableOpacity 
-                    style={[styles.button, !joinCode.trim() && styles.buttonDisabled]} 
-                    onPress={() => onConnect(joinCode)}
-                    disabled={!joinCode.trim()}
-                  >
-                    <Text style={styles.buttonText}>Join Room</Text>
-                  </TouchableOpacity>
-
-                  <Text style={styles.divider}>OR</Text>
-
-                  <TouchableOpacity 
-                    style={[styles.secondaryButton, isCreating && styles.buttonDisabled]} 
-                    onPress={handleCreateRoom}
-                    disabled={isCreating}
-                  >
-                    <Text style={styles.secondaryButtonText}>
-                      {isCreating ? 'Creating Room...' : 'Create New Room'}
-                    </Text>
-                  </TouchableOpacity>
-                </>
-              ) : (
-                <View style={styles.generatedContainer}>
-                  <Text style={styles.codeText}>{generatedCode}</Text>
-                  <TouchableOpacity style={styles.button} onPress={shareCode}>
-                    <Ionicons name="share-outline" size={20} color="white" style={{ marginRight: 8 }} />
-                    <Text style={styles.buttonText}>Send Magic Link</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity 
-                    style={[styles.secondaryButton, { marginTop: 16 }]} 
-                    onPress={() => onConnect(generatedCode)}
-                  >
-                    <Text style={styles.secondaryButtonText}>Enter Room</Text>
-                  </TouchableOpacity>
-                </View>
-              )}
+              <Ionicons name="notifications-circle-outline" size={80} color={COLORS.primary} />
+              <Text style={styles.title}>One Quick Thing</Text>
+              <Text style={styles.subtitle}>To detect what you're listening to, we need Notification Access. This lets us read your music player's notification.</Text>
+              <TouchableOpacity style={styles.button} onPress={handleGrantPermission}>
+                <Text style={styles.buttonText}>Enable Notification Access</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.secondaryButton} onPress={() => setStep('room')}>
+                <Text style={styles.secondaryButtonText}>Skip for now</Text>
+              </TouchableOpacity>
             </View>
           )}
-        </View>
+
+          {/* ── STEP: ROOM SETUP ── */}
+          {step === 'room' && !generatedCode && (
+            <View style={styles.slide}>
+              <Ionicons name="people-circle-outline" size={80} color={COLORS.primary} />
+              <Text style={styles.title}>Connect with your partner</Text>
+              <Text style={styles.subtitle}>Create a room and invite them, or join theirs.</Text>
+
+              <TouchableOpacity style={styles.button} onPress={handleCreateRoom}>
+                <Ionicons name="add-circle-outline" size={22} color="white" style={{ marginRight: 8 }} />
+                <Text style={styles.buttonText}>Create a Room</Text>
+              </TouchableOpacity>
+
+              <Text style={styles.divider}>OR</Text>
+
+              <TouchableOpacity style={styles.outlineButton} onPress={startScanning}>
+                <Ionicons name="qr-code-outline" size={22} color={COLORS.primary} style={{ marginRight: 8 }} />
+                <Text style={styles.outlineButtonText}>Scan QR Code</Text>
+              </TouchableOpacity>
+
+              <Text style={styles.divider}>OR</Text>
+
+              <TextInput
+                style={styles.input}
+                value={joinCode}
+                onChangeText={setJoinCode}
+                placeholder="Enter room code"
+                placeholderTextColor={COLORS.textSecondary}
+                autoCapitalize="characters"
+              />
+              <TouchableOpacity
+                style={[styles.secondaryButton, !joinCode.trim() && styles.buttonDisabled]}
+                onPress={() => onConnect(joinCode.trim().toUpperCase(), null, null)}
+                disabled={!joinCode.trim()}
+              >
+                <Text style={styles.secondaryButtonText}>Join with Code</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+
+          {/* ── STEP: ROOM CREATED (show QR + share) ── */}
+          {step === 'room' && generatedCode && (
+            <View style={styles.slide}>
+              <Text style={styles.title}>Your Room</Text>
+              <Text style={styles.codeText}>{generatedCode}</Text>
+
+              {QRCode && (
+                <View style={styles.qrContainer}>
+                  <QRCode
+                    value={getQrData(generatedCode)}
+                    size={width * 0.5}
+                    color={COLORS.textPrimary}
+                    backgroundColor="white"
+                  />
+                </View>
+              )}
+
+              <Text style={styles.subtitle}>Let your partner scan this code, or send them the link below.</Text>
+
+              <TouchableOpacity style={styles.button} onPress={shareLink}>
+                <Ionicons name="share-outline" size={20} color="white" style={{ marginRight: 8 }} />
+                <Text style={styles.buttonText}>Send Invite Link</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[styles.secondaryButton, { marginTop: 12 }]}
+                onPress={() => onConnect(generatedCode, null, null)}
+              >
+                <Text style={styles.secondaryButtonText}>Enter Room</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity onPress={() => setGeneratedCode(null)} style={{ marginTop: 16 }}>
+                <Text style={styles.linkText}>Back</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+
+        </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
@@ -235,8 +329,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.background,
   },
-  content: {
-    flex: 1,
+  scrollContent: {
+    flexGrow: 1,
     justifyContent: 'center',
     padding: 24,
   },
@@ -265,16 +359,17 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 32,
     lineHeight: 24,
+    paddingHorizontal: 8,
   },
   input: {
     backgroundColor: '#fff',
     width: '100%',
     padding: 16,
-    borderRadius: 12,
+    borderRadius: 14,
     fontSize: 18,
     textAlign: 'center',
     borderWidth: 2,
-    borderColor: COLORS.surface,
+    borderColor: COLORS.accent,
     marginBottom: 20,
     color: COLORS.textPrimary,
   },
@@ -294,10 +389,27 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   buttonDisabled: {
-    opacity: 0.5,
+    opacity: 0.4,
   },
   buttonText: {
     color: 'white',
+    fontSize: 18,
+    fontWeight: '700',
+  },
+  outlineButton: {
+    flexDirection: 'row',
+    paddingVertical: 16,
+    paddingHorizontal: 32,
+    borderRadius: 30,
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: COLORS.primary,
+    backgroundColor: 'transparent',
+  },
+  outlineButtonText: {
+    color: COLORS.primary,
     fontSize: 18,
     fontWeight: '700',
   },
@@ -308,7 +420,7 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: COLORS.surface,
+    backgroundColor: COLORS.accent,
   },
   secondaryButtonText: {
     color: COLORS.primary,
@@ -316,19 +428,63 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   divider: {
-    marginVertical: 24,
+    marginVertical: 20,
     color: COLORS.textSecondary,
     fontWeight: '600',
-  },
-  generatedContainer: {
-    width: '100%',
-    alignItems: 'center',
+    fontSize: 14,
   },
   codeText: {
-    fontSize: 48,
+    fontSize: 42,
     fontWeight: '900',
     color: COLORS.textPrimary,
-    letterSpacing: 8,
-    marginBottom: 32,
+    letterSpacing: 6,
+    marginBottom: 24,
+  },
+  qrContainer: {
+    padding: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    marginBottom: 24,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 12,
+    elevation: 6,
+  },
+  linkText: {
+    color: COLORS.textSecondary,
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  // Scanner overlay
+  scanOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: 999,
+    backgroundColor: 'black',
+  },
+  camera: {
+    flex: 1,
+  },
+  scanHeader: {
+    position: 'absolute',
+    top: 60,
+    left: 0,
+    right: 0,
+    alignItems: 'center',
+  },
+  scanClose: {
+    position: 'absolute',
+    left: 20,
+    top: 0,
+    padding: 8,
+  },
+  scanTitle: {
+    color: 'white',
+    fontSize: 18,
+    fontWeight: '700',
   },
 });

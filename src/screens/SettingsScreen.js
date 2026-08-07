@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, Linking, Alert, Switch, Clipboard } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity, Alert, Switch, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { COLORS, SIZES, SHADOWS } from '../utils/constants';
 import { StorageService } from '../services/StorageService';
 
-export const SettingsScreen = ({ onDisconnect, onResetPartner }) => {
+export const SettingsScreen = ({ onDisconnect, onResetPartner, partnerName, pairingCode }) => {
   const [pushEnabled, setPushEnabled] = useState(true);
   
   useEffect(() => {
@@ -22,70 +22,92 @@ export const SettingsScreen = ({ onDisconnect, onResetPartner }) => {
     await StorageService.setSettings({ ...settings, pushNotifications: value });
   };
 
-  const openBatterySettings = () => {
-    Linking.openSettings().catch(() => {
-      Alert.alert('Notice', 'Please open Settings and allow background activity for this app.');
-    });
+  const confirmDisconnect = () => {
+    Alert.alert(
+      'Leave Room',
+      'This will disconnect you from your partner. You can always create a new room or join another one.',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        { text: 'Leave', style: 'destructive', onPress: onDisconnect },
+      ]
+    );
   };
 
-  const copyUSDT = () => {
-    Clipboard.setString('0x1234567890abcdef1234567890abcdef12345678'); // REPLACE WITH REAL USDT
-    Alert.alert('Copied!', 'USDT Address copied to clipboard.');
+  const confirmResetPartner = () => {
+    Alert.alert(
+      'Reset Partner',
+      'This will clear your current partner selection. The next person to send a song in this room will become your new partner.',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        { text: 'Reset', onPress: onResetPartner },
+      ]
+    );
   };
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Settings</Text>
-      </View>
+      <ScrollView>
+        <View style={styles.header}>
+          <Text style={styles.title}>Settings</Text>
+        </View>
 
-      <View style={styles.content}>
-        <View style={styles.card}>
-          <View style={styles.row}>
-            <Text style={styles.sectionTitle}>Push Notifications</Text>
-            <Switch 
-              value={pushEnabled} 
-              onValueChange={togglePush} 
-              trackColor={{ false: COLORS.textSecondary, true: COLORS.primary }}
-              thumbColor={COLORS.card}
-            />
+        <View style={styles.content}>
+          {/* Connection Info */}
+          <View style={styles.card}>
+            <View style={styles.infoRow}>
+              <Ionicons name="link-outline" size={20} color={COLORS.primary} />
+              <Text style={styles.infoLabel}>Room</Text>
+              <Text style={styles.infoValue}>{pairingCode || '—'}</Text>
+            </View>
+            <View style={styles.separator} />
+            <View style={styles.infoRow}>
+              <Ionicons name="person-outline" size={20} color={COLORS.partnerAccent} />
+              <Text style={styles.infoLabel}>Partner</Text>
+              <Text style={styles.infoValue}>{partnerName || 'Waiting...'}</Text>
+            </View>
           </View>
-          <Text style={styles.description}>
-            Get pinged when your partner starts a new song.
-          </Text>
-        </View>
 
-        <View style={styles.card}>
-          <Text style={styles.sectionTitle}>Battery Optimization</Text>
-          <Text style={styles.description}>
-            To keep sharing music while the app is closed, please disable battery optimization.
-          </Text>
-          <TouchableOpacity style={styles.button} onPress={openBatterySettings}>
-            <Text style={styles.buttonText}>Open Settings</Text>
-          </TouchableOpacity>
-        </View>
+          {/* Notifications */}
+          <View style={styles.card}>
+            <View style={styles.row}>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.cardTitle}>Push Notifications</Text>
+                <Text style={styles.cardDescription}>Get notified when your partner plays a new song.</Text>
+              </View>
+              <Switch 
+                value={pushEnabled} 
+                onValueChange={togglePush} 
+                trackColor={{ false: '#ccc', true: COLORS.primary }}
+                thumbColor={'white'}
+              />
+            </View>
+          </View>
 
-        <View style={styles.card}>
-          <Text style={styles.sectionTitle}>Support the App</Text>
-          <Text style={styles.description}>
-            If you love using this app, consider sending a coffee via USDT (TRC20 or ERC20) ☕
-          </Text>
-          <TouchableOpacity style={[styles.button, styles.donateButton]} onPress={copyUSDT}>
-            <Ionicons name="copy-outline" size={20} color={COLORS.card} style={{ marginRight: 8 }} />
-            <Text style={styles.donateButtonText}>Copy USDT Address</Text>
-          </TouchableOpacity>
-        </View>
+          {/* Partner Reset */}
+          <View style={styles.card}>
+            <Text style={styles.cardTitle}>Partner</Text>
+            <Text style={styles.cardDescription}>
+              Clear your current partner and auto-lock to the next person who plays a song in this room.
+            </Text>
+            <TouchableOpacity style={styles.actionButton} onPress={confirmResetPartner}>
+              <Ionicons name="refresh-outline" size={18} color={COLORS.primary} style={{ marginRight: 8 }} />
+              <Text style={styles.actionButtonText}>Reset Partner</Text>
+            </TouchableOpacity>
+          </View>
 
-        <View style={styles.card}>
-          <Text style={styles.sectionTitle}>Connection</Text>
-          <TouchableOpacity style={[styles.button, { marginBottom: 12 }]} onPress={onResetPartner}>
-            <Text style={styles.buttonText}>Reset Partner Choice</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={[styles.button, styles.disconnectButton]} onPress={onDisconnect}>
-            <Text style={styles.disconnectButtonText}>Leave Room completely</Text>
-          </TouchableOpacity>
+          {/* Leave Room */}
+          <View style={styles.card}>
+            <Text style={styles.cardTitle}>Room</Text>
+            <Text style={styles.cardDescription}>
+              Leave this room entirely and return to the setup screen.
+            </Text>
+            <TouchableOpacity style={styles.dangerButton} onPress={confirmDisconnect}>
+              <Ionicons name="log-out-outline" size={18} color={COLORS.heartRed} style={{ marginRight: 8 }} />
+              <Text style={styles.dangerButtonText}>Leave Room</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -106,60 +128,79 @@ const styles = StyleSheet.create({
   },
   content: {
     padding: 20,
+    paddingTop: 8,
   },
   card: {
     backgroundColor: COLORS.card,
     borderRadius: SIZES.cardRadius,
     padding: SIZES.padding,
-    marginBottom: 20,
+    marginBottom: 16,
     ...SHADOWS.card,
   },
   row: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 8,
   },
-  sectionTitle: {
-    fontSize: 18,
+  infoRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 4,
+  },
+  infoLabel: {
+    fontSize: 16,
+    color: COLORS.textSecondary,
+    fontWeight: '500',
+    marginLeft: 10,
+    flex: 1,
+  },
+  infoValue: {
+    fontSize: 16,
+    color: COLORS.textPrimary,
+    fontWeight: '700',
+  },
+  separator: {
+    height: 1,
+    backgroundColor: COLORS.accent,
+    marginVertical: 12,
+  },
+  cardTitle: {
+    fontSize: 17,
     fontWeight: '700',
     color: COLORS.textPrimary,
+    marginBottom: 4,
   },
-  description: {
+  cardDescription: {
     fontSize: 14,
     color: COLORS.textSecondary,
-    marginBottom: 16,
     lineHeight: 20,
+    marginBottom: 14,
   },
-  button: {
+  actionButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: COLORS.accent,
     borderRadius: SIZES.pillRadius,
     paddingVertical: 12,
-    alignItems: 'center',
+  },
+  actionButtonText: {
+    color: COLORS.primary,
+    fontWeight: '700',
+    fontSize: 15,
+  },
+  dangerButton: {
     flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'center',
-  },
-  buttonText: {
-    color: COLORS.textPrimary,
-    fontWeight: '600',
-    fontSize: 16,
-  },
-  donateButton: {
-    backgroundColor: COLORS.partnerAccent,
-  },
-  donateButtonText: {
-    color: COLORS.card,
-    fontWeight: '600',
-    fontSize: 16,
-  },
-  disconnectButton: {
     backgroundColor: COLORS.background,
-    borderWidth: 1,
+    borderRadius: SIZES.pillRadius,
+    paddingVertical: 12,
+    borderWidth: 1.5,
     borderColor: COLORS.heartRed,
   },
-  disconnectButtonText: {
+  dangerButtonText: {
     color: COLORS.heartRed,
-    fontWeight: '600',
-    fontSize: 16,
+    fontWeight: '700',
+    fontSize: 15,
   },
 });

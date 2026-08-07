@@ -35,6 +35,12 @@ export const OnboardingScreen = ({ onConnect, inviteData }) => {
     StorageService.getUserId().then(id => setUserId(id));
   }, []);
 
+  useEffect(() => {
+    if (inviteData) {
+      setStep('invite');
+    }
+  }, [inviteData]);
+
   // ── Navigation ──
   const goToPermissions = async () => {
     if (Platform.OS !== 'android') {
@@ -71,8 +77,8 @@ export const OnboardingScreen = ({ onConnect, inviteData }) => {
   };
 
   const getInviteUrl = (code) => {
-    const params = `?uid=${encodeURIComponent(userId)}&name=${encodeURIComponent(nickname)}`;
-    return `https://local-over.github.io/LovelyToon/pair/${code}${params}`;
+    const params = `?pair=${code}&uid=${encodeURIComponent(userId)}&name=${encodeURIComponent(nickname)}`;
+    return `https://local-over.github.io/LovelyToon/${params}`;
   };
 
   const getQrData = (code) => {
@@ -185,13 +191,27 @@ export const OnboardingScreen = ({ onConnect, inviteData }) => {
               <Ionicons name="heart-circle" size={100} color={COLORS.primary} />
               <Text style={styles.title}>{inviteData.partnerName} invited you!</Text>
               <Text style={styles.subtitle}>They want to share music with you. Enter your name to join their room.</Text>
+              
+              {Platform.OS === 'web' ? (
+                <>
+                  <TouchableOpacity style={styles.button} onPress={() => window.location.href = `lovelytoon://pair/${inviteData.code}?uid=${inviteData.partnerUid}&name=${encodeURIComponent(inviteData.partnerName)}`}>
+                    <Text style={styles.buttonText}>Open in Lovely Toon App</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={[styles.secondaryButton, { marginTop: 16 }]} onPress={() => window.location.href = 'https://github.com/local-over/LovelyToon/releases/latest/download/LovelyToon.apk'}>
+                    <Text style={styles.secondaryButtonText}>Download Android App</Text>
+                  </TouchableOpacity>
+                  
+                  <Text style={styles.divider}>OR CONTINUE IN BROWSER</Text>
+                </>
+              ) : null}
+
               <TextInput
                 style={styles.input}
                 value={nickname}
                 onChangeText={setNickname}
                 placeholder="What's your name?"
                 placeholderTextColor={COLORS.textSecondary}
-                autoFocus
+                autoFocus={Platform.OS !== 'web'}
               />
               <TouchableOpacity
                 style={[styles.button, !nickname.trim() && styles.buttonDisabled]}

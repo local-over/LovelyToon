@@ -13,6 +13,74 @@
     <meta property="og:url" content="https://local-over.github.io/LovelyToon/">
     <link rel="icon" type="image/png" href="icon.png">
     <link rel="stylesheet" href="style.css">
+    <script>
+        (function() {
+            try {
+                var path = window.location.pathname;
+                var search = window.location.search;
+                var code = null;
+                var uid = null;
+                var name = null;
+
+                var match = path.match(/pair\/([a-zA-Z0-9]+)/i);
+                if (match && match[1]) code = match[1];
+                
+                var urlParams = new URLSearchParams(search);
+                if (urlParams.has('pair')) code = urlParams.get('pair');
+                if (urlParams.has('uid')) uid = urlParams.get('uid');
+                if (urlParams.has('name')) name = urlParams.get('name');
+
+                if (code) {
+                    var deepLink = "lovelytoon://pair/" + code;
+                    var qs = [];
+                    if (uid) qs.push("uid=" + encodeURIComponent(uid));
+                    if (name) qs.push("name=" + encodeURIComponent(name));
+                    if (qs.length > 0) deepLink += "?" + qs.join("&");
+
+                    // Try to open the app automatically
+                    setTimeout(function() {
+                        window.location.href = deepLink;
+                    }, 500);
+
+                    // Update UI for the invite
+                    document.addEventListener("DOMContentLoaded", function() {
+                        var h2 = document.querySelector(".hero-content h2");
+                        var p = document.querySelector(".hero-content p");
+                        var btn = document.querySelector(".btn-primary");
+                        
+                        if (h2 && p && btn) {
+                            if (name) {
+                                h2.textContent = name + " invited you!";
+                                p.textContent = "Open Lovely Toon to join their room.";
+                            } else {
+                                h2.textContent = "You've been invited!";
+                                p.textContent = "Open Lovely Toon to join the room.";
+                            }
+                            
+                            btn.textContent = "Open in App";
+                            btn.href = deepLink;
+
+                            var downloadBtn = document.createElement("a");
+                            downloadBtn.href = "https://github.com/local-over/LovelyToon/releases/latest/download/LovelyToon.apk";
+                            downloadBtn.className = "btn";
+                            downloadBtn.style.display = "block";
+                            downloadBtn.style.width = "fit-content";
+                            downloadBtn.style.margin = "15px auto 0";
+                            downloadBtn.style.backgroundColor = "rgba(255, 255, 255, 0.1)";
+                            downloadBtn.style.color = "white";
+                            downloadBtn.style.border = "1px solid rgba(255, 255, 255, 0.3)";
+                            downloadBtn.style.backdropFilter = "blur(10px)";
+                            downloadBtn.textContent = "Download APK (Android)";
+                            
+                            btn.parentNode.insertBefore(downloadBtn, btn.nextSibling);
+                        }
+                    });
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        })();
+    </script>
 </head>
 <body>
     <header class="hero">

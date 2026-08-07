@@ -76,8 +76,11 @@ export default function App() {
       const url = new URL(event.url.replace('lovelytoon://', 'https://lovelytoon.app/'));
       const pathMatch = url.pathname.match(/pair\/([a-zA-Z0-9]+)/i);
       
-      if (pathMatch && pathMatch[1]) {
-        const code = pathMatch[1].toUpperCase();
+      let code = null;
+      if (pathMatch && pathMatch[1]) code = pathMatch[1].toUpperCase();
+      else if (url.searchParams.get('pair')) code = url.searchParams.get('pair').toUpperCase();
+
+      if (code) {
         const uid = url.searchParams.get('uid');
         const name = url.searchParams.get('name');
 

@@ -8,7 +8,7 @@ import { HistoryScreen } from './src/screens/HistoryScreen';
 import { SettingsScreen } from './src/screens/SettingsScreen';
 import { OnboardingScreen } from './src/screens/OnboardingScreen';
 import { TabBar } from './src/components/TabBar';
-import { mqttService } from './src/services/MqttService';
+import { appwriteService } from './src/services/AppwriteService';
 import { StorageService } from './src/services/StorageService';
 import { UpdateService } from './src/services/UpdateService';
 import { startListening } from './src/services/NotificationService';
@@ -39,7 +39,17 @@ export default function App() {
   }, []);
 
   const initApp = async () => {
-    const id = await StorageService.getUserId();
+    let id = await StorageService.getUserId();
+    if (!id) {
+      try {
+        let session = await appwriteService.getSession();
+        if (!session) session = await appwriteService.signInAnonymous();
+        id = session?.$id;
+        if (id) await StorageService.setUserId(id);
+      } catch (e) {
+        console.error('Appwrite init error:', e);
+      }
+    }
     const name = await StorageService.getNickname();
     setUserId(id);
     setUserName(name || '');
@@ -125,7 +135,7 @@ export default function App() {
   };
 
   const connectToRoom = (code, userInfo, lockedPartnerId) => {
-    mqttService.setCallbacks({
+    appwriteService.setCallbacks({
       onConnect: () => setIsConnected(true),
       onMessage: async (data) => {
         // Ignore our own messages
@@ -177,30 +187,10 @@ export default function App() {
           } catch (e) {}
         }
       },
-      onPresence: async (presenceData) => {
-        // Someone announced themselves in the room
-        if (presenceData.userId === userInfo.userId) return; // That's us
-
-        const currentPartner = partnerIdRef.current;
-
-        // If we don't have a partner yet, auto-lock to this person
-        if (!currentPartner) {
-          partnerIdRef.current = presenceData.userId;
-          setPartnerId(presenceData.userId);
-          setPartnerName(presenceData.name || 'Partner');
-          await StorageService.setPartnerId(presenceData.userId);
-          await StorageService.setPartnerName(presenceData.name || 'Partner');
-        }
-        // If this IS our partner, update their name (they may have changed it)
-        else if (currentPartner === presenceData.userId && presenceData.name) {
-          setPartnerName(presenceData.name);
-          await StorageService.setPartnerName(presenceData.name);
-        }
-      },
       onError: () => setIsConnected(false),
     });
 
-    mqttService.connect(code, userInfo);
+    appwriteService.connectToRoom(code, userInfo, lockedPartnerId);
   };
 
   // ── Notification action handling ──
@@ -235,7 +225,7 @@ export default function App() {
 
   // ── Disconnect ──
   const handleDisconnect = async () => {
-    mqttService.disconnect();
+    appwriteService.disconnect();
     await StorageService.clearAllPairing();
     setPairingCode(null);
     setIsConnected(false);
@@ -264,6 +254,7 @@ export default function App() {
           <OnboardingScreen
             onConnect={handleConnect}
             inviteData={inviteData}
+            userId={userId}
           />
         </View>
       </SafeAreaProvider>

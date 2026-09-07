@@ -21,19 +21,14 @@ try {
   useCameraPermissions = cam.useCameraPermissions;
 } catch (e) {}
 
-export const OnboardingScreen = ({ onConnect, inviteData }) => {
+export const OnboardingScreen = ({ onConnect, inviteData, userId }) => {
   const [step, setStep] = useState(inviteData ? 'invite' : 'welcome');
   const [nickname, setNickname] = useState('');
   const [joinCode, setJoinCode] = useState('');
   const [generatedCode, setGeneratedCode] = useState(null);
-  const [userId, setUserId] = useState('');
   const [scanning, setScanning] = useState(false);
   const [permission, requestPermission] = useCameraPermissions ? useCameraPermissions() : [null, () => {}];
   const scannedRef = useRef(false);
-
-  useEffect(() => {
-    StorageService.getUserId().then(id => setUserId(id));
-  }, []);
 
   useEffect(() => {
     if (inviteData) {

@@ -1,5 +1,5 @@
 import RNAndroidNotificationListener from 'react-native-android-notification-listener';
-import { mqttService } from './MqttService';
+import { appwriteService } from './AppwriteService';
 import { StorageService } from './StorageService';
 
 const MEDIA_APPS = [
@@ -22,7 +22,7 @@ export const handleNotification = async (notification) => {
     
     if (notification.event === 'removed') {
       try {
-        await mqttService.publishBackgroundMessage(pairingCode, { status: 'stopped', sender: userId });
+        await appwriteService.publishBackgroundMessage(pairingCode, { status: 'stopped', sender: userId });
       } catch (e) {}
       lastSong = { title: null, artist: null };
       return;
@@ -49,7 +49,7 @@ export const handleNotification = async (notification) => {
     };
 
     try {
-      await mqttService.publishBackgroundMessage(pairingCode, songData);
+      await appwriteService.publishBackgroundMessage(pairingCode, songData);
       await StorageService.addHistoryItem({ ...songData, direction: 'sent' });
     } catch (e) {
       console.error('Failed to publish background message', e);

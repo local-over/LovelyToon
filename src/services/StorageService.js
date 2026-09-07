@@ -14,15 +14,18 @@ export const StorageService = {
   // ── User Identity ──
   getUserId: async () => {
     try {
-      let id = await AsyncStorage.getItem(KEYS.USER_ID);
-      if (!id) {
-        // Generate a permanent 8-char alphanumeric ID
-        id = Math.random().toString(36).substr(2, 4) + Math.random().toString(36).substr(2, 4);
-        await AsyncStorage.setItem(KEYS.USER_ID, id);
-      }
-      return id;
+      return await AsyncStorage.getItem(KEYS.USER_ID);
     } catch (e) {
-      return 'fallback_' + Date.now();
+      return null;
+    }
+  },
+
+  setUserId: async (id) => {
+    try {
+      if (id) await AsyncStorage.setItem(KEYS.USER_ID, id);
+      else await AsyncStorage.removeItem(KEYS.USER_ID);
+    } catch (e) {
+      console.error(e);
     }
   },
 

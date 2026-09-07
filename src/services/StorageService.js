@@ -8,6 +8,7 @@ const KEYS = {
   PARTNER_NAME: '@partner_name',
   HISTORY: '@history',
   SETTINGS: '@settings',
+  THEME: '@theme',
 };
 
 export const StorageService = {
@@ -45,26 +46,6 @@ export const StorageService = {
     }
   },
 
-  // ── Room ──
-  getPairingCode: async () => {
-    try {
-      return await AsyncStorage.getItem(KEYS.PAIRING_CODE);
-    } catch (e) {
-      return null;
-    }
-  },
-
-  setPairingCode: async (code) => {
-    try {
-      if (code) {
-        await AsyncStorage.setItem(KEYS.PAIRING_CODE, code);
-      } else {
-        await AsyncStorage.removeItem(KEYS.PAIRING_CODE);
-      }
-    } catch (e) {
-      console.error(e);
-    }
-  },
 
   // ── Partner ──
   getPartnerId: async () => {
@@ -110,7 +91,7 @@ export const StorageService = {
   // ── Full Reset ──
   clearAllPairing: async () => {
     try {
-      await AsyncStorage.multiRemove([KEYS.PAIRING_CODE, KEYS.PARTNER_ID, KEYS.PARTNER_NAME]);
+      await AsyncStorage.multiRemove([KEYS.PARTNER_ID, KEYS.PARTNER_NAME]);
     } catch (e) {
       console.error(e);
     }
@@ -136,7 +117,7 @@ export const StorageService = {
     }
   },
 
-  // ── Settings ──
+  // ── Settings & Theme ──
   getSettings: async () => {
     try {
       const data = await AsyncStorage.getItem(KEYS.SETTINGS);
@@ -149,6 +130,26 @@ export const StorageService = {
   setSettings: async (settings) => {
     try {
       await AsyncStorage.setItem(KEYS.SETTINGS, JSON.stringify(settings));
+    } catch (e) {
+      console.error(e);
+    }
+  },
+
+  getTheme: async () => {
+    try {
+      return await AsyncStorage.getItem(KEYS.THEME);
+    } catch (e) {
+      return null;
+    }
+  },
+
+  setTheme: async (themeId) => {
+    try {
+      if (themeId) {
+        await AsyncStorage.setItem(KEYS.THEME, themeId);
+      } else {
+        await AsyncStorage.removeItem(KEYS.THEME);
+      }
     } catch (e) {
       console.error(e);
     }

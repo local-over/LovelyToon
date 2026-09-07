@@ -1,7 +1,13 @@
 import React from 'react';
 import { FlexWidget, TextWidget } from 'react-native-android-widget';
 
-export function Widget({ song }) {
+export function Widget({ song, colors }) {
+  // Fallback to lovely theme if colors not passed
+  const bgColor = colors?.background || '#FFF5F7';
+  const primaryColor = colors?.primary || '#FF6B8B';
+  const textColor = colors?.textPrimary || '#2D3748';
+  const textSecondaryColor = colors?.textSecondary || '#718096';
+
   return (
     <FlexWidget
       style={{
@@ -9,7 +15,7 @@ export function Widget({ song }) {
         width: 'match_parent',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#FFF5F7',
+        backgroundColor: bgColor,
         borderRadius: 16,
         padding: 16,
       }}
@@ -19,7 +25,7 @@ export function Widget({ song }) {
         style={{
           fontSize: 14,
           fontFamily: 'sans-serif-medium',
-          color: '#FF6B8B',
+          color: primaryColor,
           marginBottom: 8,
         }}
       />
@@ -36,7 +42,7 @@ export function Widget({ song }) {
             style={{
               fontSize: 18,
               fontFamily: 'sans-serif-medium',
-              color: '#2D3748',
+              color: textColor,
               textAlign: 'center',
             }}
             maxLines={2}
@@ -46,7 +52,7 @@ export function Widget({ song }) {
             style={{
               fontSize: 14,
               fontFamily: 'sans-serif-medium',
-              color: '#718096',
+              color: textSecondaryColor,
               textAlign: 'center',
               marginTop: 4,
             }}
@@ -60,7 +66,7 @@ export function Widget({ song }) {
             style={{
               fontSize: 16,
               fontFamily: 'sans-serif',
-              color: '#A0AEC0',
+              color: textSecondaryColor,
             }}
           />
         </FlexWidget>

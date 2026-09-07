@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, Linking, Dimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { COLORS, SIZES, SHADOWS } from '../utils/constants';
+import { SIZES, SHADOWS } from '../utils/constants';
+import { useTheme } from '../context/ThemeContext';
 
 const { width } = Dimensions.get('window');
 
 export const SongCard = ({ title, artist, app, timestamp, artwork, duration }) => {
   const [progress, setProgress] = useState(0);
+  const { theme } = useTheme();
+  const colors = theme.colors;
 
   useEffect(() => {
     let interval;
@@ -24,9 +27,9 @@ export const SongCard = ({ title, artist, app, timestamp, artwork, duration }) =
 
   if (!title) {
     return (
-      <View style={[styles.card, styles.emptyCard]}>
-        <Ionicons name="musical-notes-outline" size={48} color={COLORS.textSecondary} style={{marginBottom: 16}} />
-        <Text style={styles.emptyText}>Waiting for a song...</Text>
+      <View style={[styles.card, styles.emptyCard, { backgroundColor: colors.card + '80' }]}>
+        <Ionicons name="musical-notes-outline" size={48} color={colors.textSecondary} style={{marginBottom: 16}} />
+        <Text style={[styles.emptyText, { color: colors.textSecondary }]}>Waiting for a song...</Text>
       </View>
     );
   }
@@ -59,35 +62,35 @@ export const SongCard = ({ title, artist, app, timestamp, artwork, duration }) =
 
   return (
     <TouchableOpacity activeOpacity={0.9} onPress={handlePress}>
-      <View style={styles.card}>
-        <View style={styles.artworkContainer}>
+      <View style={[styles.card, { backgroundColor: colors.card }]}>
+        <View style={[styles.artworkContainer, { backgroundColor: colors.background }]}>
           {artwork ? (
             <Image source={{ uri: artwork }} style={styles.artwork} />
           ) : (
-            <View style={styles.artworkPlaceholder}>
-              <Ionicons name="musical-note" size={64} color={COLORS.textSecondary} />
+            <View style={[styles.artworkPlaceholder, { backgroundColor: colors.background }]}>
+              <Ionicons name="musical-note" size={64} color={colors.textSecondary} />
             </View>
           )}
         </View>
 
         <View style={styles.content}>
-          <Text style={styles.title} numberOfLines={1}>{title}</Text>
-          <Text style={styles.artist} numberOfLines={1}>{artist}</Text>
+          <Text style={[styles.title, { color: colors.textPrimary }]} numberOfLines={1}>{title}</Text>
+          <Text style={[styles.artist, { color: colors.textSecondary }]} numberOfLines={1}>{artist}</Text>
           {app && (
             <View style={styles.badgeContainer}>
-              <Text style={styles.appBadge}>{getAppName(app)}</Text>
+              <Text style={[styles.appBadge, { backgroundColor: colors.accent, color: colors.primary }]}>{getAppName(app)}</Text>
             </View>
           )}
         </View>
 
         {/* Listening Bar */}
         <View style={styles.progressContainer}>
-          <View style={styles.progressBarBackground}>
-            <View style={[styles.progressBarFill, { width: `${progress * 100}%` }]} />
+          <View style={[styles.progressBarBackground, { backgroundColor: colors.background }]}>
+            <View style={[styles.progressBarFill, { width: `${progress * 100}%`, backgroundColor: colors.primary }]} />
           </View>
           <View style={styles.timeRow}>
-            <Text style={styles.timeText}>{formatTime(currentElapsedMillis)}</Text>
-            <Text style={styles.timeText}>{formatTime(duration)}</Text>
+            <Text style={[styles.timeText, { color: colors.textSecondary }]}>{formatTime(currentElapsedMillis)}</Text>
+            <Text style={[styles.timeText, { color: colors.textSecondary }]}>{formatTime(duration)}</Text>
           </View>
         </View>
       </View>
@@ -105,7 +108,6 @@ const getAppName = (pkg) => {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: COLORS.card,
     borderRadius: 24,
     padding: 20,
     marginHorizontal: 24,
@@ -116,10 +118,8 @@ const styles = StyleSheet.create({
   emptyCard: {
     minHeight: 300,
     justifyContent: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.5)',
   },
   emptyText: {
-    color: COLORS.textSecondary,
     fontSize: 16,
     fontWeight: '600',
   },
@@ -127,7 +127,6 @@ const styles = StyleSheet.create({
     width: width - 88, // 24 padding * 2 + 20 margin * 2
     height: width - 88,
     borderRadius: 16,
-    backgroundColor: COLORS.surface,
     marginBottom: 20,
     ...SHADOWS.card,
     overflow: 'hidden',
@@ -142,7 +141,6 @@ const styles = StyleSheet.create({
     height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: COLORS.surface,
   },
   content: {
     width: '100%',
@@ -152,13 +150,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: '800',
-    color: COLORS.textPrimary,
     textAlign: 'center',
     marginBottom: 4,
   },
   artist: {
     fontSize: 18,
-    color: COLORS.textSecondary,
     textAlign: 'center',
     fontWeight: '500',
     marginBottom: 12,
@@ -168,8 +164,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   appBadge: {
-    backgroundColor: COLORS.accent,
-    color: COLORS.primary,
     paddingHorizontal: 12,
     paddingVertical: 4,
     borderRadius: SIZES.pillRadius,
@@ -183,14 +177,12 @@ const styles = StyleSheet.create({
   },
   progressBarBackground: {
     height: 6,
-    backgroundColor: COLORS.surface,
     borderRadius: 3,
     overflow: 'hidden',
     marginBottom: 8,
   },
   progressBarFill: {
     height: '100%',
-    backgroundColor: COLORS.primary,
     borderRadius: 3,
   },
   timeRow: {
@@ -199,7 +191,6 @@ const styles = StyleSheet.create({
   },
   timeText: {
     fontSize: 12,
-    color: COLORS.textSecondary,
     fontWeight: '600',
   },
 });

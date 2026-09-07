@@ -12,20 +12,19 @@ import { appwriteService } from './src/services/AppwriteService';
 import { StorageService } from './src/services/StorageService';
 import { UpdateService } from './src/services/UpdateService';
 import { startListening } from './src/services/NotificationService';
-import { COLORS } from './src/utils/constants';
+import { ThemeProvider, useTheme } from './src/context/ThemeContext';
 
-export default function App() {
+function AppContent() {
+  const { theme } = useTheme();
   const [activeTab, setActiveTab] = useState('home');
-  const [pairingCode, setPairingCode] = useState(null);
   const [currentSong, setCurrentSong] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
   const [userId, setUserId] = useState('');
   const [userName, setUserName] = useState('');
   const [partnerId, setPartnerId] = useState(null);
   const [partnerName, setPartnerName] = useState(null);
-  const [inviteData, setInviteData] = useState(null); // { code, partnerUid, partnerName }
-
-  const partnerIdRef = useRef(null);
+  const [inviteData, setInviteData] = useState(null); // { code, partnerName }
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     Notifications.setNotificationHandler({
@@ -39,49 +38,47 @@ export default function App() {
   }, []);
 
   const initApp = async () => {
-    let id = await StorageService.getUserId();
-    if (!id) {
-      try {
-        let session = await appwriteService.getSession();
-        if (!session) session = await appwriteService.signInAnonymous();
-        id = session?.$id;
-        if (id) await StorageService.setUserId(id);
-      } catch (e) {
-        console.error('Appwrite init error:', e);
+    setIsLoading(true);
+    try {
+      let session = await appwriteService.getSession();
+      if (session) {
+        setUserId(session.$id);
+        
+        const relPartnerId = await appwriteService.getRelationship();
+        if (relPartnerId) {
+          setPartnerId(relPartnerId);
+          await StorageService.setPartnerId(relPartnerId);
+          connectToPartner(relPartnerId);
+        }
       }
-    }
-    const name = await StorageService.getNickname();
-    setUserId(id);
-    setUserName(name || '');
+      
+      const name = await StorageService.getNickname();
+      setUserName(name || '');
+      
+      const pname = await StorageService.getPartnerName();
+      setPartnerName(pname);
 
-    const pid = await StorageService.getPartnerId();
-    const pname = await StorageService.getPartnerName();
-    setPartnerId(pid);
-    setPartnerName(pname);
-    partnerIdRef.current = pid;
+      // Handle deep links
+      const initialUrl = await Linking.getInitialURL();
+      if (initialUrl) {
+        handleDeepLink({ url: initialUrl });
+      }
+      Linking.addEventListener('url', handleDeepLink);
 
-    const savedCode = await StorageService.getPairingCode();
-    if (savedCode && name) {
-      // Already paired — reconnect
-      connectToRoom(savedCode, { userId: id, name: name || 'Me' }, pid);
-    }
+      startListening();
 
-    // Handle deep links
-    const initialUrl = await Linking.getInitialURL();
-    if (initialUrl) {
-      handleDeepLink({ url: initialUrl }, savedCode);
-    }
-    Linking.addEventListener('url', (event) => handleDeepLink(event, savedCode));
-
-    startListening();
-
-    const updateInfo = await UpdateService.checkForUpdates();
-    if (updateInfo?.hasUpdate) {
-      UpdateService.showUpdateAlert(updateInfo);
+      const updateInfo = await UpdateService.checkForUpdates();
+      if (updateInfo?.hasUpdate) {
+        UpdateService.showUpdateAlert(updateInfo);
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const handleDeepLink = (event, existingCode) => {
+  const handleDeepLink = (event) => {
     try {
       const url = new URL(event.url.replace('lovelytoon://', 'https://lovelytoon.app/'));
       const pathMatch = url.pathname.match(/pair\/([a-zA-Z0-9]+)/i);
@@ -91,78 +88,40 @@ export default function App() {
       else if (url.searchParams.get('pair')) code = url.searchParams.get('pair').toUpperCase();
 
       if (code) {
-        const uid = url.searchParams.get('uid');
         const name = url.searchParams.get('name');
+        
+        // If we already have a partner, ignore
+        if (partnerId) return;
 
-        // If we already have a room, ignore the deep link
-        if (existingCode) return;
-
-        if (uid && name) {
-          // We know who invited us — show the invite flow
-          setInviteData({ code, partnerUid: uid, partnerName: decodeURIComponent(name) });
-        } else {
-          // Old-style link with just a code — show invite flow with generic name
-          setInviteData({ code, partnerUid: null, partnerName: 'Your partner' });
-        }
+        setInviteData({ code, partnerName: name ? decodeURIComponent(name) : 'Your partner' });
       }
     } catch (e) {
       console.error('Deep link parse error:', e);
     }
   };
 
-  // ── The main connect function ──
-  // Called from OnboardingScreen with (code, partnerUid, partnerName)
-  const handleConnect = async (code, pUid, pName) => {
-    if (!code) return;
-
-    const id = userId || await StorageService.getUserId();
-    const name = userName || await StorageService.getNickname() || 'Me';
-
-    // Save partner if we know them from the link/QR
-    if (pUid) {
-      setPartnerId(pUid);
-      setPartnerName(pName || 'Partner');
-      partnerIdRef.current = pUid;
-      await StorageService.setPartnerId(pUid);
-      await StorageService.setPartnerName(pName || 'Partner');
-    }
-
-    setPairingCode(code);
-    await StorageService.setPairingCode(code);
+  const handlePaired = async (pId, pName) => {
+    setPartnerId(pId);
+    setPartnerName(pName || 'Partner');
+    await StorageService.setPartnerId(pId);
+    await StorageService.setPartnerName(pName || 'Partner');
     setInviteData(null);
-
-    connectToRoom(code, { userId: id, name }, pUid);
+    connectToPartner(pId);
   };
 
-  const connectToRoom = (code, userInfo, lockedPartnerId) => {
+  const connectToPartner = (pId) => {
     appwriteService.setCallbacks({
       onConnect: () => setIsConnected(true),
       onMessage: async (data) => {
-        // Ignore our own messages
-        if (data.sender === userInfo.userId) return;
-
-        const currentPartner = lockedPartnerId || partnerIdRef.current;
-
-        // If we have a locked partner, only accept their messages
-        if (currentPartner && data.sender !== currentPartner) {
-          return; // Ghost everyone else
-        }
-
-        // If we don't have a partner yet, auto-lock to this sender
-        if (!currentPartner && data.status !== 'stopped') {
-          lockedPartnerId = data.sender;
-          partnerIdRef.current = data.sender;
-          setPartnerId(data.sender);
-          setPartnerName(data.senderName || 'Partner');
-          await StorageService.setPartnerId(data.sender);
-          await StorageService.setPartnerName(data.senderName || 'Partner');
-        }
-
         if (data.status === 'stopped') {
           setCurrentSong(null);
           return;
         }
 
+        // We receive senderName as 'Partner' by default from service, overwrite with cached name
+        const localPName = await StorageService.getPartnerName();
+        data.senderName = localPName || 'Partner';
+        
         setCurrentSong(data);
         await StorageService.addHistoryItem({ ...data, direction: 'received' });
 
@@ -171,7 +130,7 @@ export default function App() {
           await Notifications.scheduleNotificationAsync({
             identifier: 'now-playing',
             content: {
-              title: `${data.senderName || 'Partner'} is listening to...`,
+              title: `${data.senderName} is listening to...`,
               body: `${data.title} — ${data.artist}`,
               categoryIdentifier: 'music-actions',
               data: { ...data },
@@ -190,7 +149,7 @@ export default function App() {
       onError: () => setIsConnected(false),
     });
 
-    appwriteService.connectToRoom(code, userInfo, lockedPartnerId);
+    appwriteService.connectToPartner(pId);
   };
 
   // ── Notification action handling ──
@@ -223,38 +182,36 @@ export default function App() {
     return () => subscription.remove();
   }, []);
 
-  // ── Disconnect ──
+  // ── Disconnect / Logout ──
   const handleDisconnect = async () => {
-    appwriteService.disconnect();
+    await appwriteService.signOut();
     await StorageService.clearAllPairing();
-    setPairingCode(null);
     setIsConnected(false);
     setCurrentSong(null);
+    setUserId('');
     setPartnerId(null);
     setPartnerName(null);
-    partnerIdRef.current = null;
     setInviteData(null);
   };
 
-  const handleResetPartner = async () => {
-    partnerIdRef.current = null;
-    setPartnerId(null);
-    setPartnerName(null);
-    setCurrentSong(null);
-    await StorageService.setPartnerId(null);
-    await StorageService.setPartnerName(null);
-  };
+  // ── Render ──
+  if (isLoading) {
+    return (
+      <View style={[styles.container, { backgroundColor: theme.colors.background, justifyContent: 'center', alignItems: 'center' }]}>
+        <StatusBar barStyle="dark-content" backgroundColor={theme.colors.background} />
+      </View>
+    );
+  }
 
-  // ── Render: Onboarding or Main App ──
-  if (!pairingCode) {
+  if (!partnerId) {
     return (
       <SafeAreaProvider>
-        <View style={styles.container}>
-          <StatusBar barStyle="dark-content" backgroundColor={COLORS.background} />
+        <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
+          <StatusBar barStyle="dark-content" backgroundColor={theme.colors.background} />
           <OnboardingScreen
-            onConnect={handleConnect}
+            onPaired={handlePaired}
             inviteData={inviteData}
-            userId={userId}
+            initialUserId={userId}
           />
         </View>
       </SafeAreaProvider>
@@ -268,7 +225,6 @@ export default function App() {
           <HomeScreen
             currentSong={currentSong}
             isConnected={isConnected}
-            pairingCode={pairingCode}
             partnerName={partnerName}
           />
         );
@@ -278,9 +234,7 @@ export default function App() {
         return (
           <SettingsScreen
             onDisconnect={handleDisconnect}
-            onResetPartner={handleResetPartner}
             partnerName={partnerName}
-            pairingCode={pairingCode}
           />
         );
       default:
@@ -290,8 +244,8 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
-      <View style={styles.container}>
-        <StatusBar barStyle="dark-content" backgroundColor={COLORS.background} />
+      <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
+        <StatusBar barStyle="dark-content" backgroundColor={theme.colors.background} />
         <View style={styles.content}>
           {renderScreen()}
         </View>
@@ -301,10 +255,17 @@ export default function App() {
   );
 }
 
+export default function App() {
+  return (
+    <ThemeProvider>
+      <AppContent />
+    </ThemeProvider>
+  );
+}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.background,
   },
   content: {
     flex: 1,

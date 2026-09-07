@@ -1,18 +1,24 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { COLORS, SIZES, SHADOWS } from '../utils/constants';
+import { SIZES, SHADOWS } from '../utils/constants';
 import { formatTimestamp } from '../utils/helpers';
+import { useTheme } from '../context/ThemeContext';
 
 export const HistoryItem = ({ item }) => {
   const isSent = item.direction === 'sent';
+  const { theme } = useTheme();
+  const colors = theme.colors;
 
   return (
-    <View style={[styles.container, isSent ? styles.sentContainer : styles.receivedContainer]}>
+    <View style={[
+      styles.container, 
+      isSent ? { backgroundColor: colors.card, marginLeft: 40 } : { backgroundColor: colors.accent, marginRight: 40 }
+    ]}>
       <View style={styles.content}>
-        <Text style={styles.title} numberOfLines={1}>{item.title}</Text>
-        <Text style={styles.artist} numberOfLines={1}>{item.artist}</Text>
+        <Text style={[styles.title, { color: colors.textPrimary }]} numberOfLines={1}>{item.title}</Text>
+        <Text style={[styles.artist, { color: colors.textSecondary }]} numberOfLines={1}>{item.artist}</Text>
       </View>
-      <Text style={styles.time}>{formatTimestamp(item.timestamp)}</Text>
+      <Text style={[styles.time, { color: colors.textSecondary }]}>{formatTimestamp(item.timestamp)}</Text>
     </View>
   );
 };
@@ -28,14 +34,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     ...SHADOWS.card,
   },
-  sentContainer: {
-    backgroundColor: COLORS.card,
-    marginLeft: 40,
-  },
-  receivedContainer: {
-    backgroundColor: COLORS.accent,
-    marginRight: 40,
-  },
   content: {
     flex: 1,
     marginRight: 12,
@@ -43,16 +41,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: '700',
-    color: COLORS.textPrimary,
     marginBottom: 4,
   },
   artist: {
     fontSize: 14,
-    color: COLORS.textSecondary,
   },
   time: {
     fontSize: 12,
-    color: COLORS.textSecondary,
     fontWeight: '500',
   },
 });

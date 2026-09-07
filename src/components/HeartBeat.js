@@ -1,10 +1,12 @@
 import React, { useEffect, useRef } from 'react';
-import { Animated, StyleSheet, Text, View } from 'react-native';
+import { Animated, StyleSheet, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { COLORS } from '../utils/constants';
+import { useTheme } from '../context/ThemeContext';
 
 export const HeartBeat = ({ connected }) => {
   const scale = useRef(new Animated.Value(1)).current;
+  const { theme } = useTheme();
+  const colors = theme.colors;
 
   useEffect(() => {
     if (connected) {
@@ -35,7 +37,7 @@ export const HeartBeat = ({ connected }) => {
         <Ionicons 
           name={connected ? "heart" : "heart-outline"} 
           size={32} 
-          color={connected ? COLORS.primary : COLORS.textSecondary} 
+          color={connected ? colors.primary : colors.textSecondary} 
         />
       </Animated.View>
     </View>
@@ -47,8 +49,5 @@ const styles = StyleSheet.create({
     padding: 10,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  heart: {
-    fontSize: 24,
   },
 });

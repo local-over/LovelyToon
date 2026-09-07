@@ -1,10 +1,13 @@
 import React from 'react';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
-import { COLORS, SIZES, SHADOWS } from '../utils/constants';
-
+import { SIZES, SHADOWS } from '../utils/constants';
 import { Ionicons } from '@expo/vector-icons';
+import { useTheme } from '../context/ThemeContext';
 
 export const TabBar = ({ activeTab, onTabChange }) => {
+  const { theme } = useTheme();
+  const colors = theme.colors;
+
   const tabs = [
     { id: 'home', icon: 'home-outline', label: 'Home' },
     { id: 'history', icon: 'time-outline', label: 'History' },
@@ -12,17 +15,17 @@ export const TabBar = ({ activeTab, onTabChange }) => {
   ];
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: colors.card }]}>
       {tabs.map((tab) => {
         const isActive = activeTab === tab.id;
         return (
           <TouchableOpacity
             key={tab.id}
-            style={[styles.tab, isActive && styles.activeTab]}
+            style={[styles.tab, isActive && { backgroundColor: colors.accent }]}
             onPress={() => onTabChange(tab.id)}
           >
-            <Ionicons name={tab.icon} size={24} color={isActive ? COLORS.primary : COLORS.textSecondary} />
-            <Text style={[styles.label, !isActive && styles.inactiveLabel]}>{tab.label}</Text>
+            <Ionicons name={tab.icon} size={24} color={isActive ? colors.primary : colors.textSecondary} />
+            <Text style={[styles.label, { color: isActive ? colors.primary : colors.textSecondary }]}>{tab.label}</Text>
           </TouchableOpacity>
         );
       })}
@@ -33,7 +36,6 @@ export const TabBar = ({ activeTab, onTabChange }) => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    backgroundColor: COLORS.card,
     marginHorizontal: 20,
     marginBottom: 20,
     padding: 8,
@@ -48,17 +50,9 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: SIZES.pillRadius,
   },
-  activeTab: {
-    backgroundColor: COLORS.accent,
-  },
   label: {
     marginTop: 4,
     fontSize: 12,
     fontWeight: '700',
-    color: COLORS.primary,
-  },
-  inactiveLabel: {
-    color: COLORS.textSecondary,
-    fontWeight: '500',
   },
 });

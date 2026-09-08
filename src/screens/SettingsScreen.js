@@ -1,13 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, Alert, Switch, ScrollView } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity, Alert, Switch, ScrollView, Dimensions, Modal } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { SIZES, SHADOWS, THEMES } from '../utils/constants';
 import { StorageService } from '../services/StorageService';
+import { appwriteService } from '../services/AppwriteService';
 import { useTheme } from '../context/ThemeContext';
+
+const { width } = Dimensions.get('window');
+
+let QRCode = null;
+try { QRCode = require('react-native-qrcode-svg').default; } catch (e) {}
 
 export const SettingsScreen = ({ onDisconnect, partnerName }) => {
   const [pushEnabled, setPushEnabled] = useState(true);
+  const [migrateModalVisible, setMigrateModalVisible] = useState(false);
+  
   const { theme, changeTheme, themeId } = useTheme();
   const colors = theme.colors;
 
@@ -34,6 +42,13 @@ export const SettingsScreen = ({ onDisconnect, partnerName }) => {
         { text: 'Logout', style: 'destructive', onPress: onDisconnect },
       ]
     );
+  };
+
+  const getMigratePayload = () => {
+    return JSON.stringify({
+      migrateId: appwriteService.partnerId,
+      relationshipId: appwriteService.relationshipId
+    });
   };
 
   return (
@@ -90,6 +105,20 @@ export const SettingsScreen = ({ onDisconnect, partnerName }) => {
             </View>
           </View>
 
+          {/* Account Migration */}
+          {appwriteService.partnerId && (
+            <View style={[styles.card, { backgroundColor: colors.card }]}>
+              <Text style={[styles.cardTitle, { color: colors.textPrimary }]}>Migrate Device</Text>
+              <Text style={[styles.cardDescription, { color: colors.textSecondary }]}>
+                Switching phones? Scan a QR code on your new device to seamlessly transfer your pairing.
+              </Text>
+              <TouchableOpacity style={[styles.primaryButton, { backgroundColor: colors.primary }]} onPress={() => setMigrateModalVisible(true)}>
+                <Ionicons name="qr-code-outline" size={18} color={'white'} style={{ marginRight: 8 }} />
+                <Text style={[styles.primaryButtonText, { color: 'white' }]}>Generate QR Code</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+
           {/* Logout */}
           <View style={[styles.card, { backgroundColor: colors.card }]}>
             <Text style={[styles.cardTitle, { color: colors.textPrimary }]}>Account</Text>
@@ -103,6 +132,38 @@ export const SettingsScreen = ({ onDisconnect, partnerName }) => {
           </View>
         </View>
       </ScrollView>
+
+      {/* Migration Modal */}
+      <Modal visible={migrateModalVisible} animationType="slide" transparent={true} onRequestClose={() => setMigrateModalVisible(false)}>
+        <View style={styles.modalOverlay}>
+          <View style={[styles.modalContent, { backgroundColor: colors.background }]}>
+            <TouchableOpacity onPress={() => setMigrateModalVisible(false)} style={styles.modalClose}>
+              <Ionicons name="close" size={28} color={colors.textPrimary} />
+            </TouchableOpacity>
+            
+            <Text style={[styles.modalTitle, { color: colors.textPrimary }]}>Migrate Account</Text>
+            <Text style={[styles.modalSubtitle, { color: colors.textSecondary }]}>
+              1. Install Lovely Toon on your new device.{"\n"}
+              2. On your new device, select "Scan QR" during setup.{"\n"}
+              3. Scan the code below to migrate your pairing.
+            </Text>
+
+            {QRCode && appwriteService.partnerId ? (
+              <View style={styles.qrWrapper}>
+                <QRCode
+                  value={getMigratePayload()}
+                  size={width * 0.6}
+                  color={colors.textPrimary}
+                  backgroundColor="white"
+                />
+              </View>
+            ) : (
+              <Text style={{ color: colors.heartRed, marginTop: 20 }}>Unable to generate QR Code. Partner ID missing.</Text>
+            )}
+          </View>
+        </View>
+      </Modal>
+
     </SafeAreaView>
   );
 };
@@ -180,4 +241,49 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     fontSize: 15,
   },
+  primaryButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: SIZES.pillRadius,
+    paddingVertical: 12,
+  },
+  primaryButtonText: {
+    fontWeight: '700',
+    fontSize: 15,
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'flex-end',
+  },
+  modalContent: {
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    padding: 24,
+    alignItems: 'center',
+    minHeight: '60%',
+  },
+  modalClose: {
+    alignSelf: 'flex-end',
+    marginBottom: 10,
+  },
+  modalTitle: {
+    fontSize: 24,
+    fontWeight: '800',
+    marginBottom: 12,
+  },
+  modalSubtitle: {
+    fontSize: 15,
+    lineHeight: 24,
+    textAlign: 'center',
+    marginBottom: 30,
+  },
+  qrWrapper: {
+    padding: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    elevation: 4,
+    ...SHADOWS.card,
+  }
 });

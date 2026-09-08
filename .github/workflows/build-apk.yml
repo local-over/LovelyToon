@@ -42,8 +42,7 @@ jobs:
         env:
           NODE_OPTIONS: "--max_old_space_size=4096"
         run: |
-          echo "" >> android/gradle.properties
-          echo "org.gradle.jvmargs=-Xmx3g -XX:MaxMetaspaceSize=1024m -XX:+HeapDumpOnOutOfMemoryError" >> android/gradle.properties
+          echo -e "\norg.gradle.jvmargs=-Xmx3g -XX:MaxMetaspaceSize=1024m -XX:+HeapDumpOnOutOfMemoryError" >> android/gradle.properties
           cd android && ./gradlew assembleRelease
 
       - name: Rename APK

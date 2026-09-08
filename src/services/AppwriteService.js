@@ -53,26 +53,7 @@ class AppwriteService {
     }
   }
 
-  async registerEmail(email, password, name) {
-    try {
-      await this.account.create(ID.unique(), email, password, name);
-      this.currentUser = await this.account.createEmailPasswordSession(email, password);
-      return this.currentUser;
-    } catch (e) {
-      console.error('Register error', e);
-      throw e;
-    }
-  }
 
-  async loginEmail(email, password) {
-    try {
-      this.currentUser = await this.account.createEmailPasswordSession(email, password);
-      return this.currentUser;
-    } catch (e) {
-      console.error('Login error', e);
-      throw e;
-    }
-  }
 
   async signOut() {
     try {
@@ -129,15 +110,37 @@ class AppwriteService {
     return { partnerId, partnerName: invite.inviterName };
   }
 
+  async migrateAccount(partnerId, relationshipId, myName) {
+    if (!this.currentUser) return null;
+    try { if (myName && this.currentUser.name !== myName) await this.account.updateName(myName); } catch(e){}
+
+    // Create new permanent relationship
+    await this.databases.createDocument(DB_ID, RELATIONSHIPS_COL, ID.unique(), {
+      users: [this.currentUser.$id, partnerId],
+      lastActive: Math.floor(Date.now() / 1000)
+    });
+
+    // Try to cleanup the old relationship
+    if (relationshipId) {
+      try {
+        await this.databases.deleteDocument(DB_ID, RELATIONSHIPS_COL, relationshipId);
+      } catch (e) {}
+    }
+
+    return { partnerId, partnerName: 'Partner' };
+  }
+
   async getRelationship() {
     if (!this.currentUser) return null;
     const rels = await this.databases.listDocuments(DB_ID, RELATIONSHIPS_COL, [
-      Query.contains('users', [this.currentUser.$id])
+      Query.contains('users', [this.currentUser.$id]),
+      Query.orderDesc('lastActive')
     ]);
 
     if (rels.total > 0) {
       const rel = rels.documents[0];
       const partnerId = rel.users.find(id => id !== this.currentUser.$id);
+      this.relationshipId = rel.$id;
       
       // Update last active to prevent the 1-year cleanup
       try {

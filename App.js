@@ -21,6 +21,7 @@ function AppContent() {
   const [isConnected, setIsConnected] = useState(false);
   const [userId, setUserId] = useState('');
   const [userName, setUserName] = useState('');
+  const [partnerId, setPartnerId] = useState(null);
   const [partnerName, setPartnerName] = useState(null);
   const [inviteData, setInviteData] = useState(null); // { code, partnerName }
   const [isLoading, setIsLoading] = useState(true);

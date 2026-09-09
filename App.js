@@ -3,6 +3,7 @@ import { View, StyleSheet, StatusBar, AppState, Platform } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import * as Linking from 'expo-linking';
 import * as Notifications from 'expo-notifications';
+import { Ionicons } from '@expo/vector-icons';
 import { HomeScreen } from './src/screens/HomeScreen';
 import { HistoryScreen } from './src/screens/HistoryScreen';
 import { SettingsScreen } from './src/screens/SettingsScreen';
@@ -15,7 +16,7 @@ import { startListening } from './src/services/NotificationService';
 import { ThemeProvider, useTheme } from './src/context/ThemeContext';
 
 function AppContent() {
-  const { theme } = useTheme();
+  const { theme, themeId } = useTheme();
   const [activeTab, setActiveTab] = useState('home');
   const [currentSong, setCurrentSong] = useState(null);
   const [isConnected, setIsConnected] = useState(false);

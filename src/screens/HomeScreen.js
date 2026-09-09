@@ -5,6 +5,8 @@ import { SongCard } from '../components/SongCard';
 import { HeartBeat } from '../components/HeartBeat';
 import { MusicInfoService } from '../services/MusicInfoService';
 import { useTheme } from '../context/ThemeContext';
+import { LinearGradient } from 'expo-linear-gradient';
+import { VinylRecord } from '../components/VinylRecord';
 
 export const HomeScreen = ({ currentSong, isConnected, partnerName }) => {
   const [songInfo, setSongInfo] = useState(null);
@@ -31,33 +33,47 @@ export const HomeScreen = ({ currentSong, isConnected, partnerName }) => {
   };
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]} edges={['top', 'left', 'right']}>
-      <View style={styles.header}>
-        <View style={[styles.roomBadge, { backgroundColor: colors.accent + '80' }]}>
-          <View style={[styles.statusDot, { backgroundColor: isConnected ? colors.success : '#A0AEC0' }]} />
-          <Text style={[styles.headerText, { color: colors.textSecondary }]}>{isConnected ? 'Connected' : 'Disconnected'}</Text>
+    <LinearGradient 
+      colors={[colors.gradientStart + '40', colors.background]} 
+      style={styles.container}
+    >
+      <SafeAreaView style={styles.safeArea} edges={['top', 'left', 'right']}>
+        <View style={styles.header}>
+          <View style={[styles.roomBadge, { backgroundColor: colors.surfaceOverlay }]}>
+            <View style={[styles.statusDot, { backgroundColor: isConnected ? colors.success : '#A0AEC0' }]} />
+            <Text style={[styles.headerText, { color: colors.textSecondary }]}>{isConnected ? 'Connected' : 'Disconnected'}</Text>
+          </View>
+          <HeartBeat connected={isConnected} />
         </View>
-        <HeartBeat connected={isConnected} />
-      </View>
-      
-      <View style={styles.content}>
-        <Text style={[styles.statusText, { color: colors.textSecondary }]}>{getStatusText()}</Text>
         
-        <SongCard 
-          title={currentSong?.title} 
-          artist={currentSong?.artist} 
-          app={currentSong?.app} 
-          timestamp={currentSong?.timestamp}
-          artwork={songInfo?.artwork}
-          duration={songInfo?.duration}
-        />
-      </View>
-    </SafeAreaView>
+        <View style={styles.content}>
+          <Text style={[styles.statusText, { color: colors.textSecondary }]}>{getStatusText()}</Text>
+          
+          {currentSong ? (
+            <SongCard 
+              title={currentSong?.title} 
+              artist={currentSong?.artist} 
+              app={currentSong?.app} 
+              timestamp={currentSong?.timestamp}
+              artwork={songInfo?.artwork}
+              duration={songInfo?.duration}
+            />
+          ) : (
+            <View style={styles.emptyState}>
+              <VinylRecord isPlaying={false} />
+            </View>
+          )}
+        </View>
+      </SafeAreaView>
+    </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+  },
+  safeArea: {
     flex: 1,
   },
   header: {
@@ -92,6 +108,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 16,
     fontWeight: '600',
-    marginBottom: 16,
+    marginBottom: 24,
+    opacity: 0.8,
   },
+  emptyState: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 40,
+  }
 });

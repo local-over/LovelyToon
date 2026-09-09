@@ -59,6 +59,7 @@ export const SettingsScreen = ({ onDisconnect, partnerName }) => {
         </View>
 
         <View style={styles.content}>
+          <Text style={[styles.sectionHeader, { color: colors.textSecondary }]}>ACCOUNT</Text>
           {/* Connection Info */}
           <View style={[styles.card, { backgroundColor: colors.card }]}>
             <View style={styles.infoRow}>
@@ -69,27 +70,34 @@ export const SettingsScreen = ({ onDisconnect, partnerName }) => {
           </View>
 
           {/* Theme Selector */}
+          <Text style={[styles.sectionHeader, { color: colors.textSecondary, marginTop: 24 }]}>APPEARANCE</Text>
           <View style={[styles.card, { backgroundColor: colors.card }]}>
             <Text style={[styles.cardTitle, { color: colors.textPrimary }]}>Theme</Text>
             <Text style={[styles.cardDescription, { color: colors.textSecondary }]}>
               Customize the look and feel of the app and Android widget.
             </Text>
             <View style={styles.themeContainer}>
-              {Object.values(THEMES).map((t) => (
-                <TouchableOpacity
-                  key={t.id}
-                  style={[
-                    styles.themeCircle,
-                    { backgroundColor: t.colors.primary },
-                    themeId === t.id && { borderWidth: 3, borderColor: colors.textPrimary }
-                  ]}
-                  onPress={() => changeTheme(t.id)}
-                />
-              ))}
+              {Object.values(THEMES).map((t) => {
+                const isActive = themeId === t.id;
+                return (
+                  <TouchableOpacity
+                    key={t.id}
+                    style={[
+                      styles.themeCircle,
+                      { backgroundColor: t.colors.primary },
+                      isActive && { borderWidth: 3, borderColor: colors.textPrimary }
+                    ]}
+                    onPress={() => changeTheme(t.id)}
+                  >
+                    {isActive && <Ionicons name="checkmark" size={24} color="white" />}
+                  </TouchableOpacity>
+                );
+              })}
             </View>
           </View>
 
           {/* Notifications */}
+          <Text style={[styles.sectionHeader, { color: colors.textSecondary, marginTop: 24 }]}>PREFERENCES</Text>
           <View style={[styles.card, { backgroundColor: colors.card }]}>
             <View style={styles.row}>
               <View style={{ flex: 1 }}>
@@ -121,15 +129,36 @@ export const SettingsScreen = ({ onDisconnect, partnerName }) => {
 
           {/* Logout */}
           <View style={[styles.card, { backgroundColor: colors.card }]}>
-            <Text style={[styles.cardTitle, { color: colors.textPrimary }]}>Account</Text>
+            <Text style={[styles.cardTitle, { color: colors.textPrimary }]}>Sign Out</Text>
             <Text style={[styles.cardDescription, { color: colors.textSecondary }]}>
-              Log out of your Appwrite session. You will need to log back in to see your partner's status.
+              Log out of your session. You will need to reconnect to see your partner's status.
             </Text>
             <TouchableOpacity style={[styles.dangerButton, { backgroundColor: colors.background, borderColor: colors.heartRed }]} onPress={confirmDisconnect}>
               <Ionicons name="log-out-outline" size={18} color={colors.heartRed} style={{ marginRight: 8 }} />
               <Text style={[styles.dangerButtonText, { color: colors.heartRed }]}>Logout</Text>
             </TouchableOpacity>
           </View>
+
+          {/* About Section */}
+          <Text style={[styles.sectionHeader, { color: colors.textSecondary, marginTop: 24 }]}>ABOUT</Text>
+          <View style={[styles.card, { backgroundColor: colors.card, alignItems: 'center', paddingVertical: 32 }]}>
+            <View style={[styles.appIconWrapper, { backgroundColor: colors.primary }]}>
+              <Ionicons name="heart" size={32} color="white" />
+            </View>
+            <Text style={[styles.cardTitle, { color: colors.textPrimary, marginTop: 16 }]}>LovelyToon</Text>
+            <Text style={[styles.cardDescription, { color: colors.textSecondary, textAlign: 'center', marginBottom: 24 }]}>
+              Version 4.0.0{'\n'}Made with ❤️ for couples
+            </Text>
+            <TouchableOpacity 
+              style={[styles.primaryButton, { backgroundColor: colors.surfaceOverlay, paddingHorizontal: 24 }]} 
+              onPress={() => Linking.openURL('https://github.com/local-over/LovelyToon')}
+            >
+              <Ionicons name="logo-github" size={18} color={colors.primary} style={{ marginRight: 8 }} />
+              <Text style={[styles.primaryButtonText, { color: colors.primary }]}>View Source</Text>
+            </TouchableOpacity>
+          </View>
+          
+          <View style={{ height: 100 }} /> {/* Bottom padding for tab bar */}
         </View>
       </ScrollView>
 
@@ -184,6 +213,13 @@ const styles = StyleSheet.create({
     padding: 20,
     paddingTop: 8,
   },
+  sectionHeader: {
+    fontSize: 13,
+    fontWeight: '800',
+    letterSpacing: 1.2,
+    marginBottom: 8,
+    marginLeft: 4,
+  },
   card: {
     borderRadius: SIZES.cardRadius,
     padding: SIZES.padding,
@@ -228,6 +264,16 @@ const styles = StyleSheet.create({
     width: 48,
     height: 48,
     borderRadius: 24,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  appIconWrapper: {
+    width: 64,
+    height: 64,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    ...SHADOWS.card,
   },
   dangerButton: {
     flexDirection: 'row',

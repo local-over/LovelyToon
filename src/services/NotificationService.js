@@ -15,14 +15,11 @@ export const handleNotification = async (notification) => {
   if (!notification || !notification.app) return;
   
   if (MEDIA_APPS.includes(notification.app)) {
-    const pairingCode = await StorageService.getPairingCode();
-    if (!pairingCode) return;
-    
     const userId = await StorageService.getUserId();
     
     if (notification.event === 'removed') {
       try {
-        await appwriteService.publishBackgroundMessage(pairingCode, { status: 'stopped', sender: userId });
+        await appwriteService.publishBackgroundMessage({ status: 'stopped', sender: userId });
       } catch (e) {}
       lastSong = { title: null, artist: null };
       return;
@@ -49,7 +46,7 @@ export const handleNotification = async (notification) => {
     };
 
     try {
-      await appwriteService.publishBackgroundMessage(pairingCode, songData);
+      await appwriteService.publishBackgroundMessage(songData);
       await StorageService.addHistoryItem({ ...songData, direction: 'sent' });
     } catch (e) {
       console.error('Failed to publish background message', e);

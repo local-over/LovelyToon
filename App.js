@@ -21,10 +21,16 @@ function AppContent() {
   const [isConnected, setIsConnected] = useState(false);
   const [userId, setUserId] = useState('');
   const [userName, setUserName] = useState('');
-  const [partnerId, setPartnerId] = useState(null);
   const [partnerName, setPartnerName] = useState(null);
   const [inviteData, setInviteData] = useState(null); // { code, partnerName }
   const [isLoading, setIsLoading] = useState(true);
+  
+  const partnerIdRef = useRef(null);
+  
+  // Keep ref in sync
+  useEffect(() => {
+    partnerIdRef.current = partnerId;
+  }, [partnerId]);
 
   useEffect(() => {
     Notifications.setNotificationHandler({
@@ -91,7 +97,7 @@ function AppContent() {
         const name = url.searchParams.get('name');
         
         // If we already have a partner, ignore
-        if (partnerId) return;
+        if (partnerIdRef.current) return;
 
         setInviteData({ code, partnerName: name ? decodeURIComponent(name) : 'Your partner' });
       }
@@ -184,6 +190,7 @@ function AppContent() {
 
   // ── Disconnect / Logout ──
   const handleDisconnect = async () => {
+    appwriteService.disconnect();
     await appwriteService.signOut();
     await StorageService.clearAllPairing();
     setIsConnected(false);
@@ -195,10 +202,14 @@ function AppContent() {
   };
 
   // ── Render ──
+  const isDarkTheme = themeId === 'midnight' || themeId === 'ocean';
+  const statusBarStyle = isDarkTheme ? 'light-content' : 'dark-content';
+
   if (isLoading) {
     return (
       <View style={[styles.container, { backgroundColor: theme.colors.background, justifyContent: 'center', alignItems: 'center' }]}>
-        <StatusBar barStyle="dark-content" backgroundColor={theme.colors.background} />
+        <StatusBar barStyle={statusBarStyle} backgroundColor={theme.colors.background} />
+        <Ionicons name="headset" size={64} color={theme.colors.primary} />
       </View>
     );
   }
@@ -207,7 +218,7 @@ function AppContent() {
     return (
       <SafeAreaProvider>
         <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
-          <StatusBar barStyle="dark-content" backgroundColor={theme.colors.background} />
+          <StatusBar barStyle={statusBarStyle} backgroundColor={theme.colors.background} />
           <OnboardingScreen
             onPaired={handlePaired}
             inviteData={inviteData}
@@ -245,7 +256,7 @@ function AppContent() {
   return (
     <SafeAreaProvider>
       <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
-        <StatusBar barStyle="dark-content" backgroundColor={theme.colors.background} />
+        <StatusBar barStyle={statusBarStyle} backgroundColor={theme.colors.background} />
         <View style={styles.content}>
           {renderScreen()}
         </View>

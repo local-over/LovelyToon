@@ -3,13 +3,16 @@
     "name": "LovelyToon",
     "slug": "LovelyToon",
     "scheme": "lovelytoon",
-    "version": "4.0.0",
+    "version": "5.2.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#FF758C"
+    },
     "plugins": [
       "./plugins/withAllowBackupFix",
-      "expo-sharing",
       [
         "react-native-android-widget",
         {

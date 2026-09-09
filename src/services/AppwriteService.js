@@ -158,9 +158,8 @@ class AppwriteService {
 
   async connectToPartner(partnerId) {
     try {
-      this.partnerId = partnerId;
       this.disconnect();
-      this.partnerId = partnerId; // Set again because disconnect clears it
+      this.partnerId = partnerId;
 
       // Ensure our own NowPlaying doc exists so partner can subscribe to it
       await this.initNowPlayingDoc(this.currentUser.$id);
@@ -276,7 +275,33 @@ class AppwriteService {
       this.realtimeUnsubscribe();
       this.realtimeUnsubscribe = null;
     }
+    if (this.relationshipUnsubscribe) {
+      this.relationshipUnsubscribe();
+      this.relationshipUnsubscribe = null;
+    }
     this.partnerId = null;
+  }
+
+  subscribeToRelationships(callback) {
+    if (!this.currentUser) return;
+    
+    // Unsubscribe if already listening
+    if (this.relationshipUnsubscribe) {
+      this.relationshipUnsubscribe();
+    }
+    
+    const channel = `databases.${DB_ID}.collections.${RELATIONSHIPS_COL}.documents`;
+    this.relationshipUnsubscribe = this.client.subscribe(channel, (response) => {
+      const doc = response.payload;
+      
+      // If a relationship is created or updated, and we are in it
+      if (doc.users && doc.users.includes(this.currentUser.$id)) {
+        const partnerId = doc.users.find(id => id !== this.currentUser.$id);
+        if (partnerId) {
+          callback(partnerId);
+        }
+      }
+    });
   }
 }
 

@@ -16,7 +16,7 @@ export function Widget({ song, colors }) {
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: bgColor,
-        borderRadius: 16,
+        borderRadius: 24,
         padding: 16,
       }}
     >

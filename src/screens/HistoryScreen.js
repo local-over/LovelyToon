@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, SectionList, Text, TouchableOpacity, FlatList } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity, FlatList, LayoutAnimation, Platform, UIManager, RefreshControl } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { HistoryItem } from '../components/HistoryItem';
 import { StorageService } from '../services/StorageService';
 import { useTheme } from '../context/ThemeContext';
 import { SIZES, SHADOWS } from '../utils/constants';
+
+if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
+  UIManager.setLayoutAnimationEnabledExperimental(true);
+}
 
 const SESSION_GAP_MS = 60 * 60 * 1000; // 1 hour
 
@@ -30,11 +34,16 @@ const formatDateOnly = (timestamp) => {
 const SessionCard = ({ session, colors }) => {
   const [expanded, setExpanded] = useState(false);
 
+  const toggleExpand = () => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    setExpanded(!expanded);
+  };
+
   return (
     <View style={[styles.sessionCard, { backgroundColor: colors.card }]}>
       <TouchableOpacity 
         style={styles.sessionHeader} 
-        onPress={() => setExpanded(!expanded)}
+        onPress={toggleExpand}
         activeOpacity={0.7}
       >
         <View style={styles.sessionInfo}>
@@ -68,6 +77,7 @@ const SessionCard = ({ session, colors }) => {
 
 export const HistoryScreen = () => {
   const [sessions, setSessions] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
   const { theme } = useTheme();
   const colors = theme.colors;
 
@@ -133,6 +143,12 @@ export const HistoryScreen = () => {
     setSessions(groupedSessions);
   };
 
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await loadHistory();
+    setRefreshing(false);
+  };
+
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]} edges={['top', 'left', 'right']}>
       <View style={styles.header}>
@@ -142,10 +158,15 @@ export const HistoryScreen = () => {
         data={sessions}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => <SessionCard session={item} colors={colors} />}
-        contentContainerStyle={styles.list}
+        contentContainerStyle={[styles.list, sessions.length === 0 && {flex: 1}]}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.primary} />
+        }
         ListEmptyComponent={
           <View style={styles.empty}>
-            <Text style={[styles.emptyText, { color: colors.textSecondary }]}>No songs yet. Share some music!</Text>
+            <Ionicons name="musical-notes-outline" size={80} color={colors.accent} style={{marginBottom: 16}} />
+            <Text style={[styles.emptyText, { color: colors.textSecondary }]}>No history yet.</Text>
+            <Text style={[styles.emptySub, { color: colors.textSecondary, opacity: 0.7 }]}>Songs you listen to while connected will appear here.</Text>
           </View>
         }
       />
@@ -202,11 +223,20 @@ const styles = StyleSheet.create({
     paddingBottom: 16,
   },
   empty: {
+    flex: 1,
     padding: 40,
     alignItems: 'center',
+    justifyContent: 'center',
   },
   emptyText: {
-    fontSize: 16,
+    fontSize: 20,
+    fontWeight: '600',
     textAlign: 'center',
+    marginBottom: 8,
   },
+  emptySub: {
+    fontSize: 14,
+    textAlign: 'center',
+    lineHeight: 20,
+  }
 });

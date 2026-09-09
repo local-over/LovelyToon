@@ -1,29 +1,60 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, Linking, Dimensions } from 'react-native';
+import React, { useEffect, useState, useRef } from 'react';
+import { View, Text, StyleSheet, Image, TouchableOpacity, Linking, Dimensions, Animated, Easing } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { SIZES, SHADOWS } from '../utils/constants';
+import { SIZES, SHADOWS, ANIMATION } from '../utils/constants';
 import { useTheme } from '../context/ThemeContext';
 
 const { width } = Dimensions.get('window');
 
 export const SongCard = ({ title, artist, app, timestamp, artwork, duration }) => {
   const [progress, setProgress] = useState(0);
+  const animProgress = useRef(new Animated.Value(0)).current;
+  const scale = useRef(new Animated.Value(1)).current;
   const { theme } = useTheme();
   const colors = theme.colors;
 
   useEffect(() => {
-    let interval;
-    if (timestamp && duration) {
-      interval = setInterval(() => {
+    let animationFrame;
+    const updateProgress = () => {
+      if (timestamp && duration) {
         const now = Date.now();
         const elapsed = now - timestamp;
         let p = elapsed / duration;
-        if (p > 1) p = 1; // Cap at 100%
+        if (p > 1) p = 1;
         setProgress(p);
-      }, 1000);
-    }
-    return () => clearInterval(interval);
+        
+        Animated.timing(animProgress, {
+          toValue: p,
+          duration: 100, // frequent small updates
+          easing: Easing.linear,
+          useNativeDriver: false,
+        }).start();
+
+        if (p < 1) {
+          animationFrame = requestAnimationFrame(updateProgress);
+        }
+      }
+    };
+    
+    updateProgress();
+    return () => cancelAnimationFrame(animationFrame);
   }, [timestamp, duration]);
+
+  const handlePressIn = () => {
+    Animated.spring(scale, {
+      toValue: 0.95,
+      ...ANIMATION.spring.bouncy,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const handlePressOut = () => {
+    Animated.spring(scale, {
+      toValue: 1,
+      ...ANIMATION.spring.bouncy,
+      useNativeDriver: true,
+    }).start();
+  };
 
   if (!title) {
     return (
@@ -61,17 +92,23 @@ export const SongCard = ({ title, artist, app, timestamp, artwork, duration }) =
   const currentElapsedMillis = progress * (duration || 0);
 
   return (
-    <TouchableOpacity activeOpacity={0.9} onPress={handlePress}>
-      <View style={[styles.card, { backgroundColor: colors.card }]}>
-        <View style={[styles.artworkContainer, { backgroundColor: colors.background }]}>
-          {artwork ? (
-            <Image source={{ uri: artwork }} style={styles.artwork} />
-          ) : (
-            <View style={[styles.artworkPlaceholder, { backgroundColor: colors.background }]}>
-              <Ionicons name="musical-note" size={64} color={colors.textSecondary} />
-            </View>
-          )}
-        </View>
+    <Animated.View style={{ transform: [{ scale }] }}>
+      <TouchableOpacity 
+        activeOpacity={1} 
+        onPress={handlePress}
+        onPressIn={handlePressIn}
+        onPressOut={handlePressOut}
+      >
+        <View style={[styles.card, { backgroundColor: colors.card }, SHADOWS.glow(colors.primary + '30')]}>
+          <View style={[styles.artworkContainer, { backgroundColor: colors.background, shadowColor: colors.primary }]}>
+            {artwork ? (
+              <Image source={{ uri: artwork }} style={styles.artwork} />
+            ) : (
+              <View style={[styles.artworkPlaceholder, { backgroundColor: colors.background }]}>
+                <Ionicons name="musical-note" size={64} color={colors.textSecondary} />
+              </View>
+            )}
+          </View>
 
         <View style={styles.content}>
           <Text style={[styles.title, { color: colors.textPrimary }]} numberOfLines={1}>{title}</Text>
@@ -86,7 +123,16 @@ export const SongCard = ({ title, artist, app, timestamp, artwork, duration }) =
         {/* Listening Bar */}
         <View style={styles.progressContainer}>
           <View style={[styles.progressBarBackground, { backgroundColor: colors.background }]}>
-            <View style={[styles.progressBarFill, { width: `${progress * 100}%`, backgroundColor: colors.primary }]} />
+            <Animated.View style={[
+              styles.progressBarFill, 
+              { 
+                width: animProgress.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: ['0%', '100%']
+                }),
+                backgroundColor: colors.primary 
+              }
+            ]} />
           </View>
           <View style={styles.timeRow}>
             <Text style={[styles.timeText, { color: colors.textSecondary }]}>{formatTime(currentElapsedMillis)}</Text>
@@ -95,6 +141,7 @@ export const SongCard = ({ title, artist, app, timestamp, artwork, duration }) =
         </View>
       </View>
     </TouchableOpacity>
+    </Animated.View>
   );
 };
 

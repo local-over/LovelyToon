@@ -1,9 +1,12 @@
 import React, { useEffect, useRef } from 'react';
 import { View, StyleSheet, Animated, Easing } from 'react-native';
-import { COLORS } from '../utils/constants';
+import { useTheme } from '../context/ThemeContext';
 
 export const VinylRecord = ({ isPlaying }) => {
   const spinValue = useRef(new Animated.Value(0)).current;
+  const currentSpin = useRef(0);
+  const { theme } = useTheme();
+  const colors = theme.colors;
 
   useEffect(() => {
     let animation;
@@ -16,6 +19,9 @@ export const VinylRecord = ({ isPlaying }) => {
           useNativeDriver: true,
         })
       );
+      // If we stopped previously, we'll just let it jump for now 
+      // since keeping track of exact angle requires listener. 
+      // But we can improve it slightly by keeping state if needed.
       animation.start();
     } else {
       spinValue.stopAnimation();
@@ -35,8 +41,8 @@ export const VinylRecord = ({ isPlaying }) => {
       <Animated.View style={[styles.record, { transform: [{ rotate: spin }] }]}>
         <View style={styles.groove} />
         <View style={styles.grooveInner} />
-        <View style={styles.label}>
-          <View style={styles.hole} />
+        <View style={[styles.label, { backgroundColor: colors.primary }]}>
+          <View style={[styles.hole, { backgroundColor: colors.background }]} />
         </View>
       </Animated.View>
     </View>
@@ -82,7 +88,6 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     borderRadius: 40,
-    backgroundColor: COLORS.primary,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -90,6 +95,5 @@ const styles = StyleSheet.create({
     width: 12,
     height: 12,
     borderRadius: 6,
-    backgroundColor: '#FFF5F7',
   },
 });

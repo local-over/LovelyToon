@@ -3,64 +3,76 @@ export const THEMES = {
     id: 'lovely',
     name: 'Lovely Rose',
     colors: {
-      primary: '#FF6B8A', // warm rose
-      secondary: '#FFA3B5', // soft pink
-      accent: '#FFD4E0', // blush
-      background: '#FFF5F7', // cream rose
+      primary: '#FF4D85',
+      secondary: '#FFA3B5',
+      accent: '#FFD4E0',
+      background: '#FFF5F7',
       card: '#FFFFFF',
-      textPrimary: '#2D1B2E', // deep plum
-      textSecondary: '#8B6B8D', // muted lavender
+      textPrimary: '#2D1B2E',
+      textSecondary: '#8B6B8D',
       heartRed: '#FF4D6D',
-      partnerAccent: '#7C5CFC', // soft purple
-      success: '#4ECDC4', // mint
+      partnerAccent: '#7C5CFC',
+      success: '#4ECDC4',
+      gradientStart: '#FF6B8A',
+      gradientEnd: '#FF8E9E',
+      surfaceOverlay: 'rgba(255, 107, 138, 0.08)',
     }
   },
   ocean: {
     id: 'ocean',
     name: 'Ocean Breeze',
     colors: {
-      primary: '#4DA8DA', // ocean blue
-      secondary: '#82C4E6', // soft blue
-      accent: '#D4F0FF', // light breeze
-      background: '#F0F8FF', // alice blue
+      primary: '#0084FF',
+      secondary: '#82C4E6',
+      accent: '#D4F0FF',
+      background: '#F0F8FF',
       card: '#FFFFFF',
-      textPrimary: '#1E3B4D', // deep sea
-      textSecondary: '#6B8D9E', // muted sea
+      textPrimary: '#1E3B4D',
+      textSecondary: '#6B8D9E',
       heartRed: '#FF4D6D',
-      partnerAccent: '#FF9A3C', // sunset orange
+      partnerAccent: '#FF9A3C',
       success: '#4ECDC4',
+      gradientStart: '#4DA8DA',
+      gradientEnd: '#7BC5EE',
+      surfaceOverlay: 'rgba(77, 168, 218, 0.08)',
     }
   },
   midnight: {
     id: 'midnight',
     name: 'Midnight Purple',
     colors: {
-      primary: '#9D4EDD', // royal purple
-      secondary: '#C77DFF', // soft purple
-      accent: '#E0AAFF', // light lavender
-      background: '#1A0B2E', // dark night
-      card: '#2D1B4E', // dark purple
-      textPrimary: '#FFFFFF', // white
-      textSecondary: '#A992C8', // muted lavender
+      primary: '#A259FF',
+      secondary: '#C77DFF',
+      accent: '#E0AAFF',
+      background: '#14121E',
+      card: '#201C30',
+      textPrimary: '#FFFFFF',
+      textSecondary: '#A992C8',
       heartRed: '#FF4D6D',
-      partnerAccent: '#F9A03F', // gold
+      partnerAccent: '#F9A03F',
       success: '#4ECDC4',
+      gradientStart: '#9D4EDD',
+      gradientEnd: '#7B2CBF',
+      surfaceOverlay: 'rgba(157, 78, 221, 0.15)',
     }
   },
   forest: {
     id: 'forest',
     name: 'Deep Forest',
     colors: {
-      primary: '#2D6A4F', // forest green
-      secondary: '#52B788', // soft green
-      accent: '#B7E4C7', // mint
-      background: '#F0FFF4', // pale mint
+      primary: '#2D6A4F',
+      secondary: '#52B788',
+      accent: '#B7E4C7',
+      background: '#F1F8F2',
       card: '#FFFFFF',
-      textPrimary: '#1B4332', // dark green
-      textSecondary: '#74A57F', // muted green
+      textPrimary: '#1B3B1D',
+      textSecondary: '#74A57F',
       heartRed: '#FF4D6D',
-      partnerAccent: '#D4A373', // wood
+      partnerAccent: '#D4A373',
       success: '#4ECDC4',
+      gradientStart: '#2D6A4F',
+      gradientEnd: '#40916C',
+      surfaceOverlay: 'rgba(45, 106, 79, 0.08)',
     }
   }
 };
@@ -74,9 +86,28 @@ export const SIZES = {
 export const SHADOWS = {
   card: {
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.08,
-    shadowRadius: 12,
-    elevation: 4,
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.06,
+    shadowRadius: 16,
+    elevation: 6,
   },
+  glow: (color) => ({
+    shadowColor: color,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 12,
+    elevation: 8,
+  }),
+};
+
+export const ANIMATION = {
+  spring: {
+    bouncy: { tension: 40, friction: 3 },
+    smooth: { tension: 30, friction: 7 },
+  },
+  timing: {
+    fast: 200,
+    normal: 300,
+    slow: 500,
+  }
 };

@@ -50,12 +50,14 @@ const FadeInView = ({ children, delay = 0, style }) => {
 
 export const OnboardingScreen = ({ onPaired, inviteData, initialUserId }) => {
   const [step, setStep] = useState(initialUserId ? (inviteData ? 'invite' : 'welcome') : 'welcome');
+  const [welcomeSlide, setWelcomeSlide] = useState(0);
   const [nickname, setNickname] = useState('');
   const [joinCode, setJoinCode] = useState('');
   const [generatedCode, setGeneratedCode] = useState(null);
   
   const [loading, setLoading] = useState(false);
   const [authReady, setAuthReady] = useState(!!initialUserId);
+  const [authError, setAuthError] = useState(false);
   
   const [scanning, setScanning] = useState(false);
   const [permission, requestPermission] = useCameraPermissions ? useCameraPermissions() : [null, () => {}];
@@ -67,12 +69,42 @@ export const OnboardingScreen = ({ onPaired, inviteData, initialUserId }) => {
   useEffect(() => {
     StorageService.getNickname().then(n => { if (n) setNickname(n); });
     if (!initialUserId) {
-      appwriteService.signInAnonymous().then(() => setAuthReady(true)).catch(() => {
-        // Retry or handle anon login error
-        appwriteService.signInAnonymous().then(() => setAuthReady(true)).catch(console.error);
-      });
+      const initAuth = async () => {
+        try {
+          await appwriteService.signInAnonymous();
+          setAuthReady(true);
+        } catch (e) {
+          try {
+            await appwriteService.signInAnonymous();
+            setAuthReady(true);
+          } catch (e2) {
+            setAuthError(true);
+          }
+        }
+      };
+      initAuth();
     }
   }, []);
+
+  useEffect(() => {
+    if (inviteData && step !== 'invite') {
+      setStep('invite');
+      if (inviteData.partnerName && !nickname) {
+        // If we want to pre-fill something, though nickname is for current user
+      }
+    }
+  }, [inviteData]);
+
+  // Real-time invite detection
+  useEffect(() => {
+    if (generatedCode) {
+      appwriteService.subscribeToRelationships((partnerId) => {
+        // We don't have the partner name immediately without an extra fetch, 
+        // but we can transition and App.js will fetch it from NowPlaying eventually
+        onPaired(partnerId, 'Your Partner');
+      });
+    }
+  }, [generatedCode]);
 
   const goToPermissions = async () => {
     if (Platform.OS !== 'android') {
@@ -211,21 +243,57 @@ export const OnboardingScreen = ({ onPaired, inviteData, initialUserId }) => {
 
           {step === 'welcome' && (
             <View style={styles.slide}>
-              <FadeInView delay={100} style={styles.iconContainer}>
-                <Ionicons name="headset-outline" size={100} color={colors.primary} />
-                <Ionicons name="heart" size={40} color={colors.accent} style={styles.floatingIcon} />
-              </FadeInView>
-              <FadeInView delay={300} style={{ alignItems: 'center' }}>
-                <Text style={[styles.title, { color: colors.textPrimary }]}>Lovely Toon</Text>
-                <Text style={[styles.subtitle, { color: colors.textSecondary }]}>See what your partner is listening to, in real-time. No sign-ups required.</Text>
-              </FadeInView>
-              <FadeInView delay={500} style={{ width: '100%' }}>
+              {welcomeSlide === 0 && (
+                <FadeInView delay={100} key="slide0" style={{ alignItems: 'center' }}>
+                  <View style={styles.iconContainer}>
+                    <Ionicons name="headset-outline" size={100} color={colors.primary} />
+                    <Ionicons name="heart" size={40} color={colors.accent} style={styles.floatingIcon} />
+                  </View>
+                  <Text style={[styles.title, { color: colors.textPrimary }]}>Lovely Toon</Text>
+                  <Text style={[styles.subtitle, { color: colors.textSecondary }]}>See what your partner is listening to, in real-time. No sign-ups required.</Text>
+                </FadeInView>
+              )}
+              
+              {welcomeSlide === 1 && (
+                <FadeInView delay={100} key="slide1" style={{ alignItems: 'center' }}>
+                  <Ionicons name="disc-outline" size={100} color={colors.primary} style={{ marginBottom: 20 }} />
+                  <Text style={[styles.title, { color: colors.textPrimary }]}>Always Connected</Text>
+                  <Text style={[styles.subtitle, { color: colors.textSecondary }]}>Works silently in the background with Spotify, YouTube Music, and Apple Music.</Text>
+                </FadeInView>
+              )}
+
+              {welcomeSlide === 2 && (
+                <FadeInView delay={100} key="slide2" style={{ alignItems: 'center' }}>
+                  <Ionicons name="cafe-outline" size={100} color={colors.primary} style={{ marginBottom: 20 }} />
+                  <Text style={[styles.title, { color: colors.textPrimary }]}>Keep it Alive</Text>
+                  <Text style={[styles.subtitle, { color: colors.textSecondary }]}>LovelyToon is free and ad-free. If you love it, consider supporting the servers.</Text>
+                  <View style={[styles.donationCard, { backgroundColor: colors.card, borderColor: colors.accent, borderWidth: 1 }]}>
+                    <Text style={{ fontWeight: '700', marginBottom: 4, color: colors.textPrimary }}>USDT (TRC20)</Text>
+                    <Text style={{ fontSize: 11, color: colors.textSecondary }} selectable>UQBEJwLa4EGPRmUKw4O1i9d_JjJGmjkJ2myqR5lborzgceT-</Text>
+                  </View>
+                </FadeInView>
+              )}
+
+              <View style={styles.dotsContainer}>
+                {[0, 1, 2].map((i) => (
+                  <View key={i} style={[styles.dot, { backgroundColor: welcomeSlide === i ? colors.primary : colors.accent }]} />
+                ))}
+              </View>
+
+              <FadeInView delay={300} style={{ width: '100%', marginTop: 20 }}>
+                {authError ? (
+                  <Text style={{ color: colors.heartRed, textAlign: 'center', marginBottom: 16 }}>Connection error. Please check your internet.</Text>
+                ) : null}
+                
                 <TouchableOpacity 
-                  style={[styles.button, { backgroundColor: colors.primary }, !authReady && styles.buttonDisabled]} 
-                  onPress={() => setStep('name')}
-                  disabled={!authReady}
+                  style={[styles.button, { backgroundColor: colors.primary }, (!authReady || authError) && styles.buttonDisabled]} 
+                  onPress={() => {
+                    if (welcomeSlide < 2) setWelcomeSlide(welcomeSlide + 1);
+                    else setStep('name');
+                  }}
+                  disabled={!authReady || authError}
                 >
-                  {!authReady ? <ActivityIndicator color="white" /> : <Text style={styles.buttonText}>Get Started</Text>}
+                  {!authReady && !authError ? <ActivityIndicator color="white" /> : <Text style={styles.buttonText}>{welcomeSlide < 2 ? 'Next' : 'Get Started'}</Text>}
                 </TouchableOpacity>
               </FadeInView>
             </View>
@@ -416,8 +484,12 @@ export const OnboardingScreen = ({ onPaired, inviteData, initialUserId }) => {
                 </FadeInView>
               )}
 
-              <FadeInView delay={300} style={{ alignItems: 'center' }}>
-                <Text style={[styles.subtitle, { color: colors.textSecondary }]}>Let your partner scan this code, or send them the link.</Text>
+              <FadeInView delay={300} style={{ alignItems: 'center', width: '100%' }}>
+                <View style={styles.pulseContainer}>
+                  <ActivityIndicator color={colors.primary} size="small" style={{ marginRight: 8 }} />
+                  <Text style={[styles.subtitle, { color: colors.primary, marginBottom: 0, fontWeight: '700' }]}>Waiting for partner to connect...</Text>
+                </View>
+                <Text style={[styles.subtitle, { color: colors.textSecondary, marginTop: 16 }]}>Let your partner scan this code, or send them the link.</Text>
               </FadeInView>
 
               <FadeInView delay={400} style={{ width: '100%' }}>
@@ -425,7 +497,7 @@ export const OnboardingScreen = ({ onPaired, inviteData, initialUserId }) => {
                   <Text style={styles.buttonText}>Share Link</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => setGeneratedCode(null)} style={{ marginTop: 24, alignItems: 'center' }}>
+                <TouchableOpacity onPress={() => { setGeneratedCode(null); if (appwriteService.relationshipUnsubscribe) appwriteService.relationshipUnsubscribe(); }} style={{ marginTop: 24, alignItems: 'center' }}>
                   <Text style={[styles.linkText, { color: colors.textSecondary }]}>Back</Text>
                 </TouchableOpacity>
               </FadeInView>
@@ -466,5 +538,9 @@ const styles = StyleSheet.create({
   themeGrid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', gap: 16 },
   themeCard: { width: '45%', padding: 16, borderRadius: 16, alignItems: 'center', elevation: 2, marginBottom: 16 },
   themeCircle: { width: 40, height: 40, borderRadius: 20, marginBottom: 12 },
-  themeName: { fontSize: 14, fontWeight: '700', textAlign: 'center' }
+  themeName: { fontSize: 14, fontWeight: '700', textAlign: 'center' },
+  dotsContainer: { flexDirection: 'row', justifyContent: 'center', marginVertical: 20 },
+  dot: { width: 8, height: 8, borderRadius: 4, marginHorizontal: 4 },
+  donationCard: { padding: 16, borderRadius: 12, marginTop: 10, width: '90%', alignItems: 'center' },
+  pulseContainer: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', padding: 12, borderRadius: 24, backgroundColor: 'rgba(0,0,0,0.05)', marginTop: 10 }
 });

@@ -67,43 +67,70 @@ export const OnboardingScreen = ({ onPaired, inviteData, initialUserId }) => {
   const colors = theme.colors;
 
   useEffect(() => {
-    StorageService.getNickname().then(n => { if (n) setNickname(n); });
-    if (!initialUserId) {
-      const initAuth = async () => {
+    const init = async () => {
+      const n = await StorageService.getNickname();
+      if (n) setNickname(n);
+
+      let uId = initialUserId;
+      if (!uId) {
         try {
           await appwriteService.signInAnonymous();
+          uId = appwriteService.currentUser?.$id;
           setAuthReady(true);
         } catch (e) {
           try {
             await appwriteService.signInAnonymous();
+            uId = appwriteService.currentUser?.$id;
             setAuthReady(true);
           } catch (e2) {
             setAuthError(true);
           }
         }
-      };
-      initAuth();
-    }
-  }, []);
+      } else {
+        setAuthReady(true);
+      }
+
+      if (uId) {
+        const activeCode = await appwriteService.getActiveInvite();
+        if (activeCode) {
+          setGeneratedCode(activeCode);
+          setStep('room');
+        } else if (n && !inviteData) {
+          setStep('room');
+        }
+      }
+    };
+    init();
+  }, [initialUserId, inviteData]);
 
   useEffect(() => {
     if (inviteData && step !== 'invite') {
       setStep('invite');
-      if (inviteData.partnerName && !nickname) {
-        // If we want to pre-fill something, though nickname is for current user
-      }
     }
   }, [inviteData]);
 
-  // Real-time invite detection
+  // Real-time invite detection and polling
   useEffect(() => {
+    let pollInterval;
     if (generatedCode) {
+      // 1. Real-time subscription
       appwriteService.subscribeToRelationships((partnerId) => {
-        // We don't have the partner name immediately without an extra fetch, 
-        // but we can transition and App.js will fetch it from NowPlaying eventually
         onPaired(partnerId, 'Your Partner');
       });
+
+      // 2. Polling fallback every 3 seconds (in case real-time drops on mobile)
+      pollInterval = setInterval(async () => {
+        try {
+          const partnerId = await appwriteService.getRelationship();
+          if (partnerId) {
+            onPaired(partnerId, 'Your Partner');
+          }
+        } catch(e) {}
+      }, 3000);
     }
+    return () => {
+      if (pollInterval) clearInterval(pollInterval);
+    };
   }, [generatedCode]);
 
   const goToPermissions = async () => {
@@ -525,22 +552,22 @@ const styles = StyleSheet.create({
   outlineButton: { paddingVertical: 16, borderRadius: 30, width: '100%', alignItems: 'center', borderWidth: 2 },
   outlineButtonText: { fontSize: 18, fontWeight: '700' },
   secondaryButton: { paddingVertical: 16, borderRadius: 30, width: '100%', alignItems: 'center' },
-  secondaryButtonText: { fontSize: 18, fontWeight: '700' },
+  secondaryButtonText: { fontSize: 18, fontWeight: '700', textAlign: 'center' },
   divider: { marginVertical: 20, fontWeight: '600', textAlign: 'center' },
-  codeText: { fontSize: 42, fontWeight: '900', letterSpacing: 6, marginBottom: 24 },
-  qrContainer: { padding: 20, backgroundColor: 'white', borderRadius: 20, marginBottom: 24, elevation: 6 },
-  linkText: { fontSize: 16, fontWeight: '600' },
+  codeText: { fontSize: 42, fontWeight: '900', letterSpacing: 6, marginBottom: 24, textAlign: 'center' },
+  qrContainer: { padding: 20, backgroundColor: 'white', borderRadius: 20, marginBottom: 24, elevation: 6, alignItems: 'center', justifyContent: 'center' },
+  linkText: { fontSize: 16, fontWeight: '600', paddingVertical: 8, paddingHorizontal: 16 },
   scanOverlay: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 999, backgroundColor: 'black' },
   camera: { flex: 1 },
   scanHeader: { position: 'absolute', top: 60, left: 0, right: 0, alignItems: 'center' },
   scanClose: { position: 'absolute', left: 20, top: 0, padding: 8 },
   scanTitle: { color: 'white', fontSize: 18, fontWeight: '700' },
-  themeGrid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', gap: 16 },
-  themeCard: { width: '45%', padding: 16, borderRadius: 16, alignItems: 'center', elevation: 2, marginBottom: 16 },
+  themeGrid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', gap: 12, width: '100%' },
+  themeCard: { width: '48%', padding: 16, borderRadius: 16, alignItems: 'center', elevation: 2, marginBottom: 12 },
   themeCircle: { width: 40, height: 40, borderRadius: 20, marginBottom: 12 },
   themeName: { fontSize: 14, fontWeight: '700', textAlign: 'center' },
   dotsContainer: { flexDirection: 'row', justifyContent: 'center', marginVertical: 20 },
   dot: { width: 8, height: 8, borderRadius: 4, marginHorizontal: 4 },
-  donationCard: { padding: 16, borderRadius: 12, marginTop: 10, width: '90%', alignItems: 'center' },
-  pulseContainer: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', padding: 12, borderRadius: 24, backgroundColor: 'rgba(0,0,0,0.05)', marginTop: 10 }
+  donationCard: { padding: 16, borderRadius: 12, marginTop: 10, width: '100%', alignItems: 'center' },
+  pulseContainer: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingVertical: 12, paddingHorizontal: 16, borderRadius: 24, backgroundColor: 'rgba(0,0,0,0.05)', marginTop: 10, flexShrink: 1 }
 });

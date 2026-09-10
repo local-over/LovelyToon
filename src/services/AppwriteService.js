@@ -83,6 +83,21 @@ class AppwriteService {
     return code;
   }
 
+  async getActiveInvite() {
+    if (!this.currentUser) return null;
+    try {
+      const invites = await this.databases.listDocuments(DB_ID, INVITES_COL, [
+        Query.equal('inviterId', this.currentUser.$id)
+      ]);
+      if (invites.total > 0) {
+        return invites.documents[0].code;
+      }
+    } catch (e) {
+      console.error('Error fetching active invite:', e);
+    }
+    return null;
+  }
+
   async consumeInvite(code, myName) {
     if (!this.currentUser) return null;
     try { if (myName && this.currentUser.name !== myName) await this.account.updateName(myName); } catch(e){}

@@ -70,7 +70,11 @@ export const TabBar = ({ activeTab, onTabChange }) => {
   return (
     <View style={[
       styles.container, 
-      { backgroundColor: colors.card, paddingBottom: Math.max(insets.bottom, 20) },
+      { 
+        backgroundColor: colors.card, 
+        paddingBottom: 8, 
+        bottom: Math.max(insets.bottom, 20) 
+      },
       SHADOWS.card
     ]}>
       {tabs.map((tab) => (
@@ -90,13 +94,11 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     marginHorizontal: 20,
-    marginBottom: 20,
     paddingHorizontal: 8,
     paddingTop: 8,
     borderRadius: SIZES.pillRadius,
     justifyContent: 'space-between',
     position: 'absolute',
-    bottom: 0,
     left: 0,
     right: 0,
   },

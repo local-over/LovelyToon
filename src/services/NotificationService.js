@@ -42,7 +42,8 @@ export const handleNotification = async (notification) => {
       app: notification.app,
       timestamp: Date.now(),
       sender: userId,
-      senderName: nickname
+      senderName: nickname,
+      status: 'playing'
     };
 
     try {

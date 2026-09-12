@@ -57,7 +57,7 @@ jobs:
   release:
     name: Create GitHub Release
     needs: build
-    if: startsWith(github.ref, 'refs/tags/v')
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -73,6 +73,7 @@ jobs:
         with:
           files: LovelyToon.apk
           name: "Lovely Toon ${{ github.ref_name }} 💕"
+          tag_name: ${{ github.ref == 'refs/heads/main' && 'latest' || github.ref_name }}
           body: |
             ## What's New
             Download the APK below and install it on your Android phone.

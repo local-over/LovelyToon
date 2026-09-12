@@ -75,6 +75,13 @@ function AppContent() {
 
       startListening();
 
+      if (Platform.OS === 'android') {
+        const { status } = await Notifications.getPermissionsAsync();
+        if (status !== 'granted') {
+          await Notifications.requestPermissionsAsync();
+        }
+      }
+
       const updateInfo = await UpdateService.checkForUpdates();
       if (updateInfo?.hasUpdate) {
         UpdateService.showUpdateAlert(updateInfo);

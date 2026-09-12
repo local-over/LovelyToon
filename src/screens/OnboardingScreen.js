@@ -94,7 +94,9 @@ export const OnboardingScreen = ({ onPaired, inviteData, initialUserId }) => {
         const activeCode = await appwriteService.getActiveInvite();
         if (activeCode) {
           setGeneratedCode(activeCode);
-          setStep('room');
+          if (n) {
+            setStep('room');
+          }
         } else if (n && !inviteData) {
           setStep('room');
         }

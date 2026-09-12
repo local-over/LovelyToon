@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, StyleSheet, StatusBar, AppState, Platform } from 'react-native';
+import { View, StyleSheet, StatusBar, AppState, Platform, Alert } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import * as Linking from 'expo-linking';
 import * as Notifications from 'expo-notifications';
@@ -109,12 +109,41 @@ function AppContent() {
   };
 
   const handlePaired = async (pId, pName) => {
-    setPartnerId(pId);
-    setPartnerName(pName || 'Partner');
-    await StorageService.setPartnerId(pId);
-    await StorageService.setPartnerName(pName || 'Partner');
-    setInviteData(null);
-    connectToPartner(pId);
+    const oldPartnerId = await StorageService.getPartnerId();
+    
+    const finalizePairing = async () => {
+      setPartnerId(pId);
+      setPartnerName(pName || 'Partner');
+      await StorageService.setPartnerId(pId);
+      await StorageService.setPartnerName(pName || 'Partner');
+      setInviteData(null);
+      connectToPartner(pId);
+    };
+
+    if (oldPartnerId && oldPartnerId !== pId) {
+      Alert.alert(
+        'New Partner Detected',
+        'Are you pairing with a new partner or relinking with the same person?',
+        [
+          {
+            text: 'Relinking (Keep History)',
+            onPress: () => finalizePairing(),
+            style: 'cancel',
+          },
+          {
+            text: 'New Partner (Clear History)',
+            onPress: async () => {
+              await StorageService.clearHistory();
+              finalizePairing();
+            },
+            style: 'destructive',
+          },
+        ],
+        { cancelable: false }
+      );
+    } else {
+      finalizePairing();
+    }
   };
 
   const connectToPartner = (pId) => {

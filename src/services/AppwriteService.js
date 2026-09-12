@@ -257,26 +257,39 @@ class AppwriteService {
   publishBackgroundMessage(songData) {
     return new Promise(async (resolve, reject) => {
       try {
-        const clientBg = new Client()
-          .setEndpoint(APPWRITE_ENDPOINT)
-          .setProject(APPWRITE_PROJECT_ID);
+        if (!this.currentUser) {
+          await this.getSession();
+        }
+        if (!this.currentUser) {
+          return reject(new Error("No valid session found"));
+        }
         
-        const accountBg = new Account(clientBg);
-        const user = await accountBg.get();
-        const dbBg = new Databases(clientBg);
-        
-        const docs = await dbBg.listDocuments(DB_ID, NOW_PLAYING_COL, [
-          Query.equal('userId', user.$id)
+        const docs = await this.databases.listDocuments(DB_ID, NOW_PLAYING_COL, [
+          Query.equal('userId', this.currentUser.$id)
         ]);
 
         if (docs.total > 0) {
-          await dbBg.updateDocument(DB_ID, NOW_PLAYING_COL, docs.documents[0].$id, {
+          await this.databases.updateDocument(DB_ID, NOW_PLAYING_COL, docs.documents[0].$id, {
             title: songData.title || '',
             artist: songData.artist || '',
             albumArt: songData.albumArt || '',
             status: songData.status || 'stopped',
             timestamp: Math.floor(Date.now() / 1000)
           });
+        } else {
+          await this.initNowPlayingDoc(this.currentUser.$id);
+          const retryDocs = await this.databases.listDocuments(DB_ID, NOW_PLAYING_COL, [
+            Query.equal('userId', this.currentUser.$id)
+          ]);
+          if (retryDocs.total > 0) {
+            await this.databases.updateDocument(DB_ID, NOW_PLAYING_COL, retryDocs.documents[0].$id, {
+              title: songData.title || '',
+              artist: songData.artist || '',
+              albumArt: songData.albumArt || '',
+              status: songData.status || 'stopped',
+              timestamp: Math.floor(Date.now() / 1000)
+            });
+          }
         }
         resolve();
       } catch(e) {

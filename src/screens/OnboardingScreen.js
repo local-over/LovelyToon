@@ -96,6 +96,8 @@ export const OnboardingScreen = ({ onPaired, inviteData, initialUserId }) => {
           setGeneratedCode(activeCode);
           if (n) {
             setStep('room');
+          } else {
+            setStep('name');
           }
         } else if (n && !inviteData) {
           setStep('room');

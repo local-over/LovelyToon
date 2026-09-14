@@ -48,23 +48,20 @@ function AppContent() {
   const initApp = async () => {
     setIsLoading(true);
     try {
-      let session = await appwriteService.getSession();
-      if (session) {
-        setUserId(session.$id);
-        
-        const relPartnerId = await appwriteService.getRelationship();
-        if (relPartnerId) {
-          setPartnerId(relPartnerId);
-          await StorageService.setPartnerId(relPartnerId);
-          connectToPartner(relPartnerId);
-        }
-      }
-      
+      // 1. Load from cache instantly
+      const storedUserId = await StorageService.getUserId();
+      const storedPartnerId = await StorageService.getPartnerId();
       const name = await StorageService.getNickname();
+      const pname = await StorageService.getPartnerName();
+
+      setUserId(storedUserId || '');
       setUserName(name || '');
       
-      const pname = await StorageService.getPartnerName();
-      setPartnerName(pname);
+      if (storedPartnerId) {
+        setPartnerId(storedPartnerId);
+        setPartnerName(pname);
+        connectToPartner(storedPartnerId);
+      }
 
       // Handle deep links
       const initialUrl = await Linking.getInitialURL();
@@ -82,13 +79,33 @@ function AppContent() {
         }
       }
 
-      const updateInfo = await UpdateService.checkForUpdates();
-      if (updateInfo?.hasUpdate) {
-        UpdateService.showUpdateAlert(updateInfo);
-      }
+      UpdateService.checkForUpdates().then(updateInfo => {
+        if (updateInfo?.hasUpdate) {
+          UpdateService.showUpdateAlert(updateInfo);
+        }
+      }).catch(() => {});
+
+      setIsLoading(false); // Render UI immediately from cache
+
+      // 2. Sync with cloud in background
+      appwriteService.getSession().then(async (session) => {
+        if (session) {
+          if (!storedUserId || storedUserId !== session.$id) {
+            setUserId(session.$id);
+            await StorageService.setUserId(session.$id);
+          }
+          
+          const relPartnerId = await appwriteService.getRelationship();
+          if (relPartnerId && relPartnerId !== storedPartnerId) {
+            setPartnerId(relPartnerId);
+            await StorageService.setPartnerId(relPartnerId);
+            connectToPartner(relPartnerId);
+          }
+        }
+      }).catch(() => {});
+      
     } catch (e) {
       console.error(e);
-    } finally {
       setIsLoading(false);
     }
   };
@@ -155,15 +172,41 @@ function AppContent() {
 
   const connectToPartner = (pId) => {
     appwriteService.setCallbacks({
-      onConnect: () => setIsConnected(true),
+      onConnect: async () => {
+        setIsConnected(true);
+        // Handshake: Tell partner we connected and send our name
+        const myName = await StorageService.getNickname() || 'Someone';
+        try {
+          await appwriteService.publishBackgroundMessage({ status: `connected|${myName}` });
+        } catch(e) {}
+      },
       onMessage: async (data) => {
-        if (data.status === 'stopped') {
+        let partnerNameFromStatus = null;
+        let actualStatus = data.status;
+        
+        if (data.status && data.status.includes('|')) {
+          const parts = data.status.split('|');
+          actualStatus = parts[0];
+          partnerNameFromStatus = parts[1];
+        }
+
+        if (actualStatus === 'stopped') {
           setCurrentSong(null);
           return;
         }
 
-        // We receive senderName as 'Partner' by default from service, overwrite with cached name
-        const localPName = await StorageService.getPartnerName();
+        let localPName = await StorageService.getPartnerName();
+        if (partnerNameFromStatus && partnerNameFromStatus !== 'Partner' && partnerNameFromStatus !== localPName) {
+           localPName = partnerNameFromStatus;
+           await StorageService.setPartnerName(partnerNameFromStatus);
+           setPartnerName(partnerNameFromStatus);
+        }
+
+        if (actualStatus === 'connected') {
+          // Just a handshake, no song data
+          return;
+        }
+
         data.senderName = localPName || 'Partner';
         
         setCurrentSong(data);
@@ -194,6 +237,23 @@ function AppContent() {
     });
 
     appwriteService.connectToPartner(pId);
+
+    // Polling fallback for Huawei/Android background killers
+    if (window.nowPlayingInterval) clearInterval(window.nowPlayingInterval);
+    let lastPolledTimestamp = null;
+    
+    window.nowPlayingInterval = setInterval(async () => {
+      try {
+        const data = await appwriteService.getNowPlaying(pId);
+        if (data && data.timestamp && data.timestamp !== lastPolledTimestamp) {
+          lastPolledTimestamp = data.timestamp;
+          const callbacks = appwriteService.callbacks;
+          if (callbacks && callbacks.onMessage) {
+            callbacks.onMessage(data);
+          }
+        }
+      } catch(e) {}
+    }, 5000);
   };
 
   // ── Notification action handling ──
@@ -228,9 +288,11 @@ function AppContent() {
 
   // ── Disconnect / Logout ──
   const handleDisconnect = async () => {
+    if (window.nowPlayingInterval) clearInterval(window.nowPlayingInterval);
     appwriteService.disconnect();
     await appwriteService.signOut();
     await StorageService.clearAllPairing();
+    await StorageService.setUserId(null);
     setIsConnected(false);
     setCurrentSong(null);
     setUserId('');

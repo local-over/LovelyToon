@@ -253,6 +253,19 @@ class AppwriteService {
       console.error('Publish err', e);
     }
   }
+
+  async getNowPlaying(userId) {
+    if (!this.currentUser) return null;
+    try {
+      const docs = await this.databases.listDocuments(DB_ID, NOW_PLAYING_COL, [
+        Query.equal('userId', userId)
+      ]);
+      if (docs.total > 0) {
+        return docs.documents[0];
+      }
+    } catch(e) {}
+    return null;
+  }
   
   publishBackgroundMessage(songData) {
     return new Promise(async (resolve, reject) => {

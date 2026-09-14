@@ -113,6 +113,23 @@ export const SettingsScreen = ({ onDisconnect, partnerName }) => {
             </View>
           </View>
 
+          {Platform.OS === 'android' && (
+            <View style={[styles.card, { backgroundColor: colors.card }]}>
+              <Text style={[styles.cardTitle, { color: colors.heartRed }]}>Battery & Background</Text>
+              <Text style={[styles.cardDescription, { color: colors.textSecondary }]}>
+                Huawei, Xiaomi, and Samsung devices aggressively kill background apps. To keep the app working, you MUST disable Battery Optimizations and enable Auto-Start.
+              </Text>
+              <TouchableOpacity style={[styles.primaryButton, { backgroundColor: colors.heartRed }]} onPress={() => {
+                import('react-native').then(({ Linking }) => {
+                  Linking.openSettings();
+                });
+              }}>
+                <Ionicons name="battery-dead-outline" size={18} color={'white'} style={{ marginRight: 8 }} />
+                <Text style={[styles.primaryButtonText, { color: 'white' }]}>Open Settings</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+
           {/* Account Migration */}
           {appwriteService.partnerId && (
             <View style={[styles.card, { backgroundColor: colors.card }]}>

@@ -439,9 +439,15 @@ export const OnboardingScreen = ({ onPaired, inviteData, initialUserId }) => {
               <FadeInView delay={100}>
                 <Ionicons name="notifications-circle-outline" size={80} color={colors.primary} style={{ marginBottom: 16 }} />
               </FadeInView>
-              <FadeInView delay={200} style={{ alignItems: 'center' }}>
+              <FadeInView delay={200} style={{ alignItems: 'center', width: '100%' }}>
                 <Text style={[styles.title, { color: colors.textPrimary }]}>One Quick Thing</Text>
                 <Text style={[styles.subtitle, { color: colors.textSecondary }]}>To magically detect what you're listening to, we need Notification Access on Android.</Text>
+                {Platform.OS === 'android' && (
+                  <View style={[styles.donationCard, { backgroundColor: 'rgba(255,0,0,0.05)', borderColor: colors.accent, borderWidth: 1, marginTop: -10, marginBottom: 20 }]}>
+                    <Text style={{ fontWeight: '700', marginBottom: 4, color: colors.heartRed }}>Huawei / Xiaomi / Samsung users:</Text>
+                    <Text style={{ fontSize: 12, color: colors.textSecondary, textAlign: 'center' }}>You MUST disable Battery Optimizations and allow Auto-Start for this app in your phone's settings, or it won't work in the background!</Text>
+                  </View>
+                )}
               </FadeInView>
               <FadeInView delay={300} style={{ width: '100%' }}>
                 <TouchableOpacity style={[styles.button, { backgroundColor: colors.primary }]} onPress={handleGrantPermission}>

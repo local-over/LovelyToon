@@ -7,6 +7,28 @@ const MEDIA_APPS = [
   'com.google.android.apps.youtube.music',
   'com.apple.android.music',
   'com.amazon.mp3',
+  'com.soundcloud.android',
+  'deezer.android.app',
+  'com.pandora.android',
+  'com.aspiro.tidal',
+  'com.huawei.music',
+  'com.sec.android.app.music',
+  'com.miui.player',
+  'com.oplus.music',
+  'com.heytap.music',
+  'com.hhtc.music',
+  'com.netease.cloudmusic',
+  'com.tencent.qqmusic',
+  'com.kugou.android',
+  'com.kuwo.kwmusic.biz',
+  'com.anghami',
+  'com.jio.media.jiobeats',
+  'com.bsbportal.music',
+  'com.audiomack',
+  'tunein.player',
+  'app.podcast.cosmos',
+  'fm.castbox.audiobook.radio.podcast',
+  'com.stitcher.app'
 ];
 
 let lastSong = { title: null, artist: null };
@@ -43,7 +65,7 @@ export const handleNotification = async (notification) => {
       timestamp: Date.now(),
       sender: userId,
       senderName: nickname,
-      status: 'playing'
+      status: `playing|${nickname}`
     };
 
     try {
